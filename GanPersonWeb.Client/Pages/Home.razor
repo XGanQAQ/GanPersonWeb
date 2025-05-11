@@ -1,0 +1,180 @@
+﻿@page "/"
+
+<PageTitle>游戏开发者实验室 | 个人博客</PageTitle>
+
+<MudPaper Class="game-bg text-gray-100 min-h-screen">
+    <!-- 英雄区域 -->
+    <MudContainer MaxWidth="MaxWidth.Large" Class="relative overflow-hidden py-24">
+        <MudText Typo="Typo.h1" Align="Align.Center" Class="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            创造<span class="text-pink-500">游戏</span>世界
+        </MudText>
+        <MudText Typo="Typo.h6" Align="Align.Center" Class="text-xl md:text-2xl text-gray-300 mb-8">
+            探索游戏开发的无限可能，分享我的项目、实验和思考
+        </MudText>
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <MudStack Justify="Justify.Center" Spacing="2">
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Primary" Href="#projects">
+                    <MudIcon Icon="fas fa-rocket" Class="mr-2" /> 查看项目
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Size="Size.Large" Color="Color.Secondary" Href="#blog">
+                    <MudIcon Icon="fas fa-book" Class="mr-2" /> 阅读博客
+                </MudButton>
+            </MudStack>
+        </MudContainer>
+
+    </MudContainer>
+
+    <!-- 项目展示 -->
+    <MudContainer MaxWidth="MaxWidth.Large" Class="py-16 bg-gray-900 bg-opacity-50" Id="projects">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            我的游戏项目
+        </MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center" Class="text-gray-400 max-w-2xl mx-auto mb-12">
+            这些是我投入大量时间和精力的完整游戏项目，每个项目都代表了我作为游戏开发者的成长历程。
+        </MudText>
+        <MudGrid Spacing="3">
+            <MudItem xs="12" md="6" lg="4">
+                <MudCard Class="game-card">
+                    <MudCardMedia Image="./picture/maomao.png" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="text-blue-400">时间魔法猫猫大冒险</MudText>
+                        <MudChipSet T="string">
+                            <MudChip>Unity</MudChip>
+                            <MudChip>C#</MudChip>
+                            <MudChip>3D</MudChip>
+                        </MudChipSet>
+                        <MudText Typo="Typo.body2" Class="text-gray-400">
+                            一款3D横板时间控制平台跳跃游戏，玩家可以操控会控制时间的猫猫，解密/挑战重重关卡。
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="https://www.bilibili.com/video/BV1i6mAYFE4j">
+                            了解更多
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <!-- 其他项目卡片... -->
+        </MudGrid>
+    </MudContainer>
+
+        <!-- 实验展示 -->
+    <MudContainer MaxWidth="MaxWidth.Large" Class="py-16 bg-gray-900 bg-opacity-70" Id="experiments">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-blue-500">
+            技术实验
+        </MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center" Class="text-gray-400 max-w-2xl mx-auto mb-12">
+            这些是我在游戏开发过程中进行的小型实验和技术探索，帮助我理解和掌握各种游戏开发技术。
+        </MudText>
+        <MudGrid Spacing="3">
+            <MudItem xs="12" md="6" lg="3">
+                <MudCard Class="game-card">
+                    <MudCardContent Class="flex flex-col items-center text-center">
+                        <MudIcon Icon="fas fa-cube" Size="Size.Large" Class="text-blue-500 mb-4" />
+                        <MudText Typo="Typo.h6" Align="Align.Center" Class="text-blue-400">程序化地形生成</MudText>
+                        <MudText Typo="Typo.body2" Align="Align.Center" Class="text-gray-400">
+                            使用噪声算法和Marching Cubes技术生成无限3D地形
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions Class="flex justify-center">
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="#">
+                            查看演示
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <!-- 其他实验卡片... -->
+        </MudGrid>
+    </MudContainer>
+
+    <!-- 博客文章 -->
+    <MudContainer MaxWidth="MaxWidth.Large" Class="py-16 bg-gray-900 bg-opacity-50" Id="blog">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">
+            开发日志
+        </MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center" Class="text-gray-400 max-w-2xl mx-auto mb-12">
+            记录我在游戏开发过程中的思考、遇到的问题和解决方案，以及行业见解。
+        </MudText>
+        <MudGrid Spacing="3">
+            <MudItem xs="12" md="6">
+                <MudCard Class="game-card">
+                    <MudCardMedia Image="https://via.placeholder.com/800x400/1a1a2e/4cc9f0?text=Blog+1" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="text-blue-400">优化Unity中的GC问题</MudText>
+                        <MudText Typo="Typo.body2" Class="text-gray-400">
+                            在开发"星际探险家"时，我们遇到了严重的GC卡顿问题。本文详细介绍了我们如何识别问题源头，以及通过对象池、结构体替代类等技巧减少GC压力的过程...
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="#">
+                            继续阅读
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <!-- 其他博客卡片... -->
+        </MudGrid>
+    </MudContainer>
+
+    <!-- 关于我 -->
+    <MudContainer MaxWidth="MaxWidth.Large" Class="py-16 bg-gray-900 bg-opacity-70" Id="about">
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="4">
+                <MudImage Src="images/head.jpg" Alt="A image of my head" Elevation="25" Class="rounded-lg"></MudImage>
+            </MudItem>
+            <MudItem xs="8">
+                <MudText Typo="Typo.h4" Class="mb-6" Color="Color.Primary">
+                    关于我
+                </MudText>
+                <MudText Typo="Typo.body1" Class="mb-4">
+                    你好！我是一名专注于游戏开发的程序员，拥有丰富的游戏开发经验。我对创造沉浸式的游戏体验充满热情，特别关注游戏机制设计和技术实现。
+                </MudText>
+                <MudText Typo="Typo.body1" Class="mb-6">
+                    我的专长包括Unity和Unreal引擎开发，同时对Godot等开源引擎也有深入研究。我喜欢探索新的游戏技术，从图形渲染到AI行为，从网络同步到物理模拟。
+                </MudText>
+                <MudText Typo="Typo.h5" Color="Color.Secondary">主要技术栈</MudText>
+                <MudChip T="string">Unity</MudChip>
+                <MudChip T="string">Unreal Engine</MudChip>
+                <MudChip T="string">Godot</MudChip>
+                <MudChip T="string">C#</MudChip>
+                <MudChip T="string">C++</MudChip>
+                <MudSpacer></MudSpacer>
+                <MudText Typo="Typo.h5" Color="Color.Tertiary">其他主页 </MudText>
+                    <MudChip T="string"
+                             Href="https://github.com/XGanQAQ"
+                             Target="_blank"
+                             Variant="Variant.Filled"
+                             Icon="@Icons.Custom.Brands.GitHub">
+                        GitHub
+                    </MudChip>
+                    <MudChip T="string"
+                             Href="https://twitter.com/YourTwitterHandle"
+                             Target="_blank"
+                             Variant="Variant.Filled"
+                             Icon="@Icons.Custom.Brands.Twitter">
+                        Twitter
+                    </MudChip>
+                    <MudChip T="string"
+                             Href="https://www.linkedin.com/in/YourLinkedInProfile"
+                             Target="_blank"
+                             Variant="Variant.Filled"
+                             Icon="@Icons.Custom.Brands.LinkedIn">
+                        LinkedIn
+                    </MudChip>
+                <MudText Typo="Typo.h5" Color="Color.Success">
+                    联系方式
+               </MudText>
+                    <MudChip T="string" Icon="@Icons.Material.Filled.Email"> 
+                        邮箱:2423855310@qq.com
+                    </MudChip>
+                    @* <MudChip T="string" Icon="@Icons.Material.Filled.Phone">  *@
+                    @*     电话: +86 123-4567-8901 *@
+                    @* </MudChip> *@
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</MudPaper>
+
+@code {
+
+}
