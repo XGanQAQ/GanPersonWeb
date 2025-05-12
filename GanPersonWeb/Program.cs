@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GanPersonWeb.Client.Services;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,12 +56,27 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<PersonalInfoService>();
 
+// blazor client service
+builder.Services.AddScoped(sp =>
+{
+    var navigationManager = sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
+    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+});
+builder.Services.AddScoped<ClientProjectService>();
+builder.Services.AddScoped<AuthService>();
+
 var app = builder.Build();
 // 在应用启动时检查并插入默认个人信息
 using (var scope = app.Services.CreateScope())
 {
     var personalInfoService = scope.ServiceProvider.GetRequiredService<PersonalInfoService>();
     await personalInfoService.EnsureDefaultPersonalInfoAsync();
+}
+// 创建初始管理员用户
+using (var scope = app.Services.CreateScope())
+{
+    var userService = scope.ServiceProvider.GetRequiredService<UserService>();
+    await userService.CreateInitialAdminUserAsync("admin", "admin123");
 }
 
 // Configure the HTTP request pipeline.
@@ -84,8 +101,8 @@ app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
+    .AddInteractiveServerRenderMode()
     .AddAdditionalAssemblies(typeof(GanPersonWeb.Client._Imports).Assembly);
 
 app.Run();

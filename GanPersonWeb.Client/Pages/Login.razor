@@ -1,0 +1,36 @@
+@page "/login"
+
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudPaper Class="pa-4" Elevation="4">
+        <MudText Typo="Typo.h5" Class="mb-4">Login</MudText>
+        <MudTextField @bind-Value="Username" Label="Username" Variant="Variant.Filled" />
+        <MudTextField @bind-Value="Password" Label="Password" Variant="Variant.Filled" InputType="InputType.Password" />
+        <MudButton OnClick="HandleLogin" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Login</MudButton>
+        <MudText Color="Color.Error" Class="mt-2">@ErrorMessage</MudText>
+    </MudPaper>
+</MudContainer>
+
+
+@code {
+    private string Username { get; set; } = string.Empty;
+    private string Password { get; set; } = string.Empty;
+    private string ErrorMessage { get; set; } = string.Empty;
+
+    private async Task HandleLogin()
+    {
+        ErrorMessage = string.Empty;
+        var token = await AuthService.LoginAsync(Username, Password);
+        if (token != null)
+        {
+            // Store the token (e.g., in local storage) and navigate to the home page
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ErrorMessage = "Invalid username or password.";
+        }
+    }
+}

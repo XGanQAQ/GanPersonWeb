@@ -19,6 +19,22 @@ namespace GanPersonWeb.Services
 
         }
 
+        //创建初始管理员用户
+        public async Task CreateInitialAdminUserAsync(string username, string password)
+        {
+            var existingUsers = await _databaseService.GetAllAsync<User>();
+            if (!existingUsers.Any())
+            {
+                var adminUser = new User
+                {
+                    Username = username,
+                    Password = BCrypt.Net.BCrypt.HashPassword(password),
+                    Role = "Admin"
+                };
+                await _databaseService.AddAsync(adminUser);
+            }
+        }
+
         public async Task RegisterAsync(User user)
         {
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);

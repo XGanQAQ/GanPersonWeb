@@ -1,5 +1,6 @@
 ﻿@page "/"
 
+@inject ClientProjectService clientProjectService
 <PageTitle>游戏开发者实验室 | 个人博客</PageTitle>
 
 <MudPaper Class="game-bg text-gray-100 min-h-screen">
@@ -26,6 +27,7 @@
 
     <!-- 项目展示 -->
     <MudContainer MaxWidth="MaxWidth.Large" Class="py-16 bg-gray-900 bg-opacity-50" Id="projects">
+        
         <MudText Typo="Typo.h4" Align="Align.Center" Class="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
             我的游戏项目
         </MudText>
@@ -35,7 +37,7 @@
         <MudGrid Spacing="3">
             <MudItem xs="12" md="6" lg="4">
                 <MudCard Class="game-card">
-                    <MudCardMedia Image="./picture/maomao.png" Height="200" />
+                    <MudCardMedia Image="./images/maomao.png" Height="200" />
                     <MudCardContent>
                         <MudText Typo="Typo.h6" Class="text-blue-400">时间魔法猫猫大冒险</MudText>
                         <MudChipSet T="string">
@@ -177,4 +179,10 @@
 
 @code {
 
+    public List<Project> projects { get; set; } = new List<Project>();  
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await clientProjectService.GetProjectsAsync();
+    }
 }
