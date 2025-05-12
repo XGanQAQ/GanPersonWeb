@@ -20,7 +20,10 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<GanPersonDbContext>(options =>
     options.UseInMemoryDatabase("GanPersonInMemoryDb"));
 
+builder.Services.AddControllers(); // 添加控制器服务
+
 builder.Services.AddScoped<DatabaseService>();
+builder.Services.AddScoped<ProjectService>();
 
 var app = builder.Build();
 
@@ -35,6 +38,9 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// 
+app.MapControllers();
 
 app.UseHttpsRedirection();
 

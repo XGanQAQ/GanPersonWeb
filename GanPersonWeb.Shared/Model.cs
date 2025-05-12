@@ -50,6 +50,19 @@
         public string ImageUrl { get; set; } = string.Empty; // 博客预览图片URL
         public DateTime PublishDate { get; set; } // 博客发布日期
         public List<string> Tags { get; set; } = new(); // 博客标签
+        public int ViewCount { get; set; } // 浏览量
+        public int TalkCount { get; set; } // 评论量
+    }
+
+    // 评论表
+    public class Comment
+    {
+        public int Id { get; set; } // 主键
+        public int BlogId { get; set; } // 关联的博客ID
+        public string Author { get; set; } = string.Empty; // 评论作者
+        public string Content { get; set; } = string.Empty; // 评论内容
+        public DateTime PublishDate { get; set; } // 评论发布日期
+        public int? ReplyTo { get; set; } // 回复的评论ID（如果是回复）
     }
 
     // 图片表

@@ -8,45 +8,49 @@ using Xunit;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
-public class DatabaseServiceTests
+namespace GanPersonWeb.Tests.Services
 {
-    private readonly DatabaseService _service;
-
-    public DatabaseServiceTests()
+    public class DatabaseServiceTests
     {
-        // 创建 InMemoryDatabase 的 DbContextOptions
-        var options = new DbContextOptionsBuilder<GanPersonDbContext>()
-            .UseInMemoryDatabase("TestDatabase")
-            .Options;
+        private readonly DatabaseService _service;
 
-        // 创建真实的 DbContext
-        var context = new GanPersonDbContext(options);
+        public DatabaseServiceTests()
+        {
+            // 创建 InMemoryDatabase 的 DbContextOptions
+            var options = new DbContextOptionsBuilder<GanPersonDbContext>()
+                .UseInMemoryDatabase("TestDatabase")
+                .Options;
 
-        // 初始化 DatabaseService
-        _service = new DatabaseService(context);
-    }
+            // 创建真实的 DbContext
+            var context = new GanPersonDbContext(options);
 
-    [Fact]
-    public async Task GetAllAsync_ShouldReturnAllEntities()
-    {
-        // Arrange
-        var blog1 = new Blog { Id = 1, Title = "Test Blog 1" };
-        var blog2 = new Blog { Id = 2, Title = "Test Blog 2" };
+            // 初始化 DatabaseService
+            _service = new DatabaseService(context);
+        }
 
-        // 添加测试数据
-        var context = _service.GetType()
-            .GetField("_context", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-            ?.GetValue(_service) as GanPersonDbContext;
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnAllEntities()
+        {
+            // Arrange
+            var blog1 = new Blog { Id = 1, Title = "Test Blog 1" };
+            var blog2 = new Blog { Id = 2, Title = "Test Blog 2" };
 
-        context?.Blogs.AddRange(blog1, blog2);
-        await context?.SaveChangesAsync();
+            // 添加测试数据
+            var context = _service.GetType()
+                .GetField("_context", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.GetValue(_service) as GanPersonDbContext;
 
-        // Act
-        var result = await _service.GetAllAsync<Blog>();
+            context?.Blogs.AddRange(blog1, blog2);
+            await context?.SaveChangesAsync();
 
-        // Assert
-        result.Should().NotBeNull(); // 使用 FluentAssertions 提供的扩展方法
-        result.Should().HaveCount(2);
+            // Act
+            var result = await _service.GetAllAsync<Blog>();
+
+            // Assert
+            result.Should().NotBeNull(); // 使用 FluentAssertions 提供的扩展方法
+            result.Should().HaveCount(2);
+        }
     }
 }
+
 

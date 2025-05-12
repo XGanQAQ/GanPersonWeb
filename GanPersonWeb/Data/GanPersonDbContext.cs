@@ -12,5 +12,6 @@ namespace GanPersonWeb.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Comment> Comments { get; set; } // 新增评论表
     }
 }

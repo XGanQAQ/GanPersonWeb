@@ -1,0 +1,44 @@
+﻿@GanPersonWeb_HostAddress = https://localhost:7134  
+
+GET {{GanPersonWeb_HostAddress}}/api/projects  
+
+###  
+
+POST {{GanPersonWeb_HostAddress}}/api/projects  
+Content-Type: application/json  
+
+{  
+ "title": "New Project",  
+ "description": "This is a test project",  
+ "imageUrl": "https://example.com/project-image.jpg",  
+ "publishDate": "2023-10-01T00:00:00Z",  
+ "tags": ["Test", "Blazor", "WebAssembly"],  
+ "link": "https://example.com/project-link"  
+}  
+
+###  
+
+@id=1
+GET {{GanPersonWeb_HostAddress}}/api/projects/{{id}}  
+
+###  
+
+@id=1  
+PUT {{GanPersonWeb_HostAddress}}/api/projects/{{id}}  
+Content-Type: application/json  
+
+{  
+ "title": "Updated Project",  
+ "description": "This project has been updated",  
+ "imageUrl": "https://example.com/updated-project-image.jpg",  
+ "publishDate": "2023-10-01T00:00:00Z",  
+ "tags": ["Updated", "Blazor", "WebAssembly"],  
+ "link": "https://example.com/updated-project-link"
+}  
+
+###
+
+@id=1
+DELETE {{GanPersonWeb_HostAddress}}/api/projects/{{id}}  
+
+###  
