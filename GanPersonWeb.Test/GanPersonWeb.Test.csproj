@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\GanPersonWeb.Tests\Services\BlogServiceTests.cs" Link="BlogServiceTests.cs" />
     <Compile Include="..\GanPersonWeb.Tests\Services\ProjectServiceTests.cs" Link="ProjectServiceTests.cs" />
   </ItemGroup>
 

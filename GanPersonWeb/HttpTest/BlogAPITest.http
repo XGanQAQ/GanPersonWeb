@@ -1,0 +1,42 @@
+@GanPersonWeb_HostAddress = https://localhost:7134  
+
+### Get all blogs
+GET {{GanPersonWeb_HostAddress}}/api/blogs  
+
+### Add a new blog
+POST {{GanPersonWeb_HostAddress}}/api/blogs  
+Content-Type: application/json  
+
+{  
+ "title": "New Blog",  
+ "content": "This is a test blog content.",  
+ "imageUrl": "https://example.com/blog-image.jpg",  
+ "publishDate": "2023-10-01T00:00:00Z",  
+ "tags": ["Test", "Blazor", "WebAssembly"],  
+ "viewCount": 0,  
+ "talkCount": 0  
+}  
+
+### Get a blog by ID
+@id=1
+GET {{GanPersonWeb_HostAddress}}/api/blogs/{{id}}  
+
+### Update a blog
+@id=1  
+PUT {{GanPersonWeb_HostAddress}}/api/blogs/{{id}}  
+Content-Type: application/json  
+
+{  
+ "title": "Updated Blog",  
+ "content": "This blog content has been updated.",  
+ "imageUrl": "https://example.com/updated-blog-image.jpg",  
+ "publishDate": "2023-10-01T00:00:00Z",  
+ "tags": ["Updated", "Blazor", "WebAssembly"],  
+ "viewCount": 10,  
+ "talkCount": 5  
+}  
+
+### Delete a blog
+@id=1
+DELETE {{GanPersonWeb_HostAddress}}/api/blogs/{{id}}  
+
