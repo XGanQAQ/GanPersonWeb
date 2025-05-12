@@ -1,0 +1,62 @@
+﻿namespace GanPersonWeb.Shared.Models
+{
+    // 用户表
+    public class User
+    {
+        public int Id { get; set; } // 主键
+        public string Username { get; set; } = string.Empty; // 用户名
+        public string Password { get; set; } = string.Empty; // 密码（加密存储）
+        public string Role { get; set; } = "User"; // 角色（如管理员、普通用户）
+    }
+
+    // 个人信息表
+    public class PersonalInfo
+    {
+        public int Id { get; set; } // 主键
+        public string Name { get; set; } = string.Empty; // 姓名
+        public string Occupation { get; set; } = string.Empty; // 职业
+        public string Description { get; set; } = string.Empty; // 个人简介
+        public string Email { get; set; } = string.Empty; // 电子邮箱
+        public string ProfileImageUrl { get; set; } = string.Empty; // 个人头像URL
+        public List<SocialMediaLink> SocialMediaLinks { get; set; } = new(); // 社交媒体链接
+    }
+
+    // 社交媒体链接表
+    public class SocialMediaLink
+    {
+        public int Id { get; set; } // 主键
+        public string Platform { get; set; } = string.Empty; // 平台名称（如GitHub、LinkedIn）
+        public string Url { get; set; } = string.Empty; // 链接
+    }
+
+    // 项目表
+    public class Project
+    {
+        public int Id { get; set; } // 主键
+        public string Title { get; set; } = string.Empty; // 项目标题
+        public string Description { get; set; } = string.Empty; // 项目描述
+        public string ImageUrl { get; set; } = string.Empty; // 项目预览图片URL
+        public DateTime PublishDate { get; set; } // 项目发布日期
+        public List<string> Tags { get; set; } = new(); // 项目标签
+        public string Link { get; set; } = string.Empty; // 项目链接
+    }
+
+    // 博客表
+    public class Blog
+    {
+        public int Id { get; set; } // 主键
+        public string Title { get; set; } = string.Empty; // 博客标题
+        public string Content { get; set; } = string.Empty; // 博客内容
+        public string ImageUrl { get; set; } = string.Empty; // 博客预览图片URL
+        public DateTime PublishDate { get; set; } // 博客发布日期
+        public List<string> Tags { get; set; } = new(); // 博客标签
+    }
+
+    // 图片表
+    public class Image
+    {
+        public int Id { get; set; } // 主键
+        public string Url { get; set; } = string.Empty; // 图片URL
+        public DateTime UploadDate { get; set; } // 上传时间
+    }
+}

@@ -1,6 +1,9 @@
 using MudBlazor.Services;
 using GanPersonWeb.Client.Pages;
 using GanPersonWeb.Components;
+using GanPersonWeb.Data;
+using GanPersonWeb.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,13 @@ builder.Services.AddMudServices();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+
+// Use in-memory database for testing and development
+builder.Services.AddDbContext<GanPersonDbContext>(options =>
+    options.UseInMemoryDatabase("GanPersonInMemoryDb"));
+
+builder.Services.AddScoped<DatabaseService>();
 
 var app = builder.Build();
 
