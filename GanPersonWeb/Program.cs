@@ -52,8 +52,15 @@ builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<PersonalInfoService>();
 
 var app = builder.Build();
+// 在应用启动时检查并插入默认个人信息
+using (var scope = app.Services.CreateScope())
+{
+    var personalInfoService = scope.ServiceProvider.GetRequiredService<PersonalInfoService>();
+    await personalInfoService.EnsureDefaultPersonalInfoAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Include="..\GanPersonWeb.Tests\Services\BlogServiceTests.cs" Link="BlogServiceTests.cs" />
+    <Compile Include="..\GanPersonWeb.Tests\Services\PersonalInfoServiceTests.cs" Link="PersonalInfoServiceTests.cs" />
     <Compile Include="..\GanPersonWeb.Tests\Services\ProjectServiceTests.cs" Link="ProjectServiceTests.cs" />
     <Compile Include="..\GanPersonWeb.Tests\Services\UserServiceTests.cs" Link="UserServiceTests.cs" />
   </ItemGroup>

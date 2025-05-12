@@ -1,0 +1,24 @@
+### Personal Info API Tests
+@GanPersonWeb_HostAddress = https://localhost:7134  
+
+GET {{GanPersonWeb_HostAddress}}/api/personalinfo
+
+###
+
+PUT {{GanPersonWeb_HostAddress}}/api/personalinfo
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Updated Name",
+  "occupation": "Updated Occupation",
+  "description": "Updated Description",
+  "email": "updated@example.com",
+  "profileImageUrl": "https://example.com/updated-profile.jpg",
+  "socialMediaLinks": [
+    { "platform": "GitHub", "url": "https://github.com/updated" },
+    { "platform": "LinkedIn", "url": "https://linkedin.com/in/updated" }
+  ]
+}
+
+###
