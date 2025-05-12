@@ -1,0 +1,43 @@
+@GanPersonWeb_HostAddress = https://localhost:7134  
+
+### Register a new user
+POST {{GanPersonWeb_HostAddress}}/api/users/register  
+Content-Type: application/json  
+
+{  
+ "username": "testuser",  
+ "password": "password123",  
+ "role": "User"  
+}  
+
+### Login with the user
+POST {{GanPersonWeb_HostAddress}}/api/users/login  
+Content-Type: application/json  
+
+{  
+ "username": "testuser",  
+ "password": "password123"  
+}  
+
+### Get user by ID
+@id=1
+GET {{GanPersonWeb_HostAddress}}/api/users/{{id}}  
+Authorization: Bearer {{token}}  
+
+### Update user
+@id=1  
+PUT {{GanPersonWeb_HostAddress}}/api/users/{{id}}  
+Content-Type: application/json  
+Authorization: Bearer {{token}}  
+
+{  
+ "id": 1,  
+ "username": "updateduser",  
+ "password": "newpassword123",  
+ "role": "User"  
+}  
+
+### Delete user
+@id=1
+DELETE {{GanPersonWeb_HostAddress}}/api/users/{{id}}  
+Authorization: Bearer {{token}}  

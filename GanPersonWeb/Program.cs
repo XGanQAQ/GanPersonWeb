@@ -50,6 +50,8 @@ builder.Services.AddControllers(); // 添加控制器服务
 builder.Services.AddScoped<DatabaseService>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<BlogService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<JwtService>();
 
 var app = builder.Build();
 
