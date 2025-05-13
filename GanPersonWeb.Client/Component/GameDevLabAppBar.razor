@@ -1,0 +1,23 @@
+﻿
+<!-- 导航栏 -->
+<MudAppBar Elevation="4" Class="bg-gray-900 bg-opacity-90 sticky top-0 z-50 border-b border-gray-800">
+    <MudText Typo="Typo.h5" Class="text-purple-500">
+        <MudIcon Icon="fas fa-gamepad" Class="mr-2" />
+        GameDev<span class="text-blue-400">Lab</span>
+    </MudText>
+    <MudSpacer />
+
+    <MudStack Row="true">
+        <MudHidden Breakpoint="Breakpoint.MdAndDown">
+            <MudLink Href="#projects" Class="hover:text-blue-400 transition">项目</MudLink>
+            <MudLink Href="#experiments" Class="hover:text-blue-400 transition">实验</MudLink>
+            <MudLink Href="#blog" Class="hover:text-blue-400 transition">博客</MudLink>
+            <MudLink Href="#about" Class="hover:text-blue-400 transition">关于</MudLink>
+        </MudHidden>
+    </MudStack>
+
+</MudAppBar>
+
+@code {
+
+}

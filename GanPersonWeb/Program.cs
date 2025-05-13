@@ -66,6 +66,7 @@ builder.Services.AddScoped<ClientProjectService>();
 builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
+
 // 在应用启动时检查并插入默认个人信息
 using (var scope = app.Services.CreateScope())
 {
