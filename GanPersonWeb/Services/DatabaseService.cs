@@ -24,6 +24,12 @@ namespace GanPersonWeb.Services
             return await _context.Set<T>().FindAsync(id);
         }
 
+        public async Task<List<T>> GetRangeAsync<T>(int skip, int take) where T : class
+        {
+            return await _context.Set<T>().Skip(skip).Take(take).ToListAsync();
+        }
+
+
         public async Task AddAsync<T>(T entity) where T : class
         {
             _context.Set<T>().Add(entity);
@@ -44,6 +50,11 @@ namespace GanPersonWeb.Services
                 _context.Set<T>().Remove(entity);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public GanPersonDbContext GetDbContext()
+        {
+            return _context;
         }
     }
 }

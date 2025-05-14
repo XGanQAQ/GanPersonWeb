@@ -29,8 +29,34 @@ namespace GanPersonWeb.Controllers
             var blog = await _blogService.GetBlogByIdAsync(id);
             if (blog == null)
                 return NotFound();
-
+            await _blogService.BlogBeViewedAsync(id); // 更新博客的浏览量
             return Ok(blog);
+        }
+
+        //获得指定范围的博客
+        [HttpGet("range/{start}/{count}")]
+        public async Task<IActionResult> GetBlogsInRange(int start, int count)
+        {
+            var blogs = await _blogService.GetBlogsInRangeAsync(start, count);
+            return Ok(blogs);
+        }
+
+        //获得总体博客数据
+        [HttpGet("data")]
+        public async Task<IActionResult> GetBlogData()
+        {
+            var blogs = await _blogService.GetBlogsAsync();
+            var blogsCount = blogs.Count;
+            var blogsVisitCount = blogs.Sum(b => b.ViewCount);
+            var blogsWriteCount = blogs.Sum(b => b.Content.Length);
+            var lastUpdateTime = blogs.Max(b => b.PublishDate);
+            return Ok(new BlogsData
+            {
+                BlogsCount = blogsCount,
+                BlogsVisitCount = blogsVisitCount,
+                BlogsWriteCount = blogsWriteCount,
+                LastUpdateTime = lastUpdateTime
+            });
         }
 
         [Authorize]

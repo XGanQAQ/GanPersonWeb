@@ -75,4 +75,11 @@
         public string Description { get; set; } = string.Empty; // 图片描述
         public string Tags { get; set; } = string.Empty; // 图片标签
     }
+
+    public class SiteVisit
+    {
+        public int Id { get; set; }
+        public DateTime VisitDate { get; set; } // 日期
+        public int Count { get; set; } // 当天访问次数
+    }
 }
