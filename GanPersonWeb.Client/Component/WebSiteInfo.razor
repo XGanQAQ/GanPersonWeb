@@ -1,0 +1,54 @@
+﻿<MudPaper>
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <MudGrid Class="d-flex align-start">
+            @if (isDisplaySiteInfo)
+            {
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Color="Color.Primary">站点信息</MudText>
+                    <MudText Typo="Typo.body1">访问总量：@visitCount</MudText>
+                    <MudText Typo="Typo.body1">今日访问：@visitCountToday</MudText>
+                    <MudText Typo="Typo.body1">运行天数：@siteRuningDays</MudText>
+                </MudItem>
+            }
+            @if (isDisplayBlogInfo)
+            {
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Color="Color.Primary">博文信息</MudText>
+                    <MudText Typo="Typo.body1">博文数量：@blogCount</MudText>
+                    <MudText Typo="Typo.body1">博文访问：@blogVisitCount</MudText>
+                    <MudText Typo="Typo.body1">博文字数：@blogTextCount</MudText>
+                    <MudText Typo="Typo.body1">最后更新：@blogLastUpdateTime.ToString("yyyy-MM-dd")</MudText>
+                </MudItem>
+            }
+            @if (isDisplayProjectInfo)
+            {
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Color="Color.Primary">项目信息</MudText>
+                    <MudText Typo="Typo.body2">项目数量：@projectCount</MudText>
+                    <MudText Typo="Typo.body2">最后更新：@projectLastUpdateTime.ToString("yyyy-MM-dd")</MudText>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    [Parameter] public bool isDisplaySiteInfo { get; set; } = true;
+    [Parameter] public bool isDisplayBlogInfo { get; set; } = true;
+    [Parameter] public bool isDisplayProjectInfo { get; set; } = true;
+
+    //站点信息
+    private int visitCount = 0;
+    private int visitCountToday = 0;
+    private int siteRuningDays = 0;
+
+    //博文信息
+    private int blogCount = 0;
+    private int blogVisitCount = 0;
+    private int blogTextCount = 0;
+    private DateTime blogLastUpdateTime = DateTime.Now;
+
+    //项目信息
+    private int projectCount = 0;
+    private DateTime projectLastUpdateTime = DateTime.Now;
+}

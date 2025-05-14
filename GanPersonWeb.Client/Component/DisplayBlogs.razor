@@ -1,0 +1,53 @@
+﻿<MudGrid>
+    @for (int i = 0; i < (DisplayCount >= blogs.Count ? blogs.Count : DisplayCount); i++)
+    {
+        <MudItem xs="12" md="12" lg="12">
+            <MudCard>
+                <MudCardMedia Image="./images/maomao.png" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Class="text-blue-400">@blogs[i].Title</MudText>
+                    <MudChipSet T="string">
+                        @foreach (var tag in @blogs[i].Tags)
+                        {
+                            <MudChip>@tag</MudChip>
+                        }
+                    </MudChipSet>
+                    <MudText Typo="Typo.body2" Class="text-gray-400">
+                        @blogs[i].Description
+                    </MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@($"/BlogDetail?{blogs[i].Id}")">
+                        了解更多
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+    @* TODO:展示空白框 *@
+    @for (int i = 0; i < (DisplayCount >= blogs.Count ? DisplayCount-blogs.Count : 0); i++)
+    {
+        <MudItem xs="12" md="12" lg="12">
+            <MudItem xs="12">
+                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+            </MudItem>
+        </MudItem>
+    }
+    <MudItem xs="12" md="12" lg="12">
+        <div class="d-flex flex-column align-center gap-4">
+            <MudPagination @bind-Selected="@_selected" ShowPageButtons="@IsShowPageButtons" ShowFirstButton="true" ShowLastButton="true" Count="@blogs.Count" />
+        </div>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter] public int DisplayCount { get; set; } = 3;
+    [Parameter] public string RankType { get; set; } = "时间排序";
+    [Parameter] public string FliterType { get; set; } = "标签过滤";
+    [Parameter] public List<string> TagTypeFilter { get; set; } = new List<string>();
+    [Parameter] public bool IsShowPageButtons { get; set; } = false;
+    private int pageCount{ get { return (blogs.Count / DisplayCount)+1; } }
+
+    private List<Blog> blogs = new List<Blog>();
+    private int _selected = 1;
+}

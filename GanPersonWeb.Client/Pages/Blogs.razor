@@ -4,47 +4,36 @@
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
             <!-- 博客文章 -->
-            <MudContainer>
-                <MudStack>
-                    <MudCard>
-                        <MudCardMedia Image="https://via.placeholder.com/800x400/1a1a2e/4cc9f0?text=Blog+1" />
-                        <MudCardContent>
-                            <MudText Typo="Typo.h6">优化Unity中的GC问题</MudText>
-                            <MudText Typo="Typo.body2">
-                                在开发"星际探险家"时，我们遇到了严重的GC卡顿问题。本文详细介绍了我们如何识别问题源头，以及通过对象池、结构体替代类等技巧减少GC压力的过程...
-                            </MudText>
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary" Href="#">
-                                继续阅读
-                            </MudButton>
-                        </MudCardActions>
-                    </MudCard>
-                    <!-- 其他博客卡片... -->
-                </MudStack>
-            </MudContainer>
+            <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="5" IsShowPageButtons="true" RankType="@_rankSelected" />
         </MudItem>
         <MudItem xs="12" sm="3" md="3" id="右侧边栏">
-            <MudText></MudText>
-            <MudList T="string" @bind-SelectedValue="SelectedValue" SelectionMode="@SelectionMode">
-                <MudListSubheader>
-                当前排序方式：
-                <MudChip>
-                    @(SelectedValue ?? "None")
-                </MudChip>
-                </MudListSubheader>
-                <MudListItem Text="热度排序"/>
-                <MudListItem Text="时间排序"  />
-            </MudList>
-            <MudList T="string">
-                <MudListItem Text="博文总数" SecondaryText="10" Icon="@Icons.Material.Filled.Inbox" />
-                <MudListItem Text="最近更新" SecondaryText="2025/3/12" Icon="@Icons.Material.Filled.Send" />
-                <MudListItem Text="浏览总数" SecondaryText="1200" Icon="@Icons.Material.Filled.Drafts" />
-            </MudList>
+            <MudPaper>
+                <MudContainer>
+                    <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+                        <MudIcon Icon="@Icons.Material.Filled.Sort"></MudIcon>
+                        排序
+                    </MudText>
+                    <MudDivider></MudDivider>
+                    <MudChipSet T="string" @bind-SelectedValue="_rankSelected" CheckMark="false" SelectionMode="SelectionMode.SingleSelection">
+                        <MudChip Value="@("最新正序")" />
+                        <MudChip Value="@("最新倒序")" />
+                        <MudChip Value="@("最热正序")" />
+                        <MudChip Value="@("最热倒序")" />
+                    </MudChipSet>
+                </MudContainer>
+            </MudPaper>
+            <MudPaper Class="mt-6" Elevation="2">
+                <MudList T="string">
+                    <MudListItem Text="博文总数" SecondaryText="10" Icon="@Icons.Material.Filled.Inbox" />
+                    <MudListItem Text="最近更新" SecondaryText="2025/3/12" Icon="@Icons.Material.Filled.Send" />
+                    <MudListItem Text="浏览总数" SecondaryText="1200" Icon="@Icons.Material.Filled.Drafts" />
+                </MudList>
+            </MudPaper>
         </MudItem>
     </MudGrid>
 </MudContainer>
 @code {
-    public string SelectedValue = "时间排序";
+    private string _rankSelected = "最新正序";
+    public bool isUpRank = true;
     public SelectionMode SelectionMode = SelectionMode.SingleSelection;
 }

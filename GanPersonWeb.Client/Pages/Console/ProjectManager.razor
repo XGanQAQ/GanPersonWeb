@@ -1,0 +1,111 @@
+﻿@page "/console/project"
+@using GanPersonWeb.Shared.Models
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+    <MudText Typo="Typo.h4" GutterBottom="true">项目管理</MudText>
+
+    <MudPaper Class="pa-6 mb-8" Outlined="true">
+        <MudText Typo="Typo.h6" GutterBottom="true">提交新项目</MudText>
+        <EditForm Model="@newProject" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator/>
+            <MudGrid Spacing="3">
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="newProject.Title" Label="项目标题" Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="newProject.ImageUrl" Label="项目图片URL" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="newProject.Description" Label="项目描述" Lines="2" />
+                </MudItem>
+                @* <MudItem xs="12" sm="6"> *@
+                @* <MudDatePicker @bind-Date="newProject.PublishDate" Label="发布日期" /> *@
+                @* </MudItem> *@
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="tagsInput" Label="标签（逗号分隔）" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="newProject.Link" Label="项目链接" />
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-end">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">提交项目</MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudPaper>
+
+    <MudPaper Class="pa-6" Outlined="true">
+        <MudText Typo="Typo.h6" GutterBottom="true">已提交项目</MudText>
+        <MudTable Items="projects" Hover="true">
+            <HeaderContent>
+                <MudTh>标题</MudTh>
+                <MudTh>描述</MudTh>
+                <MudTh>发布日期</MudTh>
+                <MudTh>标签</MudTh>
+                <MudTh>链接</MudTh>
+                <MudTh>操作</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.Title</MudTd>
+                <MudTd>@context.Description</MudTd>
+                <MudTd>@context.PublishDate.ToShortDateString()</MudTd>
+                <MudTd>
+                    @foreach (var tag in context.Tags)
+                    {
+                        <MudChip T="string" Class="mr-1" Color="Color.Info" Size="Size.Small">@tag</MudChip>
+                    }
+                </MudTd>
+                <MudTd>
+                    @if (!string.IsNullOrWhiteSpace(context.Link))
+                    {
+                        <MudLink Href="@context.Link" Target="_blank">@context.Link</MudLink>
+                    }
+                </MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => DeleteProject(context))" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private List<Project> projects = new();
+    private Project newProject = new();
+    private string tagsInput = "";
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data loading logic
+        projects = new List<Project>
+        {
+            new Project
+            {
+                Id = 1,
+                Title = "个人网站",
+                Description = "基于Blazor的个人作品展示网站。",
+                ImageUrl = "",
+                PublishDate = DateTime.Now.AddDays(-10),
+                Tags = new List<string> { "Blazor", "Web", "个人项目" },
+                Link = "https://example.com"
+            }
+        };
+        newProject.PublishDate = DateTime.Now;
+    }
+
+    private void HandleValidSubmit()
+    {
+        newProject.Id = projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
+        newProject.Tags = tagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+        projects.Insert(0, newProject);
+
+        // Reset form
+        newProject = new Project { PublishDate = DateTime.Now };
+        tagsInput = "";
+    }
+
+    private void DeleteProject(Project project)
+    {
+        projects.Remove(project);
+    }
+}

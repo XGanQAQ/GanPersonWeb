@@ -46,6 +46,7 @@
     {
         public int Id { get; set; } // 主键
         public string Title { get; set; } = string.Empty; // 博客标题
+        public string Description { get; set; } = string.Empty; // 博客描述
         public string Content { get; set; } = string.Empty; // 博客内容
         public string ImageUrl { get; set; } = string.Empty; // 博客预览图片URL
         public DateTime PublishDate { get; set; } // 博客发布日期
@@ -71,5 +72,7 @@
         public int Id { get; set; } // 主键
         public string Url { get; set; } = string.Empty; // 图片URL
         public DateTime UploadDate { get; set; } // 上传时间
+        public string Description { get; set; } = string.Empty; // 图片描述
+        public string Tags { get; set; } = string.Empty; // 图片标签
     }
 }

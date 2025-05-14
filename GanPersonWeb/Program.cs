@@ -10,6 +10,7 @@ using System.Text;
 using GanPersonWeb.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // 添加JWT认证服务
@@ -50,20 +51,14 @@ builder.Services.AddDbContext<GanPersonDbContext>(options =>
 builder.Services.AddControllers(); // 添加控制器服务
 
 builder.Services.AddScoped<DatabaseService>();
-builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<GanPersonWeb.Services.ProjectService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<PersonalInfoService>();
 
 // blazor client service
-builder.Services.AddScoped(sp =>
-{
-    var navigationManager = sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
-    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
-});
-builder.Services.AddScoped<ClientProjectService>();
-builder.Services.AddScoped<AuthService>();
+ClientServices.RegisterServices(builder.Services);
 
 var app = builder.Build();
 

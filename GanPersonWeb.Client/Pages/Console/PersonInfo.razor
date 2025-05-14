@@ -1,0 +1,88 @@
+﻿@page "/console/personinfo"
+@using GanPersonWeb.Shared.Models
+
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">个人信息修改</MudText>
+    <MudPaper Class="pa-6 mt-8" Outlined="true">
+        <EditForm Model="@personalInfo" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <MudGrid Spacing="3">
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="personalInfo.Name" Label="姓名" Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="personalInfo.Occupation" Label="职业" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="personalInfo.Email" Label="电子邮箱" Required="true" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="personalInfo.ProfileImageUrl" Label="头像URL" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="personalInfo.Description" Label="个人简介" Lines="3" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" GutterBottom="true">社交媒体链接</MudText>
+                    @foreach (var link in personalInfo.SocialMediaLinks)
+                    {
+                        <MudGrid>
+                            <MudItem xs="5">
+                                <MudTextField T="string" @bind-Value="link.Platform" Label="平台" />
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudTextField T="string" @bind-Value="link.Url" Label="链接" />
+                            </MudItem>
+                            <MudItem xs="1" Class="d-flex align-center">
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => RemoveSocialLink(link))" />
+                            </MudItem>
+                        </MudGrid>
+                    }
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="AddSocialLink" StartIcon="@Icons.Material.Filled.Add" Class="mt-2">
+                        添加社交媒体
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-end">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">保存修改</MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private PersonalInfo personalInfo = new();
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data loading logic
+        personalInfo = new PersonalInfo
+        {
+            Name = "张三",
+            Occupation = "软件工程师",
+            Description = "热爱编程，专注于Web开发。",
+            Email = "zhangsan@example.com",
+            ProfileImageUrl = "https://example.com/avatar.jpg",
+            SocialMediaLinks = new List<SocialMediaLink>
+            {
+                new SocialMediaLink { Platform = "GitHub", Url = "https://github.com/zhangsan" }
+            }
+        };
+    }
+
+    private void AddSocialLink()
+    {
+        personalInfo.SocialMediaLinks.Add(new SocialMediaLink());
+    }
+
+    private void RemoveSocialLink(SocialMediaLink link)
+    {
+        personalInfo.SocialMediaLinks.Remove(link);
+    }
+
+    private void HandleValidSubmit()
+    {
+        // TODO: Save logic (e.g., call API)
+        // You can show a success message here
+    }
+}

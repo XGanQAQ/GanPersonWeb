@@ -1,0 +1,101 @@
+﻿@page "/console/picture"
+@using GanPersonWeb.Shared.Models
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+    <MudText Typo="Typo.h4" GutterBottom="true">图片管理</MudText>
+
+    <MudPaper Class="pa-6 mb-8" Outlined="true">
+        <MudText Typo="Typo.h6" GutterBottom="true">提交新图片</MudText>
+        <EditForm Model="@newImage" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator/>
+            <MudGrid Spacing="3">
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="newImage.Url" Label="图片URL" Required="true" />
+                </MudItem>
+                @* <MudItem xs="12" sm="6"> *@
+                @*     <MudDatePicker @bind-Date="newImage.UploadDate" Label="上传时间" /> *@
+                @* </MudItem> *@
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="newImage.Description" Label="图片描述" Lines="2" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="tagsInput" Label="标签（逗号分隔）" />
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-end">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">提交图片</MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudPaper>
+
+    <MudPaper Class="pa-6" Outlined="true">
+        <MudText Typo="Typo.h6" GutterBottom="true">已提交图片</MudText>
+        <MudTable Items="images" Hover="true">
+            <HeaderContent>
+                <MudTh>图片</MudTh>
+                <MudTh>描述</MudTh>
+                <MudTh>上传时间</MudTh>
+                <MudTh>标签</MudTh>
+                <MudTh>操作</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                    @if (!string.IsNullOrWhiteSpace(context.Url))
+                    {
+                        <MudAvatar Image="@context.Url" Size="Size.Large" />
+                    }
+                </MudTd>
+                <MudTd>@context.Description</MudTd>
+                <MudTd>@context.UploadDate.ToShortDateString()</MudTd>
+                <MudTd>
+                    @foreach (var tag in context.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    {
+                        <MudChip T="string" Class="mr-1" Color="Color.Info" Size="Size.Small">@tag</MudChip>
+                    }
+                </MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => DeleteImage(context))" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private List<Image> images = new();
+    private Image newImage = new();
+    private string tagsInput = "";
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data loading logic
+        images = new List<Image>
+        {
+            new Image
+            {
+                Id = 1,
+                Url = "https://via.placeholder.com/100",
+                UploadDate = DateTime.Now.AddDays(-1),
+                Description = "示例图片",
+                Tags = "风景,示例"
+            }
+        };
+        newImage.UploadDate = DateTime.Now;
+    }
+
+    private void HandleValidSubmit()
+    {
+        newImage.Id = images.Count > 0 ? images.Max(i => i.Id) + 1 : 1;
+        newImage.Tags = tagsInput;
+        images.Insert(0, newImage);
+
+        // Reset form
+        newImage = new Image { UploadDate = DateTime.Now };
+        tagsInput = "";
+    }
+
+    private void DeleteImage(Image image)
+    {
+        images.Remove(image);
+    }
+}

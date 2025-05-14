@@ -3,11 +3,11 @@ using GanPersonWeb.Shared.Models;
 
 namespace GanPersonWeb.Client.Services
 {
-    public class ClientProjectService
+    public class ProjectService
     {
         private readonly HttpClient _httpClient;
 
-        public ClientProjectService(HttpClient httpClient)
+        public ProjectService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }

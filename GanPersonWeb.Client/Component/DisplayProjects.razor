@@ -1,0 +1,69 @@
+﻿
+<MudGrid Spacing="3">
+    @for (int i = 0; i < (DisplayCount >= projects.Count ? projects.Count : DisplayCount); i++)
+    {
+        <MudItem xs="12" md="6" lg="6">
+            <MudCard>
+                <MudCardMedia Image="./images/maomao.png" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Class="text-blue-400">@projects[i].Title</MudText>
+                    <MudChipSet T="string">
+                        @foreach (var tag in @projects[i].Tags)
+                        {
+                            <MudChip>@tag</MudChip>
+                        }
+                    </MudChipSet>
+                    <MudText Typo="Typo.body2" Class="text-gray-400">
+                        @projects[i].Description
+                    </MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@projects[i].Link">
+                        了解更多
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+
+    @* TODO:展示空白框 *@
+    @for (int i = 0; i < (DisplayCount >= projects.Count ? DisplayCount - projects.Count : 0); i++)
+    {
+        <MudItem xs="12" md="6" lg="6">
+            <MudItem xs="12">
+                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+            </MudItem>
+        </MudItem>
+    }
+
+    @if (IsShowPagination)
+    {
+        <MudItem xs="12" md="12" lg="12">
+            <div class="d-flex flex-column align-center gap-4">
+                <MudPagination @bind-Selected="@_selected" ShowFirstButton="true" ShowLastButton="true" Count="@projects.Count" />
+            </div>
+        </MudItem>
+    }
+
+</MudGrid>
+@code {
+    [Parameter] public int DisplayCount { get; set; } = 3;
+    [Parameter] public bool IsShowPagination { get; set; } = false;
+
+    [Inject]
+    public ProjectService clientProjectService { get; set; }
+
+    private List<Project> projects = new List<Project>();
+    private int _selected = 1;
+
+    protected async Task GetProjectsAsync()
+    {
+        if(clientProjectService!=null)
+        projects = await clientProjectService.GetProjectsAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProjectsAsync();
+    }
+}

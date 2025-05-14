@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject AuthService AuthService
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,11 +13,11 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <MudToggleIconButton @bind-Toggled="_isDarkMode"
-                             Icon="@Icons.Material.Filled.LightMode"
-                             Color="@Color.Error"
-                             ToggledIcon="@Icons.Material.Filled.ModeNight"
-                             ToggledColor="@Color.Inherit"
-                             title="@(_isDarkMode ? "On" : "Off")" />
+        Icon="@Icons.Material.Filled.LightMode"
+        Color="@Color.Error"
+        ToggledIcon="@Icons.Material.Filled.ModeNight"
+        ToggledColor="@Color.Inherit"
+        title="@(_isDarkMode ? "On" : "Off")" />
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
@@ -24,13 +25,24 @@
             <MudText Typo="Typo.h5" Class="mt-1">GanX</MudText>
         </MudDrawerHeader>
         <MudNavMenu>
-            <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-            <MudNavLink Href="Blogs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Book">Blogs</MudNavLink>
-            <MudNavLink Href="Portfolio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Collections">Portfolio</MudNavLink>
-            <MudNavLink Href="GameDevLab" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.VideogameAsset">GameDevLab</MudNavLink>
+            <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+            <MudNavLink Href="/Blogs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Book">Blogs</MudNavLink>
+            <MudNavLink Href="/Portfolio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Work">Portfolio</MudNavLink>
+            <MudNavLink Href="/PictureBed" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Collections">PictureBed</MudNavLink>
+            <MudNavLink Href="/GameDevLab" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.VideogameAsset">GameDevLab</MudNavLink>
 
             @* <MudNavLink Href="About" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BackHand">About</MudNavLink> *@
-            <MudNavLink Href="Me" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.TagFaces">Me</MudNavLink>
+            <MudNavLink Href="/Me" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.TagFaces">Me</MudNavLink>
+            @if (_isAdmin)
+            {
+                <MudNavGroup Title="Settings" Icon="@Icons.Material.Filled.Settings" Expanded="false">
+                    <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Terminal">Dashboard</MudNavLink>
+                    <MudNavLink Href="/Console/PersonInfo" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">PersonInfo</MudNavLink>
+                    <MudNavLink Href="/Console/Blog" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.NoteAdd">Blog</MudNavLink>
+                    <MudNavLink Href="/Console/Project" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddToQueue">Project</MudNavLink>
+                    <MudNavLink Href="/Console/Picture" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddPhotoAlternate">Picture</MudNavLink>
+                </MudNavGroup>
+            }
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
@@ -45,9 +57,12 @@
 </div>
 
 @code {
+
     private bool _drawerOpen = true;
     private bool _isDarkMode = true;
     private MudTheme? _theme = null;
+    private bool _isAdmin = false;
+
 
     protected override void OnInitialized()
     {
@@ -59,6 +74,9 @@
             PaletteDark = _darkPalette,
             LayoutProperties = new LayoutProperties()
         };
+
+        _isAdmin = true; //TODO：待修改
+        //_isAdmin = AuthService.IsAdmin();
     }
 
     private void DrawerToggle()

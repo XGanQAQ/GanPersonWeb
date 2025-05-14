@@ -2,30 +2,13 @@
 <MudContainer Class="mt-10 px-8" MaxWidth="MaxWidth.Large">
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
-            <MudGrid>
-                @* 展示俩个最新项目 *@
-                <MudItem xs="12" md="6">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-                </MudItem>
-                <MudItem xs="12" md="6">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-                </MudItem>
-                @* 展示三个最新博客 *@
-                <MudItem xs="12">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-                </MudItem>
-                <MudItem xs="12">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-                </MudItem>
-                <MudItem xs="12">
-                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-                </MudItem>
-            </MudGrid>
-            <MudPagination Count="4" @bind-Selected="@_selected" Class="mt-5" />
+            <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="2"/>
+            <MudDivider DividerType="DividerType.Middle" Class="my-6" />
+            <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="3"/>
         </MudItem>
         <MudItem xs="12" sm="3" md="3" id="右侧边栏">
             <MudContainer Class="m-6">
-                <MudImage Src="images/head.jpg" Elevation="25" Width="150" Class="rounded-circle"></MudImage>
+                <MudImage Src="images/head.jpg" Elevation="5" Width="150" Class="rounded-circle"></MudImage>
             </MudContainer>
 
             @* 公告 *@

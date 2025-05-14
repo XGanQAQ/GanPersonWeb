@@ -1,0 +1,102 @@
+﻿@page "/console/blog"
+@using GanPersonWeb.Shared.Models
+@using System.ComponentModel.DataAnnotations
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+    <MudText Typo="Typo.h4" GutterBottom="true">博客管理</MudText>
+
+    <MudPaper Class="pa-6 mb-8" Outlined="true">
+        <MudText Typo="Typo.h6" GutterBottom="true">提交新博客</MudText>
+        <EditForm Model="@newBlog" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudGrid Spacing="3">
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="newBlog.Title" Label="标题" Required="true" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="newBlog.ImageUrl" Label="预览图片URL" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="newBlog.Description" Label="描述" Lines="2" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" @bind-Value="newBlog.Content" Label="内容" Lines="5" Required="true" />
+                </MudItem>
+                @* <MudItem xs="12" sm="6"> *@
+                @*     <MudDatePicker Label="Basic example" @bind-Date="newBlog.PublishDate"/> *@
+                @* </MudItem> *@
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="tagsInput" Label="标签（逗号分隔）" />
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-end">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">提交博客</MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudPaper>
+
+    <MudPaper Class="pa-6" Outlined="true">
+        <MudText Typo="Typo.h6" GutterBottom="true">已提交博客</MudText>
+        <MudTable Items="blogs" Hover="true">
+            <HeaderContent>
+                <MudTh>标题</MudTh>
+                <MudTh>描述</MudTh>
+                <MudTh>发布日期</MudTh>
+                <MudTh>标签</MudTh>
+                <MudTh>操作</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.Title</MudTd>
+                <MudTd>@context.Description</MudTd>
+                <MudTd>@context.PublishDate.ToShortDateString()</MudTd>
+                <MudTd>
+                    @foreach (var tag in context.Tags)
+                    {
+                        <MudChip T="string" Class="mr-1" Color="Color.Info" Size="Size.Small">@tag</MudChip>
+                    }
+                </MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => DeleteBlog(context))" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private List<Blog> blogs = new();
+    private Blog newBlog = new();
+    private string tagsInput = "";
+
+    protected override void OnInitialized()
+    {
+        // TODO: Replace with actual data loading logic
+        blogs = new List<Blog>
+        {
+            new Blog
+            {
+                Id = 1,
+                Title = "Blazor 入门",
+                Description = "介绍 Blazor 的基本用法。",
+                Content = "Blazor 是一个用于构建交互式 Web UI 的框架...",
+                ImageUrl = "",
+                PublishDate = DateTime.Now,
+                Tags = new List<string> { "Blazor", "C#", "Web" },
+                ViewCount = 100,
+                TalkCount = 5
+            }
+        };
+        newBlog = new Blog { PublishDate = DateTime.Now };
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        // TODO: Save logic (e.g., call API)
+        // You can show a success message here
+    }
+
+    private void DeleteBlog(Blog blog)
+    {
+        blogs.Remove(blog);
+    }
+}

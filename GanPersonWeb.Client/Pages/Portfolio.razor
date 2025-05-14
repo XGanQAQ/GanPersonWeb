@@ -1,52 +1,37 @@
 ﻿@page "/Portfolio"
 
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
-    <MudGrid Spacing="3">
-        <MudItem xs="12" md="6" lg="4">
-            <MudCard>
-                <MudCardMedia Image="./images/maomao.png" Height="200" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h6" Class="text-blue-400">时间魔法猫猫大冒险</MudText>
-                    <MudChipSet T="string">
-                        <MudChip>Unity</MudChip>
-                        <MudChip>C#</MudChip>
-                        <MudChip>3D</MudChip>
-                    </MudChipSet>
-                    <MudText Typo="Typo.body2" Class="text-gray-400">
-                        一款3D横板时间控制平台跳跃游戏，玩家可以操控会控制时间的猫猫，解密/挑战重重关卡。
-                    </MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="https://www.bilibili.com/video/BV1i6mAYFE4j">
-                        了解更多
-                    </MudButton>
-                </MudCardActions>
-            </MudCard>
+    
+    <MudGrid>
+        <MudItem xs="12" sm="9" md="9" id="主栏">
+            <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="6" IsShowPagination="true" />
         </MudItem>
-
-        <MudItem xs="12" md="6" lg="4">
-            <MudCard>
-                <MudCardMedia Image="./images/maomao.png" Height="200" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h6" Class="text-blue-400">时间魔法猫猫大冒险</MudText>
-                    <MudChipSet T="string">
-                        <MudChip>Unity</MudChip>
-                        <MudChip>C#</MudChip>
-                        <MudChip>3D</MudChip>
-                    </MudChipSet>
-                    <MudText Typo="Typo.body2" Class="text-gray-400">
-                        一款3D横板时间控制平台跳跃游戏，玩家可以操控会控制时间的猫猫，解密/挑战重重关卡。
+        <MudItem xs="12" sm="3" md="3" id="右侧边栏">
+            <MudPaper>
+                <MudContainer>
+                    
+                    <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+                        <MudIcon Icon="@Icons.Material.Filled.FilterAlt"></MudIcon>
+                        过滤
                     </MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="https://www.bilibili.com/video/BV1i6mAYFE4j">
-                        了解更多
-                    </MudButton>
-                </MudCardActions>
-            </MudCard>
+                    <MudDivider></MudDivider>
+                    <MudChipSet T="string" @bind-SelectedValues="_selected" CheckMark="false" SelectionMode="SelectionMode.MultiSelection">
+                        <MudChip Value="@("标签1")" />
+                        <MudChip Value="@("标签2")" />
+                    </MudChipSet>
+                </MudContainer>
+            </MudPaper>
+
+            <MudPaper Class="mt-6" Elevation="2">
+                <MudList T="string">
+                    <MudListItem Text="项目总数" SecondaryText="10" Icon="@Icons.Material.Filled.Inbox" />
+                    <MudListItem Text="最近更新" SecondaryText="2025/3/12" Icon="@Icons.Material.Filled.Send" />
+                </MudList>
+            </MudPaper>
         </MudItem>
     </MudGrid>
 </MudContainer>
 @code {
-
+    private IReadOnlyCollection<string> _selected = ["标签1", "标签2"];
+    public SelectionMode SelectionMode = SelectionMode.SingleSelection;
 }
