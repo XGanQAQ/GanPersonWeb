@@ -1,11 +1,23 @@
 ﻿@page "/console/dashboard"
 <MudContainer MaxWidth="MaxWidth.Large">
-    <MudGrid Spacing="6">
-        <MudItem xs="12" sm="9" md="6">
+    <MudGrid Spacing="6" Class="d-flex">
+        <MudItem xs="12" sm="12" md="6">
             <GanPersonWeb.Client.Component.VisitLineChar />
         </MudItem>
-        <MudItem xs="12" sm="3" md="3">
-            <GanPersonWeb.Client.Component.WebSiteInfo />
+        <MudItem xs="12" sm="12" md="6" Class="mt-6">
+            <MudPaper>
+                <MudGrid>
+                    <MudItem xs="4">
+                        <GanPersonWeb.Client.Component.ShowSiteInfo />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <GanPersonWeb.Client.Component.ShowProjectsInfo />
+                    </MudItem>
+                    <MudItem xs="4">
+                        <GanPersonWeb.Client.Component.ShowBlogsInfo />
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
         </MudItem>
     </MudGrid>
 </MudContainer>

@@ -14,32 +14,36 @@
             <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="3"/>
         </MudItem>
         <MudItem xs="12" sm="12" md="3" id="右侧边栏">
-            <MudContainer Class="m-6">
-                <MudImage Src="images/head.jpg" Elevation="5" Width="150" Class="rounded-circle"></MudImage>
-            </MudContainer>
+            <MudStack>
+                <MudContainer Class="m-6">
+                    <MudImage Src="images/head.jpg" Elevation="5" Width="150" Class="rounded-circle"></MudImage>
+                </MudContainer>
 
-            @* 公告 *@
-            <MudPaper>
-                <MudText Typo="Typo.h6" Align="Align.Center">
-                    公告
-                </MudText>
-                <MudText Typo="Typo.body2" Align="Align.Center" Class="mb-8">
-                    个人博客正在建设中，敬请期待更多内容！
-                </MudText>
-            </MudPaper>
+                @* 公告 *@
+                <GanPersonWeb.Client.Component.StandBillboard Title="公告" Content="个人博客正在建设中，敬请期待更多内容！" />
 
-            @* 展示博文数据 *@
-            <MudPaper Elevation="2">
-                <MudList T="string">
-                    <MudListItem Text="博文总数" SecondaryText="10" Icon="@Icons.Material.Filled.Inbox" />
-                    <MudListItem Text="最近更新" SecondaryText="2025/3/12" Icon="@Icons.Material.Filled.Send" />
-                    <MudListItem Text="浏览总数" SecondaryText="1200" Icon="@Icons.Material.Filled.Drafts" />
-                </MudList>
-            </MudPaper>
+                @* 站点信息 *@
+                <GanPersonWeb.Client.Component.ShowSiteInfo/>
+
+                @* 展示项目数据 *@
+                <GanPersonWeb.Client.Component.ShowProjectsInfo />
+
+                @* 展示博文数据 *@
+                <GanPersonWeb.Client.Component.ShowBlogsInfo />
+            </MudStack>
         </MudItem>
     </MudGrid>
 </MudContainer>
 
 @code {
     private int _selected = 1;
+    [Inject]
+    private ClientSiteVisitService clientSiteVisitService { get; set; }
+
+    //在第一次加载的时候记录访问数据
+    protected override async Task OnInitializedAsync()
+    {
+        // 记录访问数据
+        await clientSiteVisitService.RecordVisitAsync();
+    }
 }

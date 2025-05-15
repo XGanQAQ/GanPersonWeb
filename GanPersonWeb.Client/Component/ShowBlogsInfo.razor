@@ -1,0 +1,31 @@
+﻿<MudPaper Elevation="5">
+    <MudPaper>
+        <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center">博客统计</MudText>
+    </MudPaper>
+    <MudDivider />
+    <MudList T="string">
+        <MudListItem Text="博文总数" SecondaryText="@bolgsTotalCount" Icon="@Icons.Material.Filled.Inbox" IconColor="Color.Primary"/>
+        <MudListItem Text="浏览总数" SecondaryText="@viewTotalCount" Icon="@Icons.Material.Filled.Drafts" IconColor="Color.Primary" />
+        <MudListItem Text="最近更新" SecondaryText="@lastUpdate" Icon="@Icons.Material.Filled.Send" IconColor="Color.Primary" />
+    </MudList>
+</MudPaper>
+
+@code {
+    private string bolgsTotalCount = "10";
+    private string viewTotalCount = "1200";
+    private string lastUpdate = "2025/3/12";
+
+    [Inject]
+    public ClientBlogService clientBlogService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BlogsData result = await clientBlogService.GetBlogDataAsync();
+        if (result!=null)
+        {
+            bolgsTotalCount = result.BlogsCount.ToString();
+            viewTotalCount = result.BlogsVisitCount.ToString();
+            lastUpdate = result.LastUpdateTime.ToString("yyyy/MM/dd");
+        }
+    }
+}

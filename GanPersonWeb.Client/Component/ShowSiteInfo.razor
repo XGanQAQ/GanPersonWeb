@@ -1,0 +1,48 @@
+﻿<MudPaper Elevation="5">
+    <MudPaper>
+        <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center">站点统计</MudText>
+    </MudPaper>
+    <MudDivider />
+    <MudList T="string">
+        <MudListItem Text="访问数量" SecondaryText="@totalViewCount" Icon="@Icons.Material.Filled.Inbox" IconColor="Color.Primary" />
+        <MudListItem Text="今日访问" SecondaryText="@todayViewCount" Icon="@Icons.Material.Filled.Drafts" IconColor="Color.Primary" />
+        <MudListItem Text="运行天数" SecondaryText="@runingDays" Icon="@Icons.Material.Filled.Send" IconColor="Color.Primary" />
+    </MudList>
+</MudPaper>
+
+@code {
+    private string totalViewCount = "0";
+    private string todayViewCount = "0";
+    private string runingDays = "";
+
+    [Inject]
+    public ClientSiteVisitService clientSiteVisitService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // 获取站点访问数据
+        List<SiteVisit>? result = await clientSiteVisitService.GetVisitDataAsync();
+        if (result != null && result.Count > 0)
+        {
+            // 总访问量
+            totalViewCount = result.Sum(v => v.Count).ToString();
+
+            // 今日访问量
+            var today = DateTime.Today;
+            todayViewCount = result
+                .Where(v => v.VisitDate.Date == today)
+                .Sum(v => v.Count)
+                .ToString();
+
+            // 运行天数（从第一天到今天的天数）
+            var firstDate = result.Min(v => v.VisitDate.Date);
+            runingDays = (DateTime.Today - firstDate).Days + 1 + " 天";
+        }
+        else
+        {
+            totalViewCount = "0";
+            todayViewCount = "0";
+            runingDays = "0 天";
+        }
+    }
+}

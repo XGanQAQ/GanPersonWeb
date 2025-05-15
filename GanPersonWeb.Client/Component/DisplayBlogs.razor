@@ -30,6 +30,13 @@
                         <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@($"/BlogDetail?{blog.Id}")">
                             了解更多
                         </MudButton>
+                        <MudSpacer/>
+                        <MudText Typo="Typo.body2" Class="text-gray-400">
+                            <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye"></MudIcon>
+                            @blog.ViewCount
+                            <MudIcon Icon="@Icons.Material.Filled.Update"></MudIcon>
+                            @blog.PublishDate.ToString("yyyy-MM-dd")
+                        </MudText>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -65,7 +72,8 @@
 @code {
     [Parameter] public int DisplayCount { get; set; } = 3;
     [Parameter] public string RankType { get; set; } = "时间排序";
-    [Parameter] public string FliterType { get; set; } = "标签过滤";
+    [Parameter] public string TagFliter { get; set; } = "标签过滤";
+    [Parameter] public string TypeFliter { get; set; } = "类型过滤";
     [Parameter] public List<string> TagTypeFilter { get; set; } = new List<string>();
     [Parameter] public bool IsShowPageButtons { get; set; } = false;
 
@@ -84,7 +92,7 @@
     {
         isLoading = true;
         StateHasChanged();
-        var result = await clientBlogService.GetBlogsInRangeShortAsync(start, count);
+        var result = await clientBlogService.GetBlogsInNewShortAsync(start, count);
         blogs = result ?? new List<Blog>();
         isLoading = false;
         StateHasChanged();

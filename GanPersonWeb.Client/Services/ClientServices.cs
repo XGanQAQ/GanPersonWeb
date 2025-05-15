@@ -17,6 +17,7 @@ namespace GanPersonWeb.Client.Services
             });
             services.AddScoped<ClientProjectService>();
             services.AddScoped<ClientBlogService>();
+            services.AddScoped<ClientSiteVisitService>();
             services.AddScoped<AuthService>();
             services.AddMudServices();
             services.AddBlazoredLocalStorage();

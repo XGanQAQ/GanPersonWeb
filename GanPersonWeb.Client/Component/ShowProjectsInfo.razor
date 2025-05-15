@@ -1,0 +1,28 @@
+﻿<MudPaper Elevation="5">
+    <MudPaper>
+        <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center">项目统计</MudText>
+    </MudPaper>
+    <MudDivider/>
+    <MudList T="string">
+        <MudListItem Text="项目数量" SecondaryText="@totalCount" Icon="@Icons.Material.Filled.Inbox" IconColor="Color.Primary" />
+        <MudListItem Text="最近更新" SecondaryText="@lastUpdate" Icon="@Icons.Material.Filled.Send" IconColor="Color.Primary" />
+    </MudList>
+</MudPaper>
+
+@code {
+    private string totalCount = "10";
+    private string lastUpdate = "2025/3/12";
+    
+    [Inject]
+    public ClientProjectService clientProjectService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await clientProjectService.GetProjectsAsync();
+        if (result != null)
+        {
+            totalCount = result.Count.ToString();
+            lastUpdate = result.Max(p => p.PublishDate).ToString("yyyy/MM/dd");
+        }
+    }
+}
