@@ -1,6 +1,7 @@
 using GanPersonWeb.Shared.Models;
 using GanPersonWeb.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions; // Add this for Expression<Func<...>>
 
 namespace GanPersonWeb.Services
 {
@@ -35,6 +36,11 @@ namespace GanPersonWeb.Services
             return await _context.Set<T>().CountAsync();
         }
 
+        // 通用Distinct查询（修正：使用Expression<Func<...>>，保持IQueryable链式调用）
+        public async Task<List<TProperty>> GetDistinctAsync<T, TProperty>(Expression<Func<T, TProperty>> selector) where T : class
+        {
+            return await _context.Set<T>().Select(selector).Distinct().ToListAsync();
+        }
 
         public async Task AddAsync<T>(T entity) where T : class
         {

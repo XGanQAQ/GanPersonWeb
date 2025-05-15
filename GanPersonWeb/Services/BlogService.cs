@@ -27,7 +27,6 @@ namespace GanPersonWeb.Services
             return await _databaseService.GetAllAsync<Blog>();
         }
 
-
         public async Task<Blog?> GetBlogByIdAsync(int id)
         {
             return await _databaseService.GetByIdAsync<Blog>(id);
@@ -122,6 +121,154 @@ namespace GanPersonWeb.Services
                 await context.Blogs.AddRangeAsync(initialBlogs);
                 await context.SaveChangesAsync();
             }
+        }
+
+        // 获得所有博客标签（去重）
+        public async Task<List<string>> GetAllTagsAsync()
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .SelectMany(b => b.Tags)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        // 获得指定标签的博客
+        public async Task<List<Blog>> GetBlogsByTagAsync(string tag)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .Where(b => b.Tags.Contains(tag))
+                .OrderByDescending(b => b.PublishDate)
+                .ToListAsync();
+        }
+
+        // 获得所有博客类型（去重）
+        public async Task<List<string>> GetAllTypesAsync()
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .Select(b => b.Type)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        // 获得指定类型的博客
+        public async Task<List<Blog>> GetBlogsByTypeAsync(string type)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .Where(b => b.Type == type)
+                .OrderByDescending(b => b.PublishDate)
+                .ToListAsync();
+        }
+
+        // 获得热门博客（按观看量降序）
+        public async Task<List<Blog>> GetHotBlogsAsync(int start, int count)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .OrderByDescending(b => b.ViewCount)
+                .Skip(start)
+                .Take(count)
+                .ToListAsync();
+        }
+
+        // 获得最新博客（按时间降序）
+        public async Task<List<Blog>> GetNewBlogsAsync(int start, int count)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .OrderByDescending(b => b.PublishDate)
+                .Skip(start)
+                .Take(count)
+                .ToListAsync();
+        }
+
+        // 精简版：获取指定标签的博客（不包含Content字段）
+        public async Task<List<object>> GetShortBlogsByTagAsync(string tag)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .Where(b => b.Tags.Contains(tag))
+                .OrderByDescending(b => b.PublishDate)
+                .Select(b => new
+                {
+                    b.Id,
+                    b.Title,
+                    b.Description,
+                    b.ImageUrl,
+                    b.PublishDate,
+                    b.Tags,
+                    b.ViewCount,
+                    b.TalkCount
+                })
+                .ToListAsync<object>();
+        }
+
+        // 精简版：获取指定类型的博客（不包含Content字段）
+        public async Task<List<object>> GetShortBlogsByTypeAsync(string type)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .Where(b => b.Type == type)
+                .OrderByDescending(b => b.PublishDate)
+                .Select(b => new
+                {
+                    b.Id,
+                    b.Title,
+                    b.Description,
+                    b.ImageUrl,
+                    b.PublishDate,
+                    b.Tags,
+                    b.ViewCount,
+                    b.TalkCount
+                })
+                .ToListAsync<object>();
+        }
+
+        // 精简版：获取热门博客（不包含Content字段）
+        public async Task<List<object>> GetShortHotBlogsAsync(int start, int count)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .OrderByDescending(b => b.ViewCount)
+                .Skip(start)
+                .Take(count)
+                .Select(b => new
+                {
+                    b.Id,
+                    b.Title,
+                    b.Description,
+                    b.ImageUrl,
+                    b.PublishDate,
+                    b.Tags,
+                    b.ViewCount,
+                    b.TalkCount
+                })
+                .ToListAsync<object>();
+        }
+
+        // 精简版：获取最新博客（不包含Content字段）
+        public async Task<List<object>> GetShortNewBlogsAsync(int start, int count)
+        {
+            using var context = _databaseService.GetDbContext();
+            return await context.Blogs
+                .OrderByDescending(b => b.PublishDate)
+                .Skip(start)
+                .Take(count)
+                .Select(b => new
+                {
+                    b.Id,
+                    b.Title,
+                    b.Description,
+                    b.ImageUrl,
+                    b.PublishDate,
+                    b.Tags,
+                    b.ViewCount,
+                    b.TalkCount
+                })
+                .ToListAsync<object>();
         }
     }
 }
