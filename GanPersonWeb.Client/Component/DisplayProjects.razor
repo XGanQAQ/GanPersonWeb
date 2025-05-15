@@ -1,69 +1,104 @@
-﻿
+﻿@using GanPersonWeb.Shared.Models
+
 <MudGrid Spacing="3">
-    @for (int i = 0; i < (DisplayCount >= projects.Count ? projects.Count : DisplayCount); i++)
+    @if (isLoading)
     {
-        <MudItem xs="12" md="6" lg="6">
-            <MudCard>
-                <MudCardMedia Image="./images/maomao.png" Height="200" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h6" Class="text-blue-400">@projects[i].Title</MudText>
-                    <MudChipSet T="string">
-                        @foreach (var tag in @projects[i].Tags)
-                        {
-                            <MudChip>@tag</MudChip>
-                        }
-                    </MudChipSet>
-                    <MudText Typo="Typo.body2" Class="text-gray-400">
-                        @projects[i].Description
-                    </MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@projects[i].Link">
-                        了解更多
-                    </MudButton>
-                </MudCardActions>
-            </MudCard>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6" Class="text-gray-400" Align="Align.Center">加载中...</MudText>
         </MudItem>
     }
-
-    @* TODO:展示空白框 *@
-    @for (int i = 0; i < (DisplayCount >= projects.Count ? DisplayCount - projects.Count : 0); i++)
+    else if (projects != null && projects.Count > 0)
     {
-        <MudItem xs="12" md="6" lg="6">
-            <MudItem xs="12">
+        @foreach (var project in projects)
+        {
+            <MudItem xs="12" md="6" lg="6">
+                <MudCard>
+                    <MudCardMedia Image="./images/maomao.png" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="text-blue-400">@project.Title</MudText>
+                        <MudChipSet T="string">
+                            @foreach (var tag in project.Tags ?? Enumerable.Empty<string>())
+                            {
+                                <MudChip>@tag</MudChip>
+                            }
+                        </MudChipSet>
+                        <MudText Typo="Typo.body2" Class="text-gray-400">
+                            @project.Description
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@project.Link">
+                            了解更多
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+        @* 展示空白框 *@
+        @for (int i = 0; i < Math.Max(0, DisplayCount - projects.Count); i++)
+        {
+            <MudItem xs="12" md="6" lg="6">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
             </MudItem>
-        </MudItem>
+        }
+        @if (IsShowPagination)
+        {
+            <MudItem xs="12" md="12" lg="12">
+                <div class="d-flex flex-column align-center gap-4">
+                    <MudPagination @bind-Selected="_selected"
+                                   ShowFirstButton="true"
+                                   ShowLastButton="true"
+                                   Count="@pageCount"
+                                   OnSelectedChanged="OnPageChanged" />
+                </div>
+            </MudItem>
+        }
     }
-
-    @if (IsShowPagination)
+    else
     {
-        <MudItem xs="12" md="12" lg="12">
-            <div class="d-flex flex-column align-center gap-4">
-                <MudPagination @bind-Selected="@_selected" ShowFirstButton="true" ShowLastButton="true" Count="@projects.Count" />
-            </div>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6" Class="text-gray-400" Align="Align.Center">暂无项目</MudText>
         </MudItem>
     }
-
 </MudGrid>
+
 @code {
     [Parameter] public int DisplayCount { get; set; } = 3;
     [Parameter] public bool IsShowPagination { get; set; } = false;
 
     [Inject]
-    public ProjectService clientProjectService { get; set; }
+    public ClientProjectService clientProjectService { get; set; }
 
     private List<Project> projects = new List<Project>();
     private int _selected = 1;
+    private int totalProjects = 0;
+    private bool isLoading = false;
 
-    protected async Task GetProjectsAsync()
+    private int pageCount => (int)Math.Ceiling((double)totalProjects / DisplayCount);
+
+    // 分页获取项目
+    protected async Task GetRangeProjectsAsync(int start, int count)
     {
-        if(clientProjectService!=null)
-        projects = await clientProjectService.GetProjectsAsync();
+        isLoading = true;
+        StateHasChanged();
+        projects = await clientProjectService.GetProjectsInRangeAsync(start, count);
+        isLoading = false;
+        StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        await GetProjectsAsync();
+        isLoading = true;
+        // 获取项目总数
+        totalProjects = await clientProjectService.GetProjectsCountAsync();
+        await GetRangeProjectsAsync(0, DisplayCount);
+        isLoading = false;
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        _selected = page;
+        int start = (page - 1) * DisplayCount;
+        await GetRangeProjectsAsync(start, DisplayCount);
     }
 }

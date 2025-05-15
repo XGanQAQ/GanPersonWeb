@@ -1,43 +1,65 @@
-﻿<MudGrid>
-    @for (int i = 0; i < (DisplayCount >= blogs.Count ? blogs.Count : DisplayCount); i++)
+﻿@using GanPersonWeb.Shared.Models
+
+<MudGrid>
+    @if (isLoading)
     {
-        <MudItem xs="12" md="12" lg="12">
-            <MudCard>
-                <MudCardMedia Image="./images/maomao.png" Height="200" />
-                <MudCardContent>
-                    <MudText Typo="Typo.h6" Class="text-blue-400">@blogs[i].Title</MudText>
-                    <MudChipSet T="string">
-                        @foreach (var tag in @blogs[i].Tags)
-                        {
-                            <MudChip>@tag</MudChip>
-                        }
-                    </MudChipSet>
-                    <MudText Typo="Typo.body2" Class="text-gray-400">
-                        @blogs[i].Description
-                    </MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@($"/BlogDetail?{blogs[i].Id}")">
-                        了解更多
-                    </MudButton>
-                </MudCardActions>
-            </MudCard>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6" Class="text-gray-400" Align="Align.Center">加载中...</MudText>
         </MudItem>
     }
-    @* TODO:展示空白框 *@
-    @for (int i = 0; i < (DisplayCount >= blogs.Count ? DisplayCount-blogs.Count : 0); i++)
+    else if (blogs != null && blogs.Count > 0)
     {
-        <MudItem xs="12" md="12" lg="12">
-            <MudItem xs="12">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+        @foreach(var blog in blogs)
+        {
+            <MudItem xs="12" md="12" lg="12">
+                <MudCard>
+                    <MudCardMedia Image="./images/maomao.png" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="text-blue-400">@blog.Title</MudText>
+                        <MudChipSet T="string">
+                            @foreach (var tag in blog.Tags ?? Enumerable.Empty<string>())
+                            {
+                                <MudChip>@tag</MudChip>
+                            }
+                        </MudChipSet>
+                        <MudText Typo="Typo.body2" Class="text-gray-400">
+                            @blog.Description
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@($"/BlogDetail?{blog.Id}")">
+                            了解更多
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
             </MudItem>
+        }
+        @* 展示空白框 *@
+        @for (int i = 0; i < Math.Max(0, DisplayCount - blogs.Count); i++)
+        {
+            <MudItem xs="12" md="12" lg="12">
+                <MudItem xs="12">
+                    <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                </MudItem>
+            </MudItem>
+        }
+        <MudItem xs="12" md="12" lg="12">
+            <div class="d-flex flex-column align-center gap-4">
+                <MudPagination @bind-Selected="_selected"
+                               ShowPageButtons="@IsShowPageButtons"
+                               ShowFirstButton="true"
+                               ShowLastButton="true"
+                               Count="@pageCount"
+                               OnSelectedChanged="OnPageChanged" />
+            </div>
         </MudItem>
     }
-    <MudItem xs="12" md="12" lg="12">
-        <div class="d-flex flex-column align-center gap-4">
-            <MudPagination @bind-Selected="@_selected" ShowPageButtons="@IsShowPageButtons" ShowFirstButton="true" ShowLastButton="true" Count="@blogs.Count" />
-        </div>
-    </MudItem>
+    else
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6" Class="text-gray-400" Align="Align.Center">暂无博客</MudText>
+        </MudItem>
+    }
 </MudGrid>
 
 @code {
@@ -46,8 +68,41 @@
     [Parameter] public string FliterType { get; set; } = "标签过滤";
     [Parameter] public List<string> TagTypeFilter { get; set; } = new List<string>();
     [Parameter] public bool IsShowPageButtons { get; set; } = false;
-    private int pageCount{ get { return (blogs.Count / DisplayCount)+1; } }
+
+    [Inject]
+    public ClientBlogService clientBlogService { get; set; }
 
     private List<Blog> blogs = new List<Blog>();
     private int _selected = 1;
+    private int totalBlogs = 0;
+    private bool isLoading = false;
+
+    private int pageCount => (int)Math.Ceiling((double)totalBlogs / DisplayCount);
+
+    // 获得某一个范围的博客
+    protected async Task GetRangeBlogsAsync(int start, int count)
+    {
+        isLoading = true;
+        StateHasChanged();
+        var result = await clientBlogService.GetBlogsInRangeAsync(start, count);
+        blogs = result ?? new List<Blog>();
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var data = await clientBlogService.GetBlogDataAsync();
+        totalBlogs = data?.BlogsCount ?? 0;
+        await GetRangeBlogsAsync(0, DisplayCount);
+        isLoading = false;
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        _selected = page;
+        int start = (page - 1) * DisplayCount;
+        await GetRangeBlogsAsync(start, DisplayCount);
+    }
 }

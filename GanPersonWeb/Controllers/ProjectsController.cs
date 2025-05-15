@@ -59,5 +59,21 @@ namespace GanPersonWeb.Controllers
             await _projectService.DeleteProjectAsync(id);
             return NoContent();
         }
+
+        // 分页获取项目
+        [HttpGet("range/{start}/{count}")]
+        public async Task<IActionResult> GetProjectsInRange(int start, int count)
+        {
+            var projects = await _projectService.GetProjectsInRangeAsync(start, count);
+            return Ok(projects);
+        }
+
+        // 获取项目总数
+        [HttpGet("count")]
+        public async Task<IActionResult> GetProjectsCount()
+        {
+            var count = await _projectService.GetProjectsCountAsync();
+            return Ok(count);
+        }
     }
 }

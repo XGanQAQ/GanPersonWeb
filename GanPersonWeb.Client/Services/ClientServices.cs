@@ -15,7 +15,8 @@ namespace GanPersonWeb.Client.Services
                 var navigationManager = sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
                 return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
             });
-            services.AddScoped<ProjectService>();
+            services.AddScoped<ClientProjectService>();
+            services.AddScoped<ClientBlogService>();
             services.AddScoped<AuthService>();
             services.AddMudServices();
             services.AddBlazoredLocalStorage();

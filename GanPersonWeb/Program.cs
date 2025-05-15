@@ -74,6 +74,18 @@ using (var scope = app.Services.CreateScope())
     var userService = scope.ServiceProvider.GetRequiredService<UserService>();
     await userService.CreateInitialAdminUserAsync("admin", "admin123");
 }
+//创建初始博客
+using (var scope = app.Services.CreateScope())
+{
+    var blogService = scope.ServiceProvider.GetRequiredService<BlogService>();
+    await blogService.CreateInitialBlogsAsync();
+}
+//创建初始项目
+using (var scope = app.Services.CreateScope())
+{
+    var projectService = scope.ServiceProvider.GetRequiredService<GanPersonWeb.Services.ProjectService>();
+    await projectService.CreateInitialProjectsAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

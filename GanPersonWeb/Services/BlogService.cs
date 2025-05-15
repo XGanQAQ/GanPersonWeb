@@ -86,5 +86,42 @@ namespace GanPersonWeb.Services
                 await context.SaveChangesAsync();
             }
         }
+
+        // 初始化博客数据（仅在数据库为空时插入一些初始博客）
+        public async Task CreateInitialBlogsAsync()
+        {
+            using var context = _databaseService.GetDbContext();
+            if (!await context.Blogs.AnyAsync())
+            {
+                var initialBlogs = new List<Blog>
+                {
+                    new Blog
+                    {
+                        Title = "欢迎来到我的博客",
+                        Description = "这是我的第一篇博客，欢迎大家！",
+                        Content = "这里是博客内容示例。你可以在这里分享你的想法和故事。",
+                        ImageUrl = "",
+                        PublishDate = DateTime.Now,
+                        Tags = new List<string> { "公告", "欢迎" },
+                        ViewCount = 0,
+                        TalkCount = 0
+                    },
+                    new Blog
+                    {
+                        Title = "Blazor WebAssembly 初体验",
+                        Description = "记录我使用 Blazor WebAssembly 的一些心得。",
+                        Content = "Blazor WebAssembly 让前端开发变得更加有趣和高效。",
+                        ImageUrl = "",
+                        PublishDate = DateTime.Now,
+                        Tags = new List<string> { "Blazor", "WebAssembly", "开发" },
+                        ViewCount = 0,
+                        TalkCount = 0
+                    }
+                };
+
+                await context.Blogs.AddRangeAsync(initialBlogs);
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

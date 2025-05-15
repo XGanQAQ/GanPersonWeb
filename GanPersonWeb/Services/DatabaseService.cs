@@ -29,6 +29,12 @@ namespace GanPersonWeb.Services
             return await _context.Set<T>().Skip(skip).Take(take).ToListAsync();
         }
 
+        // New method to get count
+        public async Task<int> GetCountAsync<T>() where T : class
+        {
+            return await _context.Set<T>().CountAsync();
+        }
+
 
         public async Task AddAsync<T>(T entity) where T : class
         {

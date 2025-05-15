@@ -12,13 +12,42 @@
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
+
         <MudToggleIconButton @bind-Toggled="_isDarkMode"
         Icon="@Icons.Material.Filled.LightMode"
         Color="@Color.Error"
         ToggledIcon="@Icons.Material.Filled.ModeNight"
         ToggledColor="@Color.Inherit"
         title="@(_isDarkMode ? "On" : "Off")" />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+
+        <MudMenu Dense
+        Variant="Variant.Text"
+        Size="Size.Medium"
+        Color="Color.Inherit"
+        Icon="@Icons.Material.TwoTone.MoreVert">
+
+            <MudNavGroup Title="Settings" Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">
+                <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Terminal">Dashboard</MudNavLink>
+                <MudNavLink Href="/Console/PersonInfo" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">PersonInfo</MudNavLink>
+                <MudNavLink Href="/Console/Blog" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.NoteAdd">Blog</MudNavLink>
+                <MudNavLink Href="/Console/Project" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddToQueue">Project</MudNavLink>
+                <MudNavLink Href="/Console/Picture" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddPhotoAlternate">Picture</MudNavLink>
+            </MudNavGroup>
+
+            <MudDivider />
+
+            <MudMenuItem Href="/"
+            ForceLoad
+            Icon="@Icons.Material.TwoTone.Login"
+            IconColor="Color.Primary"
+            Label="Sign In" />
+
+            <MudMenuItem Href="/"
+            ForceLoad
+            Icon="@Icons.Material.TwoTone.Logout"
+            IconColor="Color.Primary"
+            Label="Sign Out" />
+        </MudMenu>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>
@@ -33,16 +62,6 @@
 
             @* <MudNavLink Href="About" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BackHand">About</MudNavLink> *@
             <MudNavLink Href="/Me" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.TagFaces">Me</MudNavLink>
-            @if (_isAdmin)
-            {
-                <MudNavGroup Title="Settings" Icon="@Icons.Material.Filled.Settings" Expanded="false">
-                    <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Terminal">Dashboard</MudNavLink>
-                    <MudNavLink Href="/Console/PersonInfo" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">PersonInfo</MudNavLink>
-                    <MudNavLink Href="/Console/Blog" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.NoteAdd">Blog</MudNavLink>
-                    <MudNavLink Href="/Console/Project" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddToQueue">Project</MudNavLink>
-                    <MudNavLink Href="/Console/Picture" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddPhotoAlternate">Picture</MudNavLink>
-                </MudNavGroup>
-            }
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
@@ -61,6 +80,7 @@
     private bool _drawerOpen = true;
     private bool _isDarkMode = true;
     private MudTheme? _theme = null;
+    private MudTheme? _cat_relex_theme = null;
     private bool _isAdmin = false;
 
 
@@ -75,8 +95,13 @@
             LayoutProperties = new LayoutProperties()
         };
 
-        _isAdmin = true; //TODO：待修改
-        //_isAdmin = AuthService.IsAdmin();
+        _cat_relex_theme = new()
+        {
+            PaletteLight = _lightPalette,
+            PaletteDark = _darkPalette,
+            LayoutProperties = new LayoutProperties()
+        };
+
     }
 
     private void DrawerToggle()
