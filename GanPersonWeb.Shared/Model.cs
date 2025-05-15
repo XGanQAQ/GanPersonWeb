@@ -50,6 +50,7 @@
         public string Content { get; set; } = string.Empty; // 博客内容
         public string ImageUrl { get; set; } = string.Empty; // 博客预览图片URL
         public DateTime PublishDate { get; set; } // 博客发布日期
+        public string Type { get; set; } = string.Empty; // 博客类型（如技术、生活）
         public List<string> Tags { get; set; } = new(); // 博客标签
         public int ViewCount { get; set; } // 浏览量
         public int TalkCount { get; set; } // 评论量
@@ -81,5 +82,7 @@
         public int Id { get; set; }
         public DateTime VisitDate { get; set; } // 日期
         public int Count { get; set; } // 当天访问次数
+        public string IpAddress { get; set; } = string.Empty; // IP地址
+        public string area { get; set; } = string.Empty; // 访问区域
     }
 }
