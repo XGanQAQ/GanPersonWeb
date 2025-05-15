@@ -85,5 +85,45 @@ namespace GanPersonWeb.Controllers
             await _blogService.DeleteBlogAsync(id);
             return NoContent();
         }
+
+        // 精简版接口：获取所有博客（不包含Content字段）
+        [HttpGet("short")]
+        public async Task<IActionResult> GetShortBlogs()
+        {
+            var blogs = await _blogService.GetBlogsAsync();
+            var shortBlogs = blogs.Select(b => new
+            {
+                b.Id,
+                b.Title,
+                b.Description,
+                b.ImageUrl,
+                b.PublishDate,
+                b.Tags,
+                b.ViewCount,
+                b.TalkCount
+            });
+            return Ok(shortBlogs);
+        }
+
+        // 精简版接口：获取指定范围的博客（不包含Content字段）
+        [HttpGet("short/range/{start}/{count}")]
+        public async Task<IActionResult> GetShortBlogsInRange(int start, int count)
+        {
+            var blogs = await _blogService.GetBlogsInRangeAsync(start, count);
+            var shortBlogs = blogs.Select(b => new
+            {
+                b.Id,
+                b.Title,
+                b.Description,
+                b.ImageUrl,
+                b.PublishDate,
+                b.Tags,
+                b.ViewCount,
+                b.TalkCount
+            });
+            return Ok(shortBlogs);
+        }
+
+
     }
 }

@@ -37,6 +37,12 @@ namespace GanPersonWeb.Client.Services
         {
             return await _httpClient.GetFromJsonAsync<List<Blog>>($"api/Blogs/range/{start}/{count}");
         }
+        // 精简版 获取指定范围的博客
+        public async Task<List<Blog>?> GetBlogsInRangeShortAsync(int start, int count)
+        {
+            return await _httpClient.GetFromJsonAsync<List<Blog>>($"/api/Blogs/short/range/{start}/{count}");
+        }
+
 
         // 获取博客统计数据
         public async Task<BlogsData?> GetBlogDataAsync()

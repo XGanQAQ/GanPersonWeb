@@ -84,7 +84,7 @@
     {
         isLoading = true;
         StateHasChanged();
-        var result = await clientBlogService.GetBlogsInRangeAsync(start, count);
+        var result = await clientBlogService.GetBlogsInRangeShortAsync(start, count);
         blogs = result ?? new List<Blog>();
         isLoading = false;
         StateHasChanged();
