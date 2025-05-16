@@ -1,0 +1,48 @@
+﻿<MudPaper Elevation="5">
+    <MudStack AlignItems="AlignItems.Center" Spacing="2">
+        <MudImage Src="@personImageUrl" Elevation="5" Width="150" Class="rounded-circle mt-5" />
+        <MudText Typo="Typo.h5" Color="Color.Primary">@personName</MudText>
+        <MudText Typo="Typo.body2" Color="Color.Default">@description</MudText>
+        <MudDivider DividerType="DividerType.Middle"/>
+        <MudStack Row Spacing="1">
+            <MudIconButton Icon="@Icons.Material.Filled.Email"
+                           Color="Color.Default"
+                           Size="Size.Medium"
+                           Href="/Me" />
+            @foreach (var link in socialMediaLinks)
+            {
+                <MudIconButton Icon="@link.IconUrl"
+                               Color="Color.Default"
+                               Size="Size.Medium"
+                               Href="@link.Url" />
+            }
+            <!-- 可根据需要添加更多icon -->
+        </MudStack>
+    </MudStack>
+</MudPaper>
+
+
+@code {
+    [Inject]
+    public ClientPersonInfoService clientPersonInfoService { get; set; } = null!;
+
+    private string personName = string.Empty;
+    private string personImageUrl = string.Empty;
+    private string description = string.Empty;
+    private string personEmail = string.Empty;
+    private List<SocialMediaLink> socialMediaLinks = new List<SocialMediaLink>();
+
+    //从服务中获取个人信息
+    protected override async Task OnInitializedAsync()
+    {
+        var personInfo = await clientPersonInfoService.GetPersonalInfoAsync();
+        if (personInfo != null)
+        {
+            personName = personInfo.Name;
+            personImageUrl = personInfo.ProfileImageUrl;
+            description = personInfo.Description;
+            personEmail = personInfo.Email;
+            socialMediaLinks = personInfo.SocialMediaLinks;
+        }
+    }
+}

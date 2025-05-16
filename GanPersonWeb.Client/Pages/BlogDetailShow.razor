@@ -1,0 +1,115 @@
+﻿@page "/blogdetailshow/{id:int}"
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudGrid>
+        <MudItem xs="12" sm="9" md="9" id="主栏">
+            <MudPaper Class="pa-4">
+                @if (blog == null)
+                {
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">正在加载博客内容...</MudText>
+                }
+                else
+                {
+                    @if (!string.IsNullOrWhiteSpace(blog.ImageUrl))
+                    {
+                        <div class="d-flex justify-center">
+                            <!--不知道为什么，图片的大小没办法固定高度-->
+                            <MudImage ObjectFit="ObjectFit.Cover" Src="@blog.ImageUrl" Alt="博客预览图片" Class="mb-3 rounded-lg" />
+                        </div>
+                    }
+                    <MudText Typo="Typo.h2" Color="Color.Primary" GutterBottom="true" Align="Align.Center">
+                        <b> @blog.Title </b>
+                    </MudText>
+                    <MudStack Row Spacing="2" Class="mb-2">
+                        <MudSpacer/>
+                        <MudText Typo="Typo.subtitle2" Color="Color.Default">
+                            <MudIcon Icon="@Icons.Material.Filled.Update" /> @blog.PublishDate.ToString("yyyy-MM-dd")
+                        </MudText>
+                        @if (!string.IsNullOrEmpty(blog.Type))
+                        {
+                            <MudChip T="string" Color="Color.Default" Variant="Variant.Filled" Size="Size.Small">@blog.Type</MudChip>
+                        }
+                        <MudText Typo="Typo.caption" Color="Color.Default">
+                            <MudIcon Icon="@Icons.Material.Filled.Visibility" /> @blog.ViewCount
+                        </MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Default">
+                            <MudIcon Icon="@Icons.Material.Filled.Comment" /> @blog.TalkCount
+                        </MudText>
+                    </MudStack>
+                    <MudDivider Class="mb-3" />
+
+                    <MudPaper>
+                        <MudContainer>
+                            <MudText Typo="Typo.subtitle2" Color="Color.Default" Class="mb-2">前言：@blog.Description</MudText>
+                        </MudContainer>
+                    </MudPaper>
+                    <MudDivider Class="mb-3" />
+                    @if (!string.IsNullOrWhiteSpace(blog.HtmlContent))
+                    {
+                        <MudPaper Class="pa-3 mb-3">
+                            <MudContainer>
+                                @* @attributes="new Dictionary<string, object> { { "style", "word-break:break-word;" } }" *@
+                                <div class="blog-html-content"
+                                     @key="blog.Id"
+                                     @onclick:stopPropagation="true"
+                                     @onclick:preventDefault="false"
+                                     @oncontextmenu:preventDefault="false"
+                                     @oncontextmenu:stopPropagation="false">
+                                    @((MarkupString)blog.HtmlContent)
+                                </div>
+                            </MudContainer>
+                        </MudPaper>
+                    }
+                }
+            </MudPaper>
+        </MudItem>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudItem xs="12" sm="3" md="3" id="右侧边栏">
+                <MudStack>
+                    <MudCard>
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">
+                                    <MudText Inline>
+                                        <MudIcon Icon="@Icons.Material.Filled.Label" /> 标签
+                                    </MudText>
+                                </MudText>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            @if (blog!=null && blog.Tags != null && blog.Tags.Count > 0)
+                            {
+                                <MudStack Row Spacing="1">
+                                    <MudSpacer />
+                                    @foreach (var tag in blog.Tags)
+                                    {
+                                        <MudChip T="string" Color="Color.Default" Size="Size.Small">@tag</MudChip>
+                                    }
+                                </MudStack>
+                            }
+                        </MudCardContent>
+                    </MudCard>
+                    <!-- 可在此处添加作者信息、推荐文章等内容 -->
+                </MudStack>
+            </MudItem>
+        </MudHidden>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    [Inject]
+    public ClientBlogService clientBlogService { get; set; } = default!;
+
+    private Blog? blog;
+
+    protected override async Task OnInitializedAsync()
+    {
+        blog = await clientBlogService.GetBlogAsync(id);
+    }
+}

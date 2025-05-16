@@ -11,7 +11,7 @@
     {
         @foreach (var project in projects)
         {
-            <MudItem xs="12" sm="12" md="6" Class="d-flex">
+            <MudItem xs="12" sm="6" Class="d-flex">
                 <MudCard>
                     <MudCardMedia Image="./images/maomao.png" Height="200" />
                     <MudCardContent>
@@ -37,13 +37,13 @@
         @* 展示空白框 *@
         @for (int i = 0; i < Math.Max(0, DisplayCount - projects.Count); i++)
         {
-            <MudItem xs="12" sm="12" md="6">
+            <MudItem xs="12" sm="6">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
             </MudItem>
         }
         @if (IsShowPagination)
         {
-            <MudItem xs="12" md="12" lg="12">
+            <MudItem xs="12">
                 <div class="d-flex flex-column align-center gap-4">
                     <MudPagination @bind-Selected="_selected"
                                    ShowFirstButton="true"

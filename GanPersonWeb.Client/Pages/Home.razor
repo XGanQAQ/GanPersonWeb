@@ -1,7 +1,7 @@
 ﻿@page "/"
 <MudContainer Class="mt-10 px-8" MaxWidth="MaxWidth.Large">
     <MudGrid>
-        <MudItem xs="12" sm="12" md="9" id="主栏">
+        <MudItem xs="12" sm="9" md="9" id="主栏">
             <MudGrid Class="mb-6">
                 <MudItem xs="12">
                     <MudPaper Elevation="3">
@@ -13,25 +13,24 @@
             <MudDivider DividerType="DividerType.Middle" Class="my-6" />
             <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="3"/>
         </MudItem>
-        <MudItem xs="12" sm="12" md="3" id="右侧边栏">
-            <MudStack>
-                <MudContainer Class="m-6">
-                    <MudImage Src="images/head.jpg" Elevation="5" Width="150" Class="rounded-circle"></MudImage>
-                </MudContainer>
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudItem xs="12" sm="3" md="3" id="右侧边栏">
+                <MudStack>
+                    <GanPersonWeb.Client.Component.ShowPersonInfo />
+                    @* 公告 *@
+                    <GanPersonWeb.Client.Component.StandBillboard Title="公告" Content="个人博客正在建设中，敬请期待更多内容！" />
 
-                @* 公告 *@
-                <GanPersonWeb.Client.Component.StandBillboard Title="公告" Content="个人博客正在建设中，敬请期待更多内容！" />
+                    @* 站点信息 *@
+                    <GanPersonWeb.Client.Component.ShowSiteInfo />
 
-                @* 站点信息 *@
-                <GanPersonWeb.Client.Component.ShowSiteInfo/>
+                    @* 展示项目数据 *@
+                    <GanPersonWeb.Client.Component.ShowProjectsInfo />
 
-                @* 展示项目数据 *@
-                <GanPersonWeb.Client.Component.ShowProjectsInfo />
-
-                @* 展示博文数据 *@
-                <GanPersonWeb.Client.Component.ShowBlogsInfo />
-            </MudStack>
-        </MudItem>
+                    @* 展示博文数据 *@
+                    <GanPersonWeb.Client.Component.ShowBlogsInfo />
+                </MudStack>
+            </MudItem>
+        </MudHidden>
     </MudGrid>
 </MudContainer>
 
