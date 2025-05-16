@@ -26,6 +26,7 @@
     {
         public int Id { get; set; } // 主键
         public string Platform { get; set; } = string.Empty; // 平台名称（如GitHub、LinkedIn）
+        public string IconUrl { get; set; } = string.Empty; // 图标URL
         public string Url { get; set; } = string.Empty; // 链接
     }
 
@@ -48,6 +49,7 @@
         public string Title { get; set; } = string.Empty; // 博客标题
         public string Description { get; set; } = string.Empty; // 博客描述
         public string Content { get; set; } = string.Empty; // 博客内容
+        public string HtmlContent { get; set; } = string.Empty; // 博客HTML内容
         public string ImageUrl { get; set; } = string.Empty; // 博客预览图片URL
         public DateTime PublishDate { get; set; } // 博客发布日期
         public string Type { get; set; } = string.Empty; // 博客类型（如技术、生活）
