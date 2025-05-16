@@ -21,16 +21,23 @@ builder.Services.AddAuthentication(options =>
 }).AddJwtBearer(options =>
 {
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-    options.TokenValidationParameters = new TokenValidationParameters
+    if (jwtSettings != null)
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
-    };
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+        };
+    }
+    else
+    {
+        throw new Exception("JWT settings not found in configuration.");
+    }
 });
 
 builder.Services.AddAuthorization();
@@ -51,9 +58,10 @@ builder.Services.AddDbContext<GanPersonDbContext>(options =>
 builder.Services.AddControllers(); // 添加控制器服务
 
 builder.Services.AddScoped<DatabaseService>();
-builder.Services.AddScoped<GanPersonWeb.Services.ProjectService>();
+builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<SiteVisitService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<PersonalInfoService>();
 

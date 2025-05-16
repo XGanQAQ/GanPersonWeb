@@ -32,7 +32,7 @@ namespace GanPersonWeb.Services
                     Occupation = "默认职业",
                     Description = "这是默认的个人简介。",
                     Email = "default@example.com",
-                    ProfileImageUrl = "https://example.com/default-profile.png",
+                    ProfileImageUrl = "/images/head.jpg",
                     SocialMediaLinks = new List<SocialMediaLink>()
                 };
 

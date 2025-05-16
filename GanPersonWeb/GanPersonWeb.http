@@ -1,3 +1,7 @@
 ﻿@GanPersonWeb_HostAddress = https://localhost:7134
 
 
+
+GET {{GanPersonWeb_HostAddress}}/api/visit/data
+
+###
