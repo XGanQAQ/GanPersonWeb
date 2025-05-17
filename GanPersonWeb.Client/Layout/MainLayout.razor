@@ -1,8 +1,6 @@
 ﻿@inherits LayoutComponentBase
-@inject AuthService AuthService
+@inject ClientUserService AuthService
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
@@ -25,28 +23,24 @@
         Size="Size.Medium"
         Color="Color.Inherit"
         Icon="@Icons.Material.TwoTone.MoreVert">
-
-            <MudNavGroup Title="Settings" Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">
-                <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Terminal">Dashboard</MudNavLink>
-                <MudNavLink Href="/Console/PersonInfo" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">PersonInfo</MudNavLink>
-                <MudNavLink Href="/Console/Blog" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.NoteAdd">Blog</MudNavLink>
-                <MudNavLink Href="/Console/Project" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddToQueue">Project</MudNavLink>
-                <MudNavLink Href="/Console/Picture" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddPhotoAlternate">Picture</MudNavLink>
+            <MudNavGroup Title="账户" Icon="@Icons.Material.Filled.ManageAccounts" IconColor="Color.Primary">
+                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary">@_username</MudNavLink>
+                <MudNavLink Href="/login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.TwoTone.Login" IconColor="Color.Primary">登入</MudNavLink>
+                <MudNavLink OnClick="Logout" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.TwoTone.Logout" IconColor="Color.Primary">登出</MudNavLink>
             </MudNavGroup>
 
             <MudDivider />
 
-            <MudMenuItem Href="/"
-            ForceLoad
-            Icon="@Icons.Material.TwoTone.Login"
-            IconColor="Color.Primary"
-            Label="Sign In" />
-
-            <MudMenuItem Href="/"
-            ForceLoad
-            Icon="@Icons.Material.TwoTone.Logout"
-            IconColor="Color.Primary"
-            Label="Sign Out" />
+            @if (_isAdmin)
+            {
+                <MudNavGroup Title="设置" Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">
+                    <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Terminal">Dashboard</MudNavLink>
+                    <MudNavLink Href="/Console/PersonInfo" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">PersonInfo</MudNavLink>
+                    <MudNavLink Href="/Console/Blog" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.NoteAdd">Blog</MudNavLink>
+                    <MudNavLink Href="/Console/Project" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddToQueue">Project</MudNavLink>
+                    <MudNavLink Href="/Console/Picture" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddPhotoAlternate">Picture</MudNavLink>
+                </MudNavGroup>
+            }
         </MudMenu>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
@@ -82,6 +76,7 @@
     private MudTheme? _theme = null;
     private MudTheme? _cat_relex_theme = null;
     private bool _isAdmin = false;
+    private string _username = string.Empty;
 
 
     protected override void OnInitialized()
@@ -103,6 +98,13 @@
         };
 
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _username = await AuthService.GetMyselfUserInformation();
+        _isAdmin = await AuthService.IsAdmin();
+    }
+
 
     private void DrawerToggle()
     {
@@ -158,6 +160,15 @@
         true => Icons.Material.Rounded.AutoMode,
         false => Icons.Material.Outlined.DarkMode,
     };
+
+    //点击登出按钮
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        _username = "Null";
+        _isAdmin = false;
+        StateHasChanged();
+    }
 }
 
 

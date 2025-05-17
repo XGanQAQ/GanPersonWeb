@@ -1,16 +1,37 @@
 @page "/login"
 
-@inject AuthService AuthService
+@inject ClientUserService AuthService
 @inject NavigationManager NavigationManager
 
 <MudContainer MaxWidth="MaxWidth.Small">
-    <MudPaper Class="pa-4" Elevation="4">
-        <MudText Typo="Typo.h5" Class="mb-4">Login</MudText>
-        <MudTextField @bind-Value="Username" Label="Username" Variant="Variant.Filled" />
-        <MudTextField @bind-Value="Password" Label="Password" Variant="Variant.Filled" InputType="InputType.Password" />
-        <MudButton OnClick="HandleLogin" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Login</MudButton>
-        <MudText Color="Color.Error" Class="mt-2">@ErrorMessage</MudText>
-    </MudPaper>
+    @if (isRegistering)
+    {
+        <MudPaper Class="mt-10" Elevation="4">
+            <MudContainer>
+                <MudText Typo="Typo.h5" Class="mb-4">×¢²á</MudText>
+                <MudTextField @bind-Value="Username" Label="Username" Variant="Variant.Filled" />
+                <MudTextField @bind-Value="Password" Label="Password" Variant="Variant.Filled" InputType="InputType.Password" />
+                <MudButton OnClick="HandleRegister" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">×¢²á</MudButton>
+                <MudText Color="Color.Error" Class="mt-2">@ErrorMessage</MudText>
+            </MudContainer>
+        </MudPaper>
+    }
+    else
+    {
+        <MudPaper Class="mt-10" Elevation="4">
+            <MudContainer>
+                <MudText Typo="Typo.h5" Class="mb-4">µÇÂ½</MudText>
+                <MudTextField @bind-Value="Username" Label="Username" Variant="Variant.Filled" />
+                <MudTextField @bind-Value="Password" Label="Password" Variant="Variant.Filled" InputType="InputType.Password" />
+                <MudStack Row>
+                    <MudButton OnClick="HandleLogin" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">µÇÂ½</MudButton>
+                    <MudSpacer></MudSpacer>
+                    <MudButton OnClick="ChangeRegistering" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Ã»ÓÐÕË»§£¿</MudButton>
+                </MudStack>
+                <MudText Color="Color.Error" Class="mt-2">@ErrorMessage</MudText>
+            </MudContainer>
+        </MudPaper>
+    }
 </MudContainer>
 
 
@@ -18,6 +39,12 @@
     private string Username { get; set; } = string.Empty;
     private string Password { get; set; } = string.Empty;
     private string ErrorMessage { get; set; } = string.Empty;
+    private bool isRegistering { get; set; } = false;
+
+    private void ChangeRegistering()
+    {
+        isRegistering = !isRegistering;
+    }
 
     private async Task HandleLogin()
     {
@@ -31,6 +58,22 @@
         else
         {
             ErrorMessage = "Invalid username or password.";
+        }
+    }   
+    //×¢²á
+    private async Task HandleRegister()
+    {
+        ErrorMessage = string.Empty;
+        bool token = await AuthService.RegisterAsync(Username, Password);
+        if (token)
+        {
+            // Store the token (e.g., in local storage) and navigate to the home page
+            ChangeRegistering();
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            ErrorMessage = "Registration failed.";
         }
     }
 }

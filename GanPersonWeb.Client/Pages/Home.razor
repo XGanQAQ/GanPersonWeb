@@ -5,7 +5,7 @@
             <MudGrid Class="mb-6">
                 <MudItem xs="12">
                     <MudPaper Elevation="3">
-                        <MudImage Src="images/purple.png" Class="rounded-lg" />
+                        <MudImage ObjectFit="ObjectFit.Cover" Src="images/purple.png" Class="rounded-lg" Fluid />
                     </MudPaper>
                 </MudItem>
             </MudGrid>
@@ -35,14 +35,16 @@
 </MudContainer>
 
 @code {
-    private int _selected = 1;
     [Inject]
-    private ClientSiteVisitService clientSiteVisitService { get; set; }
+    private ClientSiteVisitService clientSiteVisitService { get; set; } = default!;
 
     //在第一次加载的时候记录访问数据
     protected override async Task OnInitializedAsync()
     {
         // 记录访问数据
-        await clientSiteVisitService.RecordVisitAsync();
+        if (clientSiteVisitService != null)
+        {
+            await clientSiteVisitService.RecordVisitAsync();
+        }
     }
 }
