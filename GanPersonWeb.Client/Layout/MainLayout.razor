@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
-@inject ClientUserService AuthService
 
+<link href="css/BlogDetailShow.css" rel="stylesheet" />
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
@@ -24,38 +24,49 @@
         Color="Color.Inherit"
         Icon="@Icons.Material.TwoTone.MoreVert">
             <MudNavGroup Title="账户" Icon="@Icons.Material.Filled.ManageAccounts" IconColor="Color.Primary">
-                <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary">@_username</MudNavLink>
+                <MudNavLink Href="/personCenter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary">个人中心</MudNavLink>
                 <MudNavLink Href="/login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.TwoTone.Login" IconColor="Color.Primary">登入</MudNavLink>
                 <MudNavLink OnClick="Logout" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.TwoTone.Logout" IconColor="Color.Primary">登出</MudNavLink>
             </MudNavGroup>
 
             <MudDivider />
 
-            @if (_isAdmin)
-            {
-                <MudNavGroup Title="设置" Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">
-                    <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Terminal">Dashboard</MudNavLink>
-                    <MudNavLink Href="/Console/PersonInfo" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">PersonInfo</MudNavLink>
-                    <MudNavLink Href="/Console/Blog" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.NoteAdd">Blog</MudNavLink>
-                    <MudNavLink Href="/Console/Project" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddToQueue">Project</MudNavLink>
-                    <MudNavLink Href="/Console/Picture" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddPhotoAlternate">Picture</MudNavLink>
-                </MudNavGroup>
-            }
+            <MudNavGroup Title="主题" Icon="@Icons.Material.Filled.Palette" IconColor="Color.Primary">
+
+            </MudNavGroup>
+
+            <MudDivider />
+
+            <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Settings" IconColor="Color.Primary">设置</MudNavLink>
+
         </MudMenu>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h5" Class="mt-1">GanX</MudText>
+            <MudButton Href="/">
+                <MudText Typo="Typo.h5" Class="mt-1">GanX</MudText>
+            </MudButton>
         </MudDrawerHeader>
         <MudNavMenu>
-            <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-            <MudNavLink Href="/Blogs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Book">Blogs</MudNavLink>
-            <MudNavLink Href="/Portfolio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Work">Portfolio</MudNavLink>
-            <MudNavLink Href="/PictureBed" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Collections">Picture</MudNavLink>
-            <MudNavLink Href="/GameDevLab" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.VideogameAsset">GameDevLab</MudNavLink>
+            @if (relativePath.StartsWith("Console"))
+            {
+                <MudNavLink Href="/Console/Dashboard" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Terminal">Dashboard</MudNavLink>
+                <MudNavLink Href="/Console/PersonInfo" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">PersonInfo</MudNavLink>
+                <MudNavLink Href="/Console/Blog" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.NoteAdd">Blog</MudNavLink>
+                <MudNavLink Href="/Console/Project" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddToQueue">Project</MudNavLink>
+                <MudNavLink Href="/Console/Picture" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddPhotoAlternate">Picture</MudNavLink>
+            }
+            else
+            {
+                <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+                <MudNavLink Href="/Blogs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Book">Blogs</MudNavLink>
+                <MudNavLink Href="/Portfolio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Work">Portfolio</MudNavLink>
+                <MudNavLink Href="/PictureBed" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Collections">Picture</MudNavLink>
+                <MudNavLink Href="/GameDevLab" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.VideogameAsset">GameDevLab</MudNavLink>
 
-            @* <MudNavLink Href="About" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BackHand">About</MudNavLink> *@
-            <MudNavLink Href="/Me" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.TagFaces">Me</MudNavLink>
+                @* <MudNavLink Href="About" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BackHand">About</MudNavLink> *@
+                <MudNavLink Href="/Me" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.TagFaces">Me</MudNavLink>
+            }
         </MudNavMenu>
     </MudDrawer>
     <MudMainContent>
@@ -74,10 +85,15 @@
     private bool _drawerOpen = true;
     private bool _isDarkMode = true;
     private MudTheme? _theme = null;
-    private MudTheme? _cat_relex_theme = null;
-    private bool _isAdmin = false;
-    private string _username = string.Empty;
+    private MudTheme? _amber_light_theme = null;
 
+    private string relativePath = string.Empty;// 相对路径
+
+
+    [Inject]
+    public ClientUserService clientUserService{ get; set; }
+    [Inject]
+    public NavigationManager navigation{ get; set; }
 
     protected override void OnInitialized()
     {
@@ -90,21 +106,33 @@
             LayoutProperties = new LayoutProperties()
         };
 
-        _cat_relex_theme = new()
+        _amber_light_theme = new()
         {
-            PaletteLight = _lightPalette,
+            PaletteLight = _amberlightPalette,
             PaletteDark = _darkPalette,
             LayoutProperties = new LayoutProperties()
         };
 
+        navigation.LocationChanged += OnLocationChanged;
+        UpdateRelativePath();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    public void Dispose()
     {
-        _username = await AuthService.GetMyselfUserInformation();
-        _isAdmin = await AuthService.IsAdmin();
+        navigation.LocationChanged -= OnLocationChanged;
     }
 
+    private void UpdateRelativePath()
+    {
+        relativePath = navigation.ToBaseRelativePath(navigation.Uri);
+    }
+
+    /// 处理导航事件，更新相对路径
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        UpdateRelativePath();
+        StateHasChanged();
+    }
 
     private void DrawerToggle()
     {
@@ -119,6 +147,16 @@
     private readonly PaletteLight _lightPalette = new()
     {
         Black = "#110e2d",
+        AppbarText = "#424242",
+        AppbarBackground = "rgba(255,255,255,0.8)",
+        DrawerBackground = "#ffffff",
+        GrayLight = "#e8e8e8",
+        GrayLighter = "#f9f9f9",
+    };
+
+    private readonly PaletteLight _amberlightPalette = new()
+    {
+        Black = "#FFECB3",
         AppbarText = "#424242",
         AppbarBackground = "rgba(255,255,255,0.8)",
         DrawerBackground = "#ffffff",
@@ -164,11 +202,10 @@
     //点击登出按钮
     private async Task Logout()
     {
-        await AuthService.LogoutAsync();
-        _username = "Null";
-        _isAdmin = false;
+        await clientUserService.LogoutAsync();
         StateHasChanged();
     }
+
 }
 
 

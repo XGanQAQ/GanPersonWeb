@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\BlogDetailShow.razor.css" />
+    <Content Remove="wwwroot\css\BlogDetailShow.css" />
     <Content Remove="wwwroot\images\head.jpg" />
   </ItemGroup>
 
@@ -22,6 +24,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GanPersonWeb.Shared\GanPersonWeb.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\BlogDetailShow.css" />
   </ItemGroup>
 
 </Project>

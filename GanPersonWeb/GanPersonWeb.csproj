@@ -24,4 +24,9 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
 </Project>
