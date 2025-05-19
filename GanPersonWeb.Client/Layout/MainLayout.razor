@@ -32,7 +32,10 @@
             <MudDivider />
 
             <MudNavGroup Title="主题" Icon="@Icons.Material.Filled.Palette" IconColor="Color.Primary">
-
+                @foreach(var theme in themes)
+                {
+                    <MudNavLink Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Palette" IconColor="Color.Primary" OnClick="@(() => ChangeTheme(theme.Name))">@theme.Name</MudNavLink>
+                }
             </MudNavGroup>
 
             <MudDivider />
@@ -85,34 +88,29 @@
     private bool _drawerOpen = true;
     private bool _isDarkMode = true;
     private MudTheme? _theme = null;
-    private MudTheme? _amber_light_theme = null;
 
     private string relativePath = string.Empty;// 相对路径
 
+    private List<Theme> themes = new List<Theme>();
 
     [Inject]
     public ClientUserService clientUserService{ get; set; }
     [Inject]
     public NavigationManager navigation{ get; set; }
+    [Inject]
+    public ThemePaletteService themePaletteService { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        _theme = new()
-        {
-            PaletteLight = _lightPalette,
-            PaletteDark = _darkPalette,
-            LayoutProperties = new LayoutProperties()
-        };
+        //初始化主题
 
-        _amber_light_theme = new()
-        {
-            PaletteLight = _amberlightPalette,
-            PaletteDark = _darkPalette,
-            LayoutProperties = new LayoutProperties()
-        };
+        themes = themePaletteService.GetThemes();
+        _theme = themePaletteService.GetTheme("default").MudTheme;
 
+        // 注册导航事件
+        // 当前的Uri发生变化时，更新相对路径
         navigation.LocationChanged += OnLocationChanged;
         UpdateRelativePath();
     }
@@ -122,6 +120,8 @@
         navigation.LocationChanged -= OnLocationChanged;
     }
 
+    #region 导航切换
+    /// 更新相对路径
     private void UpdateRelativePath()
     {
         relativePath = navigation.ToBaseRelativePath(navigation.Uri);
@@ -133,6 +133,7 @@
         UpdateRelativePath();
         StateHasChanged();
     }
+    #endregion
 
     private void DrawerToggle()
     {
@@ -144,60 +145,17 @@
         _isDarkMode = !_isDarkMode;
     }
 
-    private readonly PaletteLight _lightPalette = new()
-    {
-        Black = "#110e2d",
-        AppbarText = "#424242",
-        AppbarBackground = "rgba(255,255,255,0.8)",
-        DrawerBackground = "#ffffff",
-        GrayLight = "#e8e8e8",
-        GrayLighter = "#f9f9f9",
-    };
-
-    private readonly PaletteLight _amberlightPalette = new()
-    {
-        Black = "#FFECB3",
-        AppbarText = "#424242",
-        AppbarBackground = "rgba(255,255,255,0.8)",
-        DrawerBackground = "#ffffff",
-        GrayLight = "#e8e8e8",
-        GrayLighter = "#f9f9f9",
-    };
-
-    private readonly PaletteDark _darkPalette = new()
-    {
-        Primary = "#7e6fff",
-        Surface = "#1e1e2d",
-        Background = "#1a1a27",
-        BackgroundGray = "#151521",
-        AppbarText = "#92929f",
-        AppbarBackground = "rgba(26,26,39,0.8)",
-        DrawerBackground = "#1a1a27",
-        ActionDefault = "#74718e",
-        ActionDisabled = "#9999994d",
-        ActionDisabledBackground = "#605f6d4d",
-        TextPrimary = "#b2b0bf",
-        TextSecondary = "#92929f",
-        TextDisabled = "#ffffff33",
-        DrawerIcon = "#92929f",
-        DrawerText = "#92929f",
-        GrayLight = "#2a2833",
-        GrayLighter = "#1e1e2d",
-        Info = "#4a86ff",
-        Success = "#3dcb6c",
-        Warning = "#ffb545",
-        Error = "#ff3f5f",
-        LinesDefault = "#33323e",
-        TableLines = "#33323e",
-        Divider = "#292838",
-        OverlayLight = "#1e1e2d80",
-    };
-
     public string DarkLightModeButtonIcon => _isDarkMode switch
     {
         true => Icons.Material.Rounded.AutoMode,
         false => Icons.Material.Outlined.DarkMode,
     };
+
+    private void ChangeTheme(string name)
+    {
+        _theme = themePaletteService.GetTheme(name).MudTheme;
+        StateHasChanged();
+    }
 
     //点击登出按钮
     private async Task Logout()
