@@ -10,7 +10,6 @@ namespace GanPersonWeb.Client.Services
         public JwtHelperService(ILocalStorageService localStorageService) 
         {
             _localStorageService = localStorageService;
-
         }
 
         //保存JWT令牌
@@ -23,7 +22,7 @@ namespace GanPersonWeb.Client.Services
         public async Task<string> GetTokenAsync()
         {
             var token = await _localStorageService.GetItemAsync<string>("authToken");
-            return token;
+            return token?? string.Empty;
         }
 
         //获取JWT令牌Clainm信息

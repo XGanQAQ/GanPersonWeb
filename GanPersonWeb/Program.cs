@@ -1,14 +1,18 @@
-using MudBlazor.Services;
 using GanPersonWeb.Client.Pages;
+using GanPersonWeb.Client.Services;
 using GanPersonWeb.Components;
 using GanPersonWeb.Data;
 using GanPersonWeb.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using GanPersonWeb.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using MudBlazor.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +35,9 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"])),
+            NameClaimType = JwtRegisteredClaimNames.Sub,
+            RoleClaimType = ClaimTypes.Role
         };
     }
     else
@@ -64,6 +70,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SiteVisitService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<PersonalInfoService>();
+
 
 // blazor client service
 ClientServices.RegisterServices(builder.Services);
@@ -112,6 +119,8 @@ app.MapControllers();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); // 必须加上这句
+app.UseAuthorization();
 
 app.UseAntiforgery();
 

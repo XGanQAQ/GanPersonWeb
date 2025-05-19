@@ -1,5 +1,6 @@
 ﻿using MudBlazor.Services;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
 namespace GanPersonWeb.Client.Services
 {
     /// <summary>
@@ -10,19 +11,22 @@ namespace GanPersonWeb.Client.Services
     {
         public static void RegisterServices(IServiceCollection services)
         {
+            //写法一：提前配置好HttpClient
             services.AddScoped(sp =>
             {
                 var navigationManager = sp.GetRequiredService<Microsoft.AspNetCore.Components.NavigationManager>();
-                return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+                return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri)};
             });
+
             services.AddScoped<ClientProjectService>();
             services.AddScoped<ClientBlogService>();
             services.AddScoped<ClientPersonInfoService>();
             services.AddScoped<ClientSiteVisitService>();
-            services.AddScoped<AuthService>();
+            services.AddScoped<ClientUserService>();
             services.AddMudServices();
             services.AddBlazoredLocalStorage();
             services.AddScoped<JwtHelperService>();
+
         }
     }
 }

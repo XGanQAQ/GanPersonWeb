@@ -2,6 +2,8 @@ using GanPersonWeb.Services;
 using GanPersonWeb.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace GanPersonWeb.Controllers
 {
@@ -31,6 +33,20 @@ namespace GanPersonWeb.Controllers
                 return Unauthorized();
 
             return Ok(new { Token = token });
+        }
+
+        //获得自己的信息
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMe()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return NotFound("Not find id in jwt");
+            var user = await _userService.GetUserByIdAsync(int.Parse(userId));
+            if (user == null)
+                return NotFound("Not find info in database");
+            return Ok(user);
         }
 
         [Authorize(Roles = "Admin")]
