@@ -6,17 +6,10 @@
             <MudPaper Class="pa-4">
                 @if (blog == null)
                 {
-                    <MudText Typo="Typo.h6" Color="Color.Secondary">正在加载博客内容...</MudText>
+                    <MudText Typo="Typo.h6" Color="Color.Secondary" Align="Align.Center">正在加载博客内容...</MudText>
                 }
                 else
                 {
-                    @if (!string.IsNullOrWhiteSpace(blog.ImageUrl))
-                    {
-                        <div class="d-flex justify-center">
-                            <!--不知道为什么，图片的大小没办法固定高度-->
-                            <MudImage ObjectFit="ObjectFit.Cover" Height="300" Src="@blog.ImageUrl" Alt="博客预览图片" Class="mb-3 rounded-lg" />
-                        </div>
-                    }
                     <MudText Typo="Typo.h2" Color="Color.Primary" GutterBottom="true" Align="Align.Center">
                         <b> @blog.Title </b>
                     </MudText>
@@ -36,19 +29,14 @@
                             <MudIcon Icon="@Icons.Material.Filled.Comment" /> @blog.TalkCount
                         </MudText>
                     </MudStack>
-                    <MudDivider Class="mb-3" />
-
-                    <MudPaper>
-                        <MudContainer>
-                            <MudText Typo="Typo.subtitle2" Color="Color.Default" Class="mb-2">前言：@blog.Description</MudText>
-                        </MudContainer>
-                    </MudPaper>
-                    <MudDivider Class="mb-3" />
+                    <MudDivider Class="mb-3" DividerType="DividerType.Middle" />
                     @if (!string.IsNullOrWhiteSpace(blog.HtmlContent))
                     {
                         <MudPaper Class="pa-3 mb-3">
-                            <MudContainer>
-                                @* @attributes="new Dictionary<string, object> { { "style", "word-break:break-word;" } }" *@
+                            <MudContainer class="blog-html-content">
+                                @((MarkupString)blog.HtmlContent)
+
+                             @* @attributes="new Dictionary<string, object> { { "style", "word-break:break-word;" } }"
                                 <div class="blog-html-content"
                                      @key="blog.Id"
                                      @onclick:stopPropagation="true"
@@ -56,7 +44,7 @@
                                      @oncontextmenu:preventDefault="false"
                                      @oncontextmenu:stopPropagation="false">
                                     @((MarkupString)blog.HtmlContent)
-                                </div>
+                                </div> *@
                             </MudContainer>
                         </MudPaper>
                     }
@@ -65,7 +53,20 @@
         </MudItem>
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
             <MudItem xs="12" sm="3" md="3" id="右侧边栏">
-                <MudStack>
+                <MudStack Spacing="5">
+                    <MudPaper>
+                        <MudContainer Class="d-flex justify-center">
+                            <MudImage ObjectFit="ObjectFit.Cover" Height="300" Src="@blog.ImageUrl" Alt="博客预览图片" Class="mb-3 rounded-lg" />
+                        </MudContainer>
+                    </MudPaper>
+
+                    <MudPaper>
+                        <MudContainer>
+                            <MudText Typo="Typo.h6">描述：</MudText>
+                            <MudText Typo="Typo.subtitle2" Color="Color.Default" Class="mb-2">@blog.Description</MudText>
+                        </MudContainer>
+                    </MudPaper>
+
                     <MudCard>
                         <MudCardHeader>
                             <CardHeaderContent>
@@ -79,6 +80,8 @@
                                 <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
                             </CardHeaderActions>
                         </MudCardHeader>
+                        <MudDivider DividerType="DividerType.Middle" />
+
                         <MudCardContent>
                             @if (blog!=null && blog.Tags != null && blog.Tags.Count > 0)
                             {
@@ -106,10 +109,39 @@
     [Inject]
     public ClientBlogService clientBlogService { get; set; } = default!;
 
-    private Blog? blog;
+    private Blog blog = new Blog
+    {
+        Id = 0,
+        Title = "博客标题",
+        Description = "博客描述",
+        HtmlContent = "<p>博客内容</p>",
+        PublishDate = DateTime.Now,
+        ViewCount = 0,
+        TalkCount = 0,
+        Tags = new List<string> { "标签1", "标签2" },
+        Type = "类型",
+        ImageUrl = "/images/maomao.png"
+    };
 
     protected override async Task OnInitializedAsync()
     {
         blog = await clientBlogService.GetBlogAsync(id);
+        if (blog == null)
+        {
+            // 处理未找到博客的情况
+            blog = new Blog
+            {
+                Id = 0,
+                Title = "博客标题",
+                Description = "博客描述",
+                HtmlContent = "<p>博客内容</p>",
+                PublishDate = DateTime.Now,
+                ViewCount = 0,
+                TalkCount = 0,
+                Tags = new List<string> { "标签1", "标签2" },
+                Type = "类型",
+                ImageUrl = "/images/maomao.png"
+            };
+        }
     }
 }
