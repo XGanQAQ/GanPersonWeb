@@ -1,0 +1,13 @@
+﻿.mud-card.animated-card {
+    transition: transform 0.2s cubic-bezier(.4,0,.2,1), box-shadow 0.2s;
+}
+
+    .mud-card.animated-card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .mud-card.animated-card:active {
+        transform: scale(0.98);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+    }
