@@ -13,7 +13,8 @@ namespace GanPersonWeb.Services
 
         public async Task<PersonalInfo?> GetPersonalInfoAsync()
         {
-            PersonalInfo personInfo = await _databaseService.GetAllAsync<PersonalInfo>().ContinueWith(t => t.Result.FirstOrDefault());
+            var personInfoList = await _databaseService.GetAllAsync<PersonalInfo>();
+            var personInfo = personInfoList.FirstOrDefault();
             if (personInfo == null)
             {
                 return null;

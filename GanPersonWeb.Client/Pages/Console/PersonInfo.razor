@@ -45,8 +45,12 @@
                         添加社交媒体
                     </MudButton>
                 </MudItem>
-                <MudItem xs="12" Class="d-flex justify-end">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">保存修改</MudButton>
+                <MudItem xs="12">
+                    <MudStack Row> 
+                        <MudAlert Severity="Severity.Info">@updateMessage</MudAlert>
+                        <MudSpacer/>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit" OnClick="@(() => HandleValidSubmit())">保存修改</MudButton>
+                    </MudStack>
                 </MudItem>
             </MudGrid>
         </EditForm>
@@ -58,6 +62,8 @@
     public ClientPersonInfoService clientPersonInfoService{ get; set; } = default!;
 
     private PersonalInfo personalInfo = new();
+
+    private string updateMessage = "请修改你需要的信息，提交即可完成修改";
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,7 +81,12 @@
             }
         };
 
-        personalInfo = await clientPersonInfoService.GetPersonalInfoAsync();
+
+        var fetchedInfo = await clientPersonInfoService.GetPersonalInfoAsync();
+        if (fetchedInfo != null)
+        {
+            personalInfo = fetchedInfo;
+        }
 
     }
 
@@ -89,9 +100,20 @@
         personalInfo.SocialMediaLinks.Remove(link);
     }
 
-    private void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
         // TODO: Save logic (e.g., call API)
         // You can show a success message here
+        bool isSuccess = await clientPersonInfoService.UpdatePersonalInfoAsync(personalInfo);
+        if (isSuccess)
+        {
+            // Show success message or navigate to another page
+            updateMessage = "个人信息已成功更新！";
+        }
+        else
+        {
+            // Show error message
+            updateMessage = "更新个人信息时发生错误，请检查登陆状态，稍后再试。";
+        }
     }
 }
