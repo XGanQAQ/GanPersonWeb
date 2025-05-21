@@ -2,7 +2,7 @@
 @using GanPersonWeb.Shared.Models
 @using System.ComponentModel.DataAnnotations
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-10">
     <MudText Typo="Typo.h4" GutterBottom="true">博客管理</MudText>
 
     <MudPaper Class="pa-6 mb-8" Outlined="true">
@@ -22,14 +22,15 @@
                 <MudItem xs="12">
                     <MudTextField T="string" @bind-Value="newBlog.Content" Label="内容" Lines="5" Required="true" />
                 </MudItem>
-                @* <MudItem xs="12" sm="6"> *@
-                @*     <MudDatePicker Label="Basic example" @bind-Date="newBlog.PublishDate"/> *@
-                @* </MudItem> *@
                 <MudItem xs="12" sm="6">
                     <MudTextField T="string" @bind-Value="tagsInput" Label="标签（逗号分隔）" />
                 </MudItem>
-                <MudItem xs="12" Class="d-flex justify-end">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">提交博客</MudButton>
+                <MudItem xs="12">
+                    <MudStack Row>
+                        <MudAlert Severity="Severity.Info">@updateMessage</MudAlert>
+                        <MudSpacer />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit" OnClick="@(() => OnValidSubmit())">提交博客</MudButton>
+                    </MudStack>
                 </MudItem>
             </MudGrid>
         </EditForm>
@@ -67,36 +68,53 @@
     private List<Blog> blogs = new();
     private Blog newBlog = new();
     private string tagsInput = "";
+    private string updateMessage = "输入博客信息，点击提交即可上传新的博客";
 
-    protected override void OnInitialized()
+    [Inject]
+    public ClientBlogService clientBlogService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
     {
-        // TODO: Replace with actual data loading logic
-        blogs = new List<Blog>
-        {
-            new Blog
-            {
-                Id = 1,
-                Title = "Blazor 入门",
-                Description = "介绍 Blazor 的基本用法。",
-                Content = "Blazor 是一个用于构建交互式 Web UI 的框架...",
-                ImageUrl = "",
-                PublishDate = DateTime.Now,
-                Tags = new List<string> { "Blazor", "C#", "Web" },
-                ViewCount = 100,
-                TalkCount = 5
-            }
-        };
+        await LoadBlogsAsync();
         newBlog = new Blog { PublishDate = DateTime.Now };
     }
 
-    private void OnValidSubmit(EditContext context)
+    private async Task LoadBlogsAsync()
     {
-        // TODO: Save logic (e.g., call API)
-        // You can show a success message here
+        var result = await clientBlogService.GetBlogsAsync();
+        blogs = result ?? new List<Blog>();
     }
 
-    private void DeleteBlog(Blog blog)
+    private async Task OnValidSubmit()
     {
-        blogs.Remove(blog);
+        // Parse tags from input
+        newBlog.Tags = tagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+
+        var addedBlog = await clientBlogService.AddBlogAsync(newBlog);
+        if (addedBlog != null)
+        {
+            updateMessage = "博客已成功提交！";
+            await LoadBlogsAsync();
+            newBlog = new Blog { PublishDate = DateTime.Now };
+            tagsInput = "";
+        }
+        else
+        {
+            updateMessage = "提交博客失败，请检查登陆状态或稍后再试。";
+        }
+    }
+
+    private async Task DeleteBlog(Blog blog)
+    {
+        var success = await clientBlogService.DeleteBlogAsync(blog.Id);
+        if (success)
+        {
+            updateMessage = "博客已删除。";
+            await LoadBlogsAsync();
+        }
+        else
+        {
+            updateMessage = "删除博客失败，请重试。";
+        }
     }
 }

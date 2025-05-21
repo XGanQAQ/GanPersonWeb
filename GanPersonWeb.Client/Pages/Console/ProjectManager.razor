@@ -1,7 +1,7 @@
 ﻿@page "/console/project"
 @using GanPersonWeb.Shared.Models
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-10">
     <MudText Typo="Typo.h4" GutterBottom="true">项目管理</MudText>
 
     <MudPaper Class="pa-6 mb-8" Outlined="true">
@@ -27,8 +27,12 @@
                 <MudItem xs="12">
                     <MudTextField T="string" @bind-Value="newProject.Link" Label="项目链接" />
                 </MudItem>
-                <MudItem xs="12" Class="d-flex justify-end">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">提交项目</MudButton>
+                <MudItem xs="12">
+                    <MudStack Row>
+                        <MudAlert Severity="Severity.Info">@updateMessage</MudAlert>
+                        <MudSpacer />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit" OnClick="@(() => HandleValidSubmit())">提交项目</MudButton>
+                    </MudStack>
                 </MudItem>
             </MudGrid>
         </EditForm>
@@ -73,39 +77,51 @@
     private List<Project> projects = new();
     private Project newProject = new();
     private string tagsInput = "";
+    private string updateMessage = "输入项目信息，点击提交即可上传新的项目";
 
-    protected override void OnInitialized()
+    [Inject]
+    public ClientProjectService clientProjectService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
     {
-        // TODO: Replace with actual data loading logic
-        projects = new List<Project>
-        {
-            new Project
-            {
-                Id = 1,
-                Title = "个人网站",
-                Description = "基于Blazor的个人作品展示网站。",
-                ImageUrl = "",
-                PublishDate = DateTime.Now.AddDays(-10),
-                Tags = new List<string> { "Blazor", "Web", "个人项目" },
-                Link = "https://example.com"
-            }
-        };
-        newProject.PublishDate = DateTime.Now;
-    }
-
-    private void HandleValidSubmit()
-    {
-        newProject.Id = projects.Count > 0 ? projects.Max(p => p.Id) + 1 : 1;
-        newProject.Tags = tagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
-        projects.Insert(0, newProject);
-
-        // Reset form
+        await LoadProjectsAsync();
         newProject = new Project { PublishDate = DateTime.Now };
-        tagsInput = "";
     }
 
-    private void DeleteProject(Project project)
+    private async Task LoadProjectsAsync()
     {
-        projects.Remove(project);
+        var result = await clientProjectService.GetProjectsAsync();
+        projects = result ?? new List<Project>();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        newProject.Tags = tagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+        var isSuccess = await clientProjectService.AddProjectAsync(newProject);
+        if (isSuccess)
+        {
+            updateMessage = "项目已成功提交！";
+            await LoadProjectsAsync();
+            newProject = new Project { PublishDate = DateTime.Now };
+            tagsInput = "";
+        }
+        else
+        {
+            updateMessage = "项目提交失败，请检查登陆状态或稍后再试。";
+        }
+    }
+
+    private async Task DeleteProject(Project project)
+    {
+        var isSuccess = await clientProjectService.DeleteProjectAsync(project.Id);
+        if (isSuccess)
+        {
+            updateMessage = "项目已删除。";
+            await LoadProjectsAsync();            
+        }
+        else
+        {
+            updateMessage = "删除项目失败，请稍后再试。";
+        }
     }
 }

@@ -102,8 +102,6 @@
 
     private async Task HandleValidSubmit()
     {
-        // TODO: Save logic (e.g., call API)
-        // You can show a success message here
         bool isSuccess = await clientPersonInfoService.UpdatePersonalInfoAsync(personalInfo);
         if (isSuccess)
         {

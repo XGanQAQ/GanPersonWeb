@@ -24,19 +24,22 @@ namespace GanPersonWeb.Client.Services
             return result;
         }
 
-        public async Task AddProjectAsync(Project project)
+        public async Task<bool> AddProjectAsync(Project project)
         {
-            await _httpClient.PostAsJsonAsync("api/projects", project);
+            var response = await _httpClient.PostAsJsonAsync("api/projects", project);
+            return response.IsSuccessStatusCode;
         }
 
-        public async Task UpdateProjectAsync(int id, Project project)
+        public async Task<bool> UpdateProjectAsync(int id, Project project)
         {
-            await _httpClient.PutAsJsonAsync($"api/projects/{id}", project);
+            var response = await _httpClient.PutAsJsonAsync($"api/projects/{id}", project);
+            return response.IsSuccessStatusCode;
         }
 
-        public async Task DeleteProjectAsync(int id)
+        public async Task<bool> DeleteProjectAsync(int id)
         {
-            await _httpClient.DeleteAsync($"api/projects/{id}");
+            var response = await _httpClient.DeleteAsync($"api/projects/{id}");
+            return response.IsSuccessStatusCode;
         }
 
         // 新增：分页获取项目
