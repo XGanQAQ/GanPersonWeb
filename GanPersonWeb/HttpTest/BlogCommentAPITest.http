@@ -1,0 +1,23 @@
+@GanPersonWeb_HostAddress = https://localhost:7134
+
+### Get all comments for a blog
+@blogId=1
+GET {{GanPersonWeb_HostAddress}}/api/BlogComment/blog/{{blogId}}
+
+### Add a new comment
+POST {{GanPersonWeb_HostAddress}}/api/BlogComment
+Content-Type: application/json
+
+{
+  "blogId": 1,
+  "author": "TestUser",
+  "content": "This is a test comment."
+}
+
+### Get a comment by ID
+@commentId=1
+GET {{GanPersonWeb_HostAddress}}/api/BlogComment/{{commentId}}
+
+### Delete a comment
+@commentId=1
+DELETE {{GanPersonWeb_HostAddress}}/api/BlogComment/{{commentId}}
