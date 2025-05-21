@@ -51,13 +51,12 @@ namespace GanPersonWeb.Client.Services
         //验证是否是管理员
         public async Task<bool> IsAdmin()
         {
-
             var role = await jwtHelperService.GetClaim(ClaimTypes.Role);
             return role == "Admin";
         }
 
         //验证是否登录
-        public async Task<bool> IsLogin()
+        public async Task<bool> IsAuthenticated()
         {
             //先从本地存储中获取JWT令牌
             var token = await jwtHelperService.GetTokenAsync();
@@ -90,7 +89,7 @@ namespace GanPersonWeb.Client.Services
         //调用后端接口获取用户信息
         public async Task<User> GetMyselfUserInformation()
         {
-            if(await IsLogin())
+            if(await IsAuthenticated())
             {
                 var userInfo = await _httpClient.GetFromJsonAsync<User>("api/users/me");
                 if (userInfo!=null)
@@ -103,7 +102,6 @@ namespace GanPersonWeb.Client.Services
                 }
             }
             return new User { Username="未登陆"};
-        }
-        
+        }      
     }
 }

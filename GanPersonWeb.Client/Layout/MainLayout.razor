@@ -25,8 +25,8 @@
         Color="Color.Inherit"
         Icon="@Icons.Material.TwoTone.MoreVert">
             <MudNavGroup Title="账户" Icon="@Icons.Material.Filled.ManageAccounts" IconColor="Color.Primary">
-                <MudNavLink Href="/personCenter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary">个人中心</MudNavLink>
-                <MudNavLink Href="/login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.TwoTone.Login" IconColor="Color.Primary">登入</MudNavLink>
+                <MudNavLink Href="/" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person" IconColor="Color.Primary">@userName</MudNavLink>
+                <MudNavLink OnClick="Login" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.TwoTone.Login" IconColor="Color.Primary">登入</MudNavLink>
                 <MudNavLink OnClick="Logout" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.TwoTone.Logout" IconColor="Color.Primary">登出</MudNavLink>
             </MudNavGroup>
 
@@ -96,6 +96,7 @@
 
     [Inject]
     public ClientUserService clientUserService{ get; set; }
+    private string userName = "未登录";
     [Inject]
     public NavigationManager navigation{ get; set; }
     [Inject]
@@ -156,6 +157,22 @@
     {
         _theme = themePaletteService.GetTheme(name).MudTheme;
         StateHasChanged();
+    }
+
+    private async Task Login()
+    {
+        // 获取当前用户信息
+        if (await clientUserService.IsAuthenticated())
+        {
+            var userInfo = await clientUserService.GetMyselfUserInformation();
+            userName = userInfo.Username;
+            StateHasChanged();
+        }
+        else
+        {
+            userName = "未登录";
+            navigation.NavigateTo("/login", true);
+        }
     }
 
     //点击登出按钮
