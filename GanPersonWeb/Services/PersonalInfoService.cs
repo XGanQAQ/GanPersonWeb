@@ -13,7 +13,13 @@ namespace GanPersonWeb.Services
 
         public async Task<PersonalInfo?> GetPersonalInfoAsync()
         {
-            return await _databaseService.GetAllAsync<PersonalInfo>().ContinueWith(t => t.Result.FirstOrDefault());
+            PersonalInfo personInfo = await _databaseService.GetAllAsync<PersonalInfo>().ContinueWith(t => t.Result.FirstOrDefault());
+            if (personInfo == null)
+            {
+                return null;
+            }
+            personInfo.SocialMediaLinks = await _databaseService.GetAllAsync<SocialMediaLink>();
+            return personInfo;
         }
 
         public async Task UpdatePersonalInfoAsync(PersonalInfo personalInfo)
@@ -34,6 +40,20 @@ namespace GanPersonWeb.Services
                     Email = "default@example.com",
                     ProfileImageUrl = "/images/head.jpg",
                     SocialMediaLinks = new List<SocialMediaLink>()
+                    {
+                        new SocialMediaLink
+                        {
+                            Platform = "GitHub",
+                            IconUrl = "/icons/github.svg",
+                            Url = "https://github.com/"
+                        },
+                        new SocialMediaLink
+                        {
+                            Platform = "Twitter",
+                            IconUrl = "/icons/twitter.svg",
+                            Url = "https://twitter.com/"
+                        },
+                    }
                 };
 
                 await _databaseService.AddAsync(defaultInfo);

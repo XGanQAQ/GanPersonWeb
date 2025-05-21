@@ -9,14 +9,36 @@
                            Color="Color.Default"
                            Size="Size.Medium"
                            Href="/Me" />
-            @foreach (var link in socialMediaLinks)
+            @if(githubUrl != string.Empty)
+            {
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
+                               Color="Color.Default"
+                               Size="Size.Medium"
+                               Href="@githubUrl" />
+            }
+            @if(linkedinUrl != string.Empty)
+            {
+                <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn"
+                               Color="Color.Default"
+                               Size="Size.Medium"
+                               Href="@linkedinUrl" />
+            }
+            @if(twitterUrl != string.Empty)
+            {
+                <MudIconButton Icon="@Icons.Custom.Brands.Twitter"
+                               Color="Color.Default"
+                               Size="Size.Medium"
+                               Href="@twitterUrl" />
+            }
+
+            <!-- 因为图标显示有点问题所以先写死会有哪些图标 -->
+            @* @foreach (var link in socialMediaLinks)
             {
                 <MudIconButton Icon="@link.IconUrl"
                                Color="Color.Default"
                                Size="Size.Medium"
                                Href="@link.Url" />
-            }
-            <!-- 可根据需要添加更多icon -->
+            } *@
         </MudStack>
     </MudStack>
 </MudPaper>
@@ -30,7 +52,11 @@
     private string personImageUrl = string.Empty;
     private string description = string.Empty;
     private string personEmail = string.Empty;
+
     private List<SocialMediaLink> socialMediaLinks = new List<SocialMediaLink>();
+    private string githubUrl = string.Empty;
+    private string linkedinUrl = string.Empty;
+    private string twitterUrl = string.Empty;
 
     //从服务中获取个人信息
     protected override async Task OnInitializedAsync()
@@ -43,6 +69,10 @@
             description = personInfo.Description;
             personEmail = personInfo.Email;
             socialMediaLinks = personInfo.SocialMediaLinks;
+
+            githubUrl = personInfo.SocialMediaLinks.FirstOrDefault(x => x.Platform == "GitHub")?.Url ?? string.Empty;
+            linkedinUrl = personInfo.SocialMediaLinks.FirstOrDefault(x => x.Platform == "LinkedIn")?.Url ?? string.Empty;
+            twitterUrl = personInfo.SocialMediaLinks.FirstOrDefault(x => x.Platform == "Twitter")?.Url ?? string.Empty;
         }
     }
 }

@@ -27,10 +27,13 @@
                     @foreach (var link in personalInfo.SocialMediaLinks)
                     {
                         <MudGrid>
-                            <MudItem xs="5">
+                            <MudItem xs="3">
                                 <MudTextField T="string" @bind-Value="link.Platform" Label="平台" />
                             </MudItem>
-                            <MudItem xs="6">
+                            <MudItem xs="3">
+                                <MudTextField T="string" @bind-Value="link.IconUrl" Label="图标URL" />
+                            </MudItem>
+                            <MudItem xs="5">
                                 <MudTextField T="string" @bind-Value="link.Url" Label="链接" />
                             </MudItem>
                             <MudItem xs="1" Class="d-flex align-center">
@@ -51,9 +54,12 @@
 </MudContainer>
 
 @code {
+    [Inject]
+    public ClientPersonInfoService clientPersonInfoService{ get; set; } = default!;
+
     private PersonalInfo personalInfo = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         // TODO: Replace with actual data loading logic
         personalInfo = new PersonalInfo
@@ -68,6 +74,9 @@
                 new SocialMediaLink { Platform = "GitHub", Url = "https://github.com/zhangsan" }
             }
         };
+
+        personalInfo = await clientPersonInfoService.GetPersonalInfoAsync();
+
     }
 
     private void AddSocialLink()
