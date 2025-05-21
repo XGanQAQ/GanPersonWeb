@@ -11,8 +11,8 @@
     {
         @foreach (var project in projects)
         {
-            <MudItem xs="12" sm="6">
-                <MudCard Class="animated-card">
+            <MudItem xs="12" sm="6" Class="d-flex flex-grow-1">
+                <MudCard Class="animated-card" Style="width:100%;">
                     <MudCardMedia Image="./images/maomao.png" Height="200" />
                     <MudCardContent>
                         <MudText Typo="Typo.h6" Class="text-blue-400">@project.Title</MudText>
