@@ -5,6 +5,7 @@ using GanPersonWeb.Data;
 using GanPersonWeb.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -56,10 +57,22 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+string DevelopEnvUseMemoryDb = builder.Configuration["DevelopEnvUseMemoryDb"] ?? "true";
+if (builder.Environment.IsDevelopment() && DevelopEnvUseMemoryDb=="true")
+{
+    // Use in-memory database for testing and development
+    builder.Services.AddDbContext<GanPersonDbContext>(options =>
+        options.UseInMemoryDatabase("GanPersonInMemoryDb"));
+}
+else
+{
+    // 使用SQLite数据库
+    //DataSource=:memory:
+    //Data Source=GanPerson.db
+    builder.Services.AddDbContext<GanPersonDbContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
-// Use in-memory database for testing and development
-builder.Services.AddDbContext<GanPersonDbContext>(options =>
-    options.UseInMemoryDatabase("GanPersonInMemoryDb"));
 
 builder.Services.AddControllers(); // 添加控制器服务
 
