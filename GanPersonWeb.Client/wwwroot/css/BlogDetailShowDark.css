@@ -1,0 +1,144 @@
+﻿.blog-html-content-dark {
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    line-height: 1.8;
+    color: #e6e6e6;
+    background: #181a1b;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.24);
+    word-break: break-word;
+}
+
+    /* 标题样式增强 */
+    .blog-html-content-dark h1 {
+        font-size: 2em;
+        border-bottom: 2px solid #333;
+        padding-bottom: 0.3em;
+        color: #ffffff;
+    }
+
+    .blog-html-content-dark h2 {
+        font-size: 1.6em;
+        border-left: 4px solid #444;
+        padding-left: 0.5em;
+        color: #f0f0f0;
+    }
+
+    .blog-html-content-dark h3 {
+        font-size: 1.3em;
+        color: #d0d0d0;
+        border-left: 3px solid #333;
+        padding-left: 0.4em;
+    }
+
+    /* 段落 */
+    .blog-html-content-dark p {
+        margin: 1em 0;
+    }
+
+    /* 列表 */
+    .blog-html-content-dark ul,
+    .blog-html-content-dark ol {
+        margin: 1em 0;
+        padding-left: 2em;
+    }
+
+    .blog-html-content-dark li {
+        margin: 0.5em 0;
+    }
+
+    /* 链接 */
+    .blog-html-content-dark a {
+        color: #4ea1f3;
+        text-decoration: underline;
+    }
+
+        .blog-html-content-dark a:hover {
+            color: #82cfff;
+        }
+
+    /* 图片 */
+    .blog-html-content-dark img {
+        max-width: 100%;
+        border-radius: 4px;
+        margin: 1em 0;
+    }
+
+    /* 行内代码 */
+    .blog-html-content-dark code {
+        background: #23272e;
+        color: #ffcb6b;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 95%;
+        font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+
+    /* 代码块 */
+    .blog-html-content-dark pre {
+        background: #23272e;
+        color: #e6e6e6;
+        padding: 12px;
+        border-radius: 4px;
+        overflow-x: auto;
+        font-size: 14px;
+        font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+
+        .blog-html-content-dark pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+    /* 引用 */
+    .blog-html-content-dark blockquote {
+        border-left: 4px solid #444c56;
+        background: #23272e;
+        margin: 1em 0;
+        padding: 0.5em 1em;
+        color: #b2b2b2;
+        font-style: italic;
+    }
+
+    /* 表格 */
+    .blog-html-content-dark table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1em 0;
+        font-size: 0.95em;
+    }
+
+    .blog-html-content-dark th,
+    .blog-html-content-dark td {
+        border: 1px solid #333;
+        padding: 8px 12px;
+        text-align: left;
+    }
+
+    .blog-html-content-dark th {
+        background: #222;
+        color: #fff;
+    }
+
+    .blog-html-content-dark tr:nth-child(even) {
+        background: #1e1f20;
+    }
+
+    /* 水平分割线 */
+    .blog-html-content-dark hr {
+        border: none;
+        border-top: 1px solid #333;
+        margin: 2em 0;
+    }
+
+/* 响应式补充 */
+@media (max-width: 600px) {
+    .blog-html-content-dark {
+        padding: 16px;
+    }
+
+        .blog-html-content-dark pre {
+            font-size: 13px;
+        }
+}

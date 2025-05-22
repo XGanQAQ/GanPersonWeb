@@ -11,6 +11,8 @@ namespace GanPersonWeb.Client.Services
         public MudTheme MudTheme { get; set; } = new MudTheme();
         public string ThemeWallpaperUrl { get; set; } = string.Empty;
         public string ThemeBackgroundUrl { get; set; } = string.Empty;
+        public string ThemePageCssClassName_Light { get; set; } = string.Empty; //预留属性，方便后续扩展文章CSS切换功能
+        public string ThemePageCssClassName_Dark { get; set; } = string.Empty;
     }
 
     // 静态预设主题类
@@ -93,7 +95,38 @@ namespace GanPersonWeb.Client.Services
 
     public class ThemePaletteService
     {
-        public Theme CurrentTheme = MyThemes.defaultTheme;
+        private Theme currentTheme = MyThemes.defaultTheme;
+
+        public Theme CurrentTheme
+        {
+            get
+            {
+                return currentTheme;
+            }
+            set
+            {
+                currentTheme = value;
+                OnThemeChanged?.Invoke(currentTheme);
+            }
+        }
+
+        private bool isDark = true;
+
+        public bool IsDark { 
+            get 
+            {
+                return isDark;
+            } 
+            set 
+            { 
+                isDark = value;
+                OnIsDarkChanged?.Invoke(isDark);
+            }
+        }
+
+        public event Action<Theme>? OnThemeChanged;
+        public event Action<bool>? OnIsDarkChanged;
+
         private List<Theme> mudThemesList = new List<Theme>() 
         {
             MyThemes.defaultTheme,
@@ -121,6 +154,16 @@ namespace GanPersonWeb.Client.Services
             }
             CurrentTheme = theme;
             return theme;
+        }
+
+        public bool GetIsDark()
+        {
+            return IsDark;
+        }
+
+        public void SetIsDark(bool isDark)
+        {
+            IsDark = isDark;
         }
     }
 }

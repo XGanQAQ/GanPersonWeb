@@ -1,0 +1,143 @@
+﻿.blog-html-content {
+    font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    line-height: 1.8;
+    color: #222;
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    word-break: break-word;
+}
+
+    /* ---------------- 标题 ---------------- */
+    .blog-html-content h1 {
+        font-size: 2em;
+        border-bottom: 2px solid #e1e4e8;
+        padding-bottom: 0.3em;
+        color: #000;
+    }
+
+    .blog-html-content h2 {
+        font-size: 1.6em;
+        border-left: 4px solid #d0d7de;
+        padding-left: 0.5em;
+        color: #222;
+    }
+
+    .blog-html-content h3 {
+        font-size: 1.3em;
+        color: #333;
+        border-left: 3px solid #dcdcdc;
+        padding-left: 0.4em;
+    }
+
+    /* ---------------- 段落 ---------------- */
+    .blog-html-content p {
+        margin: 1em 0;
+    }
+
+    /* ---------------- 列表 ---------------- */
+    .blog-html-content ul,
+    .blog-html-content ol {
+        margin: 1em 0;
+        padding-left: 2em;
+    }
+
+    .blog-html-content li {
+        margin: 0.5em 0;
+    }
+
+    /* ---------------- 链接 ---------------- */
+    .blog-html-content a {
+        color: #0969da;
+        text-decoration: underline;
+    }
+
+        .blog-html-content a:hover {
+            color: #054da1;
+        }
+
+    /* ---------------- 图片 ---------------- */
+    .blog-html-content img {
+        max-width: 100%;
+        border-radius: 4px;
+        margin: 1em 0;
+    }
+
+    /* ---------------- 行内代码 ---------------- */
+    .blog-html-content code {
+        background: #f3f3f3;
+        color: #d6336c;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 95%;
+        font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+
+    /* ---------------- 代码块 ---------------- */
+    .blog-html-content pre {
+        background: #f6f8fa;
+        padding: 12px;
+        border-radius: 4px;
+        overflow-x: auto;
+        font-size: 14px;
+        font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+
+        .blog-html-content pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+    /* ---------------- 引用 ---------------- */
+    .blog-html-content blockquote {
+        border-left: 4px solid #d0d7de;
+        background: #f6f8fa;
+        margin: 1em 0;
+        padding: 0.5em 1em;
+        color: #6a737d;
+        font-style: italic;
+    }
+
+    /* ---------------- 表格 ---------------- */
+    .blog-html-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1em 0;
+        font-size: 0.95em;
+    }
+
+    .blog-html-content th,
+    .blog-html-content td {
+        border: 1px solid #d0d7de;
+        padding: 8px 12px;
+        text-align: left;
+    }
+
+    .blog-html-content th {
+        background: #f3f4f6;
+        color: #222;
+    }
+
+    .blog-html-content tr:nth-child(even) {
+        background: #fafafa;
+    }
+
+    /* ---------------- 水平分割线 ---------------- */
+    .blog-html-content hr {
+        border: none;
+        border-top: 1px solid #e1e4e8;
+        margin: 2em 0;
+    }
+
+/* ---------------- 响应式支持 ---------------- */
+@media (max-width: 600px) {
+    .blog-html-content {
+        padding: 16px;
+    }
+
+        .blog-html-content pre {
+            font-size: 13px;
+        }
+}

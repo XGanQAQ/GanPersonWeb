@@ -1,0 +1,21 @@
+﻿<MudPaper>
+    <MudContainer>
+        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+            <MudIcon Icon="@Icons.Material.Filled.Sort"></MudIcon>
+            排序
+        </MudText>
+        <MudDivider></MudDivider>
+        <MudChipSet T="string" @bind-SelectedValue="_rankSelected" CheckMark="false" SelectionMode="SelectionMode.SingleSelection">
+            <MudChip Value="@("最新正序")" />
+            <MudChip Value="@("最新倒序")" />
+            <MudChip Value="@("最热正序")" />
+            <MudChip Value="@("最热倒序")" />
+        </MudChipSet>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    private string _rankSelected = "最新正序";
+    public bool isUpRank = true;
+    public SelectionMode SelectionMode = SelectionMode.SingleSelection;
+}

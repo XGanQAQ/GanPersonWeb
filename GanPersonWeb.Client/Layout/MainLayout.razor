@@ -1,9 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
-<link href="css/BlogDetailShow.css" rel="stylesheet"/>
+<link href="css/BlogDetailShowLight.css" rel="stylesheet" />
+<link href="css/BlogDetailShowDark.css" rel="stylesheet"/>
 <link href="css/MudCardAnimate.css" rel="stylesheet"/>
 
-<MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
+<MudThemeProvider Theme="@_theme" IsDarkMode="isDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -15,12 +16,12 @@
         </MudButton>
         <MudSpacer />
 
-        <MudToggleIconButton @bind-Toggled="_isDarkMode"
+        <MudToggleIconButton @bind-Toggled="isDarkMode"
         Icon="@Icons.Material.Filled.LightMode"
         Color="@Color.Error"
         ToggledIcon="@Icons.Material.Filled.ModeNight"
         ToggledColor="@Color.Inherit"
-        title="@(_isDarkMode ? "On" : "Off")" />
+        title="@(isDarkMode ? "On" : "Off")" />
 
         <MudMenu Dense
         Variant="Variant.Text"
@@ -88,7 +89,17 @@
 @code {
 
     private bool _drawerOpen = true;
-    private bool _isDarkMode = true;
+    private bool isDarkMode
+    {
+        get
+        {
+            return themePaletteService.IsDark;
+        }
+        set
+        {
+            themePaletteService.SetIsDark(value);
+        }
+    }
     private MudTheme? _theme = null;
 
     private string relativePath = string.Empty;// 相对路径
@@ -145,14 +156,8 @@
 
     private void DarkModeToggle()
     {
-        _isDarkMode = !_isDarkMode;
+        isDarkMode = !isDarkMode;
     }
-
-    public string DarkLightModeButtonIcon => _isDarkMode switch
-    {
-        true => Icons.Material.Rounded.AutoMode,
-        false => Icons.Material.Outlined.DarkMode,
-    };
 
     private void ChangeTheme(string name)
     {

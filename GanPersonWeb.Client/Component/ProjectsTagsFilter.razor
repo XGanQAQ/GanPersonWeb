@@ -1,0 +1,19 @@
+﻿<MudPaper>
+    <MudContainer>
+
+        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+            <MudIcon Icon="@Icons.Material.Filled.FilterAlt"></MudIcon>
+            过滤
+        </MudText>
+        <MudDivider></MudDivider>
+        <MudChipSet T="string" @bind-SelectedValues="_selected" CheckMark="false" SelectionMode="SelectionMode.MultiSelection">
+            <MudChip Value="@("标签1")" />
+            <MudChip Value="@("标签2")" />
+        </MudChipSet>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    private IReadOnlyCollection<string> _selected = ["标签1", "标签2"];
+    public SelectionMode SelectionMode = SelectionMode.SingleSelection;
+}

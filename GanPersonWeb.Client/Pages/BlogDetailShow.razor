@@ -29,14 +29,28 @@
                             <MudIcon Icon="@Icons.Material.Filled.Comment" /> @blog.TalkCount
                         </MudText>
                     </MudStack>
-                    <MudDivider Class="mb-3" DividerType="DividerType.Middle" />
+                    <MudDivider Class="my-4" DividerType="DividerType.Middle" />
                     @if (!string.IsNullOrWhiteSpace(blog.HtmlContent))
                     {
-                        <MudPaper Class="pa-3 mb-3">
-                            <MudContainer class="blog-html-content">
+                        <MudPaper>
+                            <MudContainer class="@pageCssClass">
                                 @((MarkupString)blog.HtmlContent)
                             </MudContainer>
                         </MudPaper>
+                        @* <MudPaper>
+                            @if (themePaletteService.IsDark)
+                            {
+                                <MudContainer class="blog-html-content-dark">
+                                    @((MarkupString)blog.HtmlContent)
+                                </MudContainer>
+                            }
+                            else
+                            {
+                                <MudContainer class="blog-html-content">
+                                    @((MarkupString)blog.HtmlContent)
+                                </MudContainer>
+                            }
+                        </MudPaper> *@
                     }
                 }
             </MudPaper>
@@ -84,6 +98,25 @@
     [Inject]
     public ClientBlogService clientBlogService { get; set; } = default!;
 
+    [Inject]
+    public ThemePaletteService themePaletteService { get; set; } = default!;
+
+    private string pageCssClass {
+        get
+        {
+            string result = string.Empty;
+            if (themePaletteService.IsDark)
+            {
+                result = "blog-html-content-dark";
+            }
+            else
+            {
+                result = "blog-html-content";
+            }
+            return result;
+        }
+    }
+
     private Blog blog = new Blog
     {
         Id = 0,
@@ -119,5 +152,17 @@
         {
             blog = blogTemp;
         }
+
+        themePaletteService.OnIsDarkChanged += OnThemeChanged;
+    }
+
+    private void Dispose()
+    {
+        themePaletteService.OnIsDarkChanged -= OnThemeChanged;
+    }
+
+    private void OnThemeChanged(bool isDark)
+    {
+        StateHasChanged();
     }
 }
