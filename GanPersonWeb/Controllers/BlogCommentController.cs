@@ -25,8 +25,8 @@ namespace GanPersonWeb.Controllers
         }
 
         // 添加评论
-        [Authorize]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddComment([FromBody] Comment comment)
         {
             await _commentService.AddCommentAsync(comment);
@@ -34,8 +34,8 @@ namespace GanPersonWeb.Controllers
         }
 
         // 删除评论
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{commentId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteComment(int commentId)
         {
             await _commentService.DeleteCommentAsync(commentId);

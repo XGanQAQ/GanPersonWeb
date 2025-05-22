@@ -1,5 +1,106 @@
-﻿<h3>BlogComment</h3>
+﻿<MudPaper>
+    <MudContainer>
+        <MudText Typo="Typo.h6" Color="Color.Secondary">评论区</MudText>
+
+        <MudList T="string">
+            @if (comments.Count == 0)
+            {
+                <MudPaper Outlined="true" Class="mt-2">
+                    <MudListItem>
+                        <MudText Typo="Typo.body1" Color="Color.Default">暂无评论，快来抢沙发吧！</MudText>
+                    </MudListItem>
+                </MudPaper>
+            }
+            else
+            {
+                @foreach (var comment in comments)
+                {
+                    <MudPaper Outlined="true" Class="mt-2">
+                        <MudListItem>
+                            <MudText Typo="Typo.subtitle1" Color="Color.Tertiary">@comment.Author</MudText>
+                            <MudText Typo="Typo.body1">@comment.Content</MudText>
+                            <MudText Typo="Typo.caption">@comment.PublishDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</MudText>
+                        </MudListItem>
+                    </MudPaper>
+                }
+            }
+        </MudList>
+
+        <MudDivider DividerType="DividerType.Middle" Class="mt-4 mb-4"/>
+
+        <MudText Typo="Typo.h6" Color="Color.Secondary">发表评论</MudText>
+        <MudTextField @bind-Value="newCommentContent" Label="评论内容" Variant="Variant.Outlined" Lines="3"/>
+        <MudAlert Severity="Severity.Info" Class="mt-2 mb-2">@submitFallbackMessage</MudAlert>
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitComment">发表评论</MudButton>
+    </MudContainer>
+</MudPaper>
 
 @code {
+    [Parameter] public int BlogId { get; set; }
 
+    [Inject]
+    public ClientBlogCommentService CommentService { get; set; } = default!;
+    [Inject]
+    public ClientUserService ClientUserService { get; set; } = default!;
+
+    private List<Comment> comments { get; set; } = new();
+
+    private string newCommentContent { get; set; } = string.Empty;
+    private string submitFallbackMessage = "登入并输入评论内容即可评论！";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCommentsAsync();
+    }
+
+    private async Task LoadCommentsAsync()
+    {
+        if (BlogId > 0)
+        {
+            comments = await CommentService.GetCommentsByBlogIdAsync(BlogId);
+        }
+    }
+
+    private async Task SubmitComment()
+    {
+        if (string.IsNullOrWhiteSpace(newCommentContent))
+        {
+            submitFallbackMessage = "评论内容不能为空！";
+            StateHasChanged();
+
+            return;
+        }
+
+        if (! await ClientUserService.IsAuthenticated())
+        {
+            submitFallbackMessage = "请先登录！";
+            StateHasChanged();
+
+            return;
+        }
+
+        var user = await ClientUserService.GetMyselfUserInformation();
+        var comment = new Comment
+        {
+            BlogId = BlogId,
+            Author = user.Username,
+            Content = newCommentContent,
+            PublishDate = DateTime.Now
+        };
+
+        var success = await CommentService.AddCommentAsync(comment);
+        if (success)
+        {
+            newCommentContent = string.Empty;
+            // Optionally clear author: NewCommentAuthor = string.Empty;
+            submitFallbackMessage = "评论成功！";
+            await LoadCommentsAsync();
+        }
+        else
+        {
+            submitFallbackMessage = "评论失败，请稍后再试！";
+        }
+        StateHasChanged();
+    }
 }

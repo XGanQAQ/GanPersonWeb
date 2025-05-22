@@ -9,9 +9,11 @@ namespace GanPersonWeb.Client.Services
     {
         public string Name { get; set; } = string.Empty;
         public MudTheme MudTheme { get; set; } = new MudTheme();
+        public string ThemeWallpaperUrl { get; set; } = string.Empty;
+        public string ThemeBackgroundUrl { get; set; } = string.Empty;
     }
 
-    // 预设主题类
+    // 静态预设主题类
     public static class MyThemes
     {
 
