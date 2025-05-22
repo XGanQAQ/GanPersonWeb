@@ -10,6 +10,9 @@
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudButton Href="/">
+            <MudText Typo="Typo.h5" Color="Color.Primary">GanX</MudText>
+        </MudButton>
         <MudSpacer />
 
         <MudToggleIconButton @bind-Toggled="_isDarkMode"
@@ -45,12 +48,10 @@
 
         </MudMenu>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
-        <MudDrawerHeader>
-            <MudButton Href="/">
-                <MudText Typo="Typo.h5" Class="mt-1">GanX</MudText>
-            </MudButton>
-        </MudDrawerHeader>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        @* <MudDrawerHeader>
+
+        </MudDrawerHeader> *@
         <MudNavMenu>
             @if (relativePath.StartsWith("Console"))
             {
@@ -109,7 +110,7 @@
         //初始化主题
 
         themes = themePaletteService.GetThemes();
-        _theme = themePaletteService.GetTheme("default").MudTheme;
+        _theme = themePaletteService.ChangeTheme("default").MudTheme;
 
         // 注册导航事件
         // 当前的Uri发生变化时，更新相对路径
@@ -155,7 +156,7 @@
 
     private void ChangeTheme(string name)
     {
-        _theme = themePaletteService.GetTheme(name).MudTheme;
+        _theme = themePaletteService.ChangeTheme(name).MudTheme;
         StateHasChanged();
     }
 

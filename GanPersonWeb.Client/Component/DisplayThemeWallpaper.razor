@@ -1,0 +1,9 @@
+﻿
+<MudPaper Elevation="1">
+    <MudImage ObjectFit="ObjectFit.Cover" Src="@Theme.ThemeWallpaperUrl" Class="rounded-lg" Fluid />
+</MudPaper>
+
+@code {
+    [Parameter] public Theme Theme { get; set; } = MyThemes.defaultTheme;
+
+}

@@ -74,7 +74,9 @@ namespace GanPersonWeb.Client.Services
                 PaletteLight = defaultLight,
                 PaletteDark = defaultDark,
                 LayoutProperties = new LayoutProperties()
-            }
+            },
+            ThemeWallpaperUrl = "images/defaultWallpaper.png",
+            ThemeBackgroundUrl = "images/defaultBackground.png"
         };
 
         public static Theme noteTheme = new Theme()
@@ -91,12 +93,16 @@ namespace GanPersonWeb.Client.Services
 
     public class ThemePaletteService
     {
-        private List<Theme> mudThemesList = new List<Theme>();
+        public Theme CurrentTheme = MyThemes.defaultTheme;
+        private List<Theme> mudThemesList = new List<Theme>() 
+        {
+            MyThemes.defaultTheme,
+            MyThemes.noteTheme
+        };
 
         public ThemePaletteService()
         {
-            mudThemesList.Add(MyThemes.defaultTheme);
-            mudThemesList.Add(MyThemes.noteTheme);
+
         }
 
         public List<Theme> GetThemes()
@@ -104,14 +110,16 @@ namespace GanPersonWeb.Client.Services
             return mudThemesList;
         }
 
-        public Theme GetTheme(string name)
+        public Theme ChangeTheme(string name)
         {
             // 使用 FirstOrDefault 查找匹配的主题
-            Theme theme = mudThemesList.FirstOrDefault(t => t.Name == name);
+            Theme? theme = mudThemesList.FirstOrDefault(t => t.Name == name);
             if (theme == null) 
             {
+                CurrentTheme = MyThemes.defaultTheme;
                 return MyThemes.defaultTheme;
             }
+            CurrentTheme = theme;
             return theme;
         }
     }

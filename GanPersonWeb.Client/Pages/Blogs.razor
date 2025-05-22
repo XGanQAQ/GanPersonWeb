@@ -1,6 +1,6 @@
 ﻿@page "/Blogs"
 
-<MudContainer Class="mt-13" MaxWidth="MaxWidth.Medium">
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
             <!-- 博客文章 -->
@@ -8,22 +8,6 @@
         </MudItem>
         <MudItem xs="12" sm="3" md="3" id="右侧边栏">
             <MudStack>
-                <MudPaper>
-                    <MudContainer>
-                        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
-                            <MudIcon Icon="@Icons.Material.Filled.Sort"></MudIcon>
-                            排序
-                        </MudText>
-                        <MudDivider></MudDivider>
-                        <MudChipSet T="string" @bind-SelectedValue="_rankSelected" CheckMark="false" SelectionMode="SelectionMode.SingleSelection">
-                            <MudChip Value="@("最新正序")" />
-                            <MudChip Value="@("最新倒序")" />
-                            <MudChip Value="@("最热正序")" />
-                            <MudChip Value="@("最热倒序")" />
-                        </MudChipSet>
-                    </MudContainer>
-                </MudPaper>
-
                 <GanPersonWeb.Client.Component.ShowBlogsInfo />
             </MudStack>
 
@@ -32,6 +16,5 @@
 </MudContainer>
 @code {
     private string _rankSelected = "最新正序";
-    public bool isUpRank = true;
-    public SelectionMode SelectionMode = SelectionMode.SingleSelection;
+
 }

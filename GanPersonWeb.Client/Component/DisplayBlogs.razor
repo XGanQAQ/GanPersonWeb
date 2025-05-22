@@ -82,7 +82,7 @@
     [Parameter] public bool IsShowPageButtons { get; set; } = false;
 
     [Inject]
-    public ClientBlogService clientBlogService { get; set; }
+    public ClientBlogService clientBlogService { get; set; } = default!;
 
     private List<Blog> blogs = new List<Blog>();
     private int _selected = 1;

@@ -1,6 +1,6 @@
 ﻿@page "/Portfolio"
 
-<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Medium">
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
     
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
@@ -8,20 +8,6 @@
         </MudItem>
         <MudItem xs="12" sm="3" md="3" id="右侧边栏">
             <MudStack>
-                <MudPaper>
-                    <MudContainer>
-
-                        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
-                            <MudIcon Icon="@Icons.Material.Filled.FilterAlt"></MudIcon>
-                            过滤
-                        </MudText>
-                        <MudDivider></MudDivider>
-                        <MudChipSet T="string" @bind-SelectedValues="_selected" CheckMark="false" SelectionMode="SelectionMode.MultiSelection">
-                            <MudChip Value="@("标签1")" />
-                            <MudChip Value="@("标签2")" />
-                        </MudChipSet>
-                    </MudContainer>
-                </MudPaper>
 
                 <GanPersonWeb.Client.Component.ShowProjectsInfo />
             </MudStack>
@@ -30,6 +16,5 @@
     </MudGrid>
 </MudContainer>
 @code {
-    private IReadOnlyCollection<string> _selected = ["标签1", "标签2"];
-    public SelectionMode SelectionMode = SelectionMode.SingleSelection;
+
 }

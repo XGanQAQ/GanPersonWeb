@@ -1,16 +1,14 @@
 ﻿@page "/"
-<MudContainer Class="mt-10 px-8" MaxWidth="MaxWidth.Medium">
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3" Color="Color.Primary" Class="my-4">Home</MudText>
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
-            <MudGrid Class="mb-6">
-                <MudItem xs="12">
-                    <MudPaper Elevation="3">
-                        <MudImage ObjectFit="ObjectFit.Cover" Src="images/purple.png" Class="rounded-lg" Fluid />
-                    </MudPaper>
-                </MudItem>
-            </MudGrid>
+            <GanPersonWeb.Client.Component.DisplayThemeWallpaper Theme="themePaletteService.CurrentTheme"/>
+            <MudDivider DividerType="DividerType.Middle" Class="my-4" />
+            <MudText Typo="Typo.h5" Color="Color.Secondary" Class="my-2">Portfolio</MudText>
             <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="2"/>
-            <MudDivider DividerType="DividerType.Middle" Class="my-6" />
+            <MudDivider DividerType="DividerType.Middle" Class="my-4" />
+            <MudText Typo="Typo.h5" Color="Color.Secondary" Class="my-2">Blogs</MudText>
             <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="3"/>
         </MudItem>
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
@@ -31,6 +29,8 @@
 @code {
     [Inject]
     private ClientSiteVisitService clientSiteVisitService { get; set; } = default!;
+    [Inject]
+    private ThemePaletteService themePaletteService { get; set; } = default!;
 
     //在第一次加载的时候记录访问数据
     protected override async Task OnInitializedAsync()
