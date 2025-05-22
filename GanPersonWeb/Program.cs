@@ -88,7 +88,22 @@ using (var scope = app.Services.CreateScope())
 using (var scope = app.Services.CreateScope())
 {
     var userService = scope.ServiceProvider.GetRequiredService<UserService>();
-    await userService.CreateInitialAdminUserAsync("admin", "admin123");
+    var config = builder.Configuration.GetSection("InitAdminAccount");
+    var userName = string.Empty;
+    var password = string.Empty;
+    if (config["UserName"] != null)
+    {
+        userName = config["UserName"];
+    }
+    if (config["Password"] != null)
+    {
+        password = config["Password"];
+    }
+    if(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+    {
+        throw new Exception("InitAdminAccount configuration is missing or invalid.");
+    }
+    await userService.CreateInitialAdminUserAsync(userName, password);
 }
 //创建初始博客
 using (var scope = app.Services.CreateScope())

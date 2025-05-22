@@ -20,6 +20,7 @@ namespace GanPersonWeb.Services
         }
 
         //创建初始管理员用户
+        //该方法会检查数据库中是否已经存在用户，如果不存在，则创建一个新的管理员用户
         public async Task CreateInitialAdminUserAsync(string username, string password)
         {
             var existingUsers = await _databaseService.GetAllAsync<User>();
