@@ -1,34 +1,32 @@
 ﻿@page "/Blogs"
 
-<MudContainer Class="mt-13" MaxWidth="MaxWidth.Large">
+<MudContainer Class="mt-13" MaxWidth="MaxWidth.Medium">
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
             <!-- 博客文章 -->
             <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="5" IsShowPageButtons="true" RankType="@_rankSelected" />
         </MudItem>
         <MudItem xs="12" sm="3" md="3" id="右侧边栏">
-            <MudPaper>
-                <MudContainer>
-                    <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
-                        <MudIcon Icon="@Icons.Material.Filled.Sort"></MudIcon>
-                        排序
-                    </MudText>
-                    <MudDivider></MudDivider>
-                    <MudChipSet T="string" @bind-SelectedValue="_rankSelected" CheckMark="false" SelectionMode="SelectionMode.SingleSelection">
-                        <MudChip Value="@("最新正序")" />
-                        <MudChip Value="@("最新倒序")" />
-                        <MudChip Value="@("最热正序")" />
-                        <MudChip Value="@("最热倒序")" />
-                    </MudChipSet>
-                </MudContainer>
-            </MudPaper>
-            <MudPaper Class="mt-6" Elevation="2">
-                <MudList T="string">
-                    <MudListItem Text="博文总数" SecondaryText="10" Icon="@Icons.Material.Filled.Inbox" />
-                    <MudListItem Text="最近更新" SecondaryText="2025/3/12" Icon="@Icons.Material.Filled.Send" />
-                    <MudListItem Text="浏览总数" SecondaryText="1200" Icon="@Icons.Material.Filled.Drafts" />
-                </MudList>
-            </MudPaper>
+            <MudStack>
+                <MudPaper>
+                    <MudContainer>
+                        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+                            <MudIcon Icon="@Icons.Material.Filled.Sort"></MudIcon>
+                            排序
+                        </MudText>
+                        <MudDivider></MudDivider>
+                        <MudChipSet T="string" @bind-SelectedValue="_rankSelected" CheckMark="false" SelectionMode="SelectionMode.SingleSelection">
+                            <MudChip Value="@("最新正序")" />
+                            <MudChip Value="@("最新倒序")" />
+                            <MudChip Value="@("最热正序")" />
+                            <MudChip Value="@("最热倒序")" />
+                        </MudChipSet>
+                    </MudContainer>
+                </MudPaper>
+
+                <GanPersonWeb.Client.Component.ShowBlogsInfo />
+            </MudStack>
+
         </MudItem>
     </MudGrid>
 </MudContainer>

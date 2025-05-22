@@ -15,19 +15,20 @@
                 <MudCard Class="animated-card" Style="width:100%;">
                     <MudCardMedia Image="./images/maomao.png" Height="200" />
                     <MudCardContent>
-                        <MudText Typo="Typo.h6" Class="text-blue-400">@project.Title</MudText>
-                        <MudChipSet T="string">
+                        <MudText Typo="Typo.h5" Class="mb-4" Color="Color.Primary">@project.Title</MudText>
+                        <MudText Typo="Typo.body2" Class="" Color="Color.Default">
+                            @project.Description
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudChipSet T="string" Size="Size.Small">
                             @foreach (var tag in project.Tags ?? Enumerable.Empty<string>())
                             {
                                 <MudChip>@tag</MudChip>
                             }
                         </MudChipSet>
-                        <MudText Typo="Typo.body2" Class="text-gray-400">
-                            @project.Description
-                        </MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@project.Link">
+                        <MudSpacer/>
+                        <MudButton Variant="Variant.Text" Color="Color.Info" Href="@project.Link" >
                             了解更多
                         </MudButton>
                     </MudCardActions>

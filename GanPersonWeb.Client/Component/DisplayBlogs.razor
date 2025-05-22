@@ -13,30 +13,34 @@
         {
             <MudItem xs="12" md="12" lg="12">
                 <MudCard Class="animated-card">
-                    <MudCardMedia Image="./images/maomao.png" Height="200" />
+                    <MudCardMedia Image="./images/maomao.png" Height="300" />
                     <MudCardContent>
-                        <MudText Typo="Typo.h6" Class="text-blue-400">@blog.Title</MudText>
+                        <MudStack Row>
+                            <MudText Typo="Typo.h5" Class="mb-4" Color="Color.Primary">@blog.Title</MudText>
+                            <MudSpacer />
+                            <MudText Typo="Typo.body2">
+                                <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye"></MudIcon>
+                                @blog.ViewCount
+                                <MudIcon Icon="@Icons.Material.Filled.Update"></MudIcon>
+                                @blog.PublishDate.ToString("yyyy-MM-dd")
+                            </MudText>
+                        </MudStack>
+
+                        <MudText Typo="Typo.body2" Color="Color.Default">
+                            @blog.Description
+                        </MudText>
+                    </MudCardContent>
+                    <MudCardActions>
                         <MudChipSet T="string">
                             @foreach (var tag in blog.Tags ?? Enumerable.Empty<string>())
                             {
                                 <MudChip>@tag</MudChip>
                             }
                         </MudChipSet>
-                        <MudText Typo="Typo.body2" Class="text-gray-400">
-                            @blog.Description
-                        </MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" Href="@($"/blogdetailshow/{blog.Id}")">
+                        <MudSpacer/>
+                        <MudButton Variant="Variant.Text" Color="Color.Info" Href="@($"/blogdetailshow/{blog.Id}")">
                             了解更多
                         </MudButton>
-                        <MudSpacer/>
-                        <MudText Typo="Typo.body2" Class="text-gray-400">
-                            <MudIcon Icon="@Icons.Material.Filled.RemoveRedEye"></MudIcon>
-                            @blog.ViewCount
-                            <MudIcon Icon="@Icons.Material.Filled.Update"></MudIcon>
-                            @blog.PublishDate.ToString("yyyy-MM-dd")
-                        </MudText>
                     </MudCardActions>
                 </MudCard>
             </MudItem>

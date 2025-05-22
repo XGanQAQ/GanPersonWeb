@@ -1,7 +1,7 @@
 ﻿@page "/blogdetailshow/{id:int}"
 
 <MudContainer MaxWidth="MaxWidth.Large">
-    <MudGrid>
+    <MudGrid Class="mt-10">
         <MudItem xs="12" sm="9" md="9" id="主栏">
             <MudPaper Class="pa-4">
                 @if (blog == null)
@@ -45,43 +45,26 @@
             <MudItem xs="12" sm="3" md="3" id="右侧边栏">
                 <MudStack Spacing="5">
                     <MudPaper>
-                        <MudContainer Class="d-flex justify-center">
-                            <MudImage ObjectFit="ObjectFit.Cover" Height="300" Src="@blog.ImageUrl" Alt="博客预览图片" Class="mb-3 rounded-lg" />
-                        </MudContainer>
-                    </MudPaper>
-
-                    <MudPaper>
-                        <MudContainer>
-                            <MudText Typo="Typo.h6">描述：</MudText>
-                            <MudText Typo="Typo.subtitle2" Color="Color.Default" Class="mb-2">@blog.Description</MudText>
+                        <MudContainer Class="mt-4 mb-4">
+                            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-2">描述</MudText>
+                            <MudText Typo="Typo.body1" Color="Color.Default" Class="mb-2">@blog.Description</MudText>
                         </MudContainer>
                     </MudPaper>
 
                     <MudCard>
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">
-                                    <MudText Inline>
-                                        <MudIcon Icon="@Icons.Material.Filled.Label" /> 标签
-                                    </MudText>
-                                </MudText>
-                            </CardHeaderContent>
-                            <CardHeaderActions>
-                                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-                            </CardHeaderActions>
-                        </MudCardHeader>
-                        <MudDivider DividerType="DividerType.Middle" />
-
                         <MudCardContent>
+                            <MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.Label" Color="Color.Primary" />
+                            </MudText>
+
+                            <MudDivider DividerType="DividerType.Middle" Class="mb-2"/>
+
                             @if (blog!=null && blog.Tags != null && blog.Tags.Count > 0)
                             {
-                                <MudStack Row Spacing="1">
-                                    <MudSpacer />
-                                    @foreach (var tag in blog.Tags)
-                                    {
-                                        <MudChip T="string" Color="Color.Default" Size="Size.Small">@tag</MudChip>
-                                    }
-                                </MudStack>
+                                @foreach (var tag in blog.Tags)
+                                {
+                                    <MudChip T="string" Color="Color.Default" Size="Size.Medium">@tag</MudChip>
+                                }
                             }
                         </MudCardContent>
                     </MudCard>

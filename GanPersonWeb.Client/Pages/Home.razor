@@ -1,5 +1,5 @@
 ﻿@page "/"
-<MudContainer Class="mt-10 px-8" MaxWidth="MaxWidth.Large">
+<MudContainer Class="mt-10 px-8" MaxWidth="MaxWidth.Medium">
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
             <MudGrid Class="mb-6">
@@ -22,12 +22,6 @@
 
                     @* 站点信息 *@
                     <GanPersonWeb.Client.Component.ShowSiteInfo />
-
-                    @* 展示项目数据 *@
-                    <GanPersonWeb.Client.Component.ShowProjectsInfo />
-
-                    @* 展示博文数据 *@
-                    <GanPersonWeb.Client.Component.ShowBlogsInfo />
                 </MudStack>
             </MudItem>
         </MudHidden>

@@ -1,33 +1,31 @@
 ﻿@page "/Portfolio"
 
-<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Large">
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.Medium">
     
     <MudGrid>
         <MudItem xs="12" sm="9" md="9" id="主栏">
             <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="6" IsShowPagination="true" />
         </MudItem>
         <MudItem xs="12" sm="3" md="3" id="右侧边栏">
-            <MudPaper>
-                <MudContainer>
-                    
-                    <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
-                        <MudIcon Icon="@Icons.Material.Filled.FilterAlt"></MudIcon>
-                        过滤
-                    </MudText>
-                    <MudDivider></MudDivider>
-                    <MudChipSet T="string" @bind-SelectedValues="_selected" CheckMark="false" SelectionMode="SelectionMode.MultiSelection">
-                        <MudChip Value="@("标签1")" />
-                        <MudChip Value="@("标签2")" />
-                    </MudChipSet>
-                </MudContainer>
-            </MudPaper>
+            <MudStack>
+                <MudPaper>
+                    <MudContainer>
 
-            <MudPaper Class="mt-6" Elevation="2">
-                <MudList T="string">
-                    <MudListItem Text="项目总数" SecondaryText="10" Icon="@Icons.Material.Filled.Inbox" />
-                    <MudListItem Text="最近更新" SecondaryText="2025/3/12" Icon="@Icons.Material.Filled.Send" />
-                </MudList>
-            </MudPaper>
+                        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+                            <MudIcon Icon="@Icons.Material.Filled.FilterAlt"></MudIcon>
+                            过滤
+                        </MudText>
+                        <MudDivider></MudDivider>
+                        <MudChipSet T="string" @bind-SelectedValues="_selected" CheckMark="false" SelectionMode="SelectionMode.MultiSelection">
+                            <MudChip Value="@("标签1")" />
+                            <MudChip Value="@("标签2")" />
+                        </MudChipSet>
+                    </MudContainer>
+                </MudPaper>
+
+                <GanPersonWeb.Client.Component.ShowProjectsInfo />
+            </MudStack>
+
         </MudItem>
     </MudGrid>
 </MudContainer>
