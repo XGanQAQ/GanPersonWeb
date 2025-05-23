@@ -1,5 +1,4 @@
-﻿@using GanPersonWeb.Shared.Models
-
+﻿
 <MudGrid>
     @if (isLoading)
     {
@@ -11,8 +10,8 @@
     {
         @foreach(var blog in blogs)
         {
-            <MudItem xs="12" sm="12" md="@(12/InlineCount)">
-                <MudCard Class="animated-card">
+            <MudItem xs="12" sm="12" md="@(12 / InlineCount)" Class="d-flex flex-grow-1">
+                <MudCard Class="animated-card" Style="width:100%;">
                     <MudCardMedia Image="./images/maomao.png" Height="300" />
                     <MudCardContent>
                         <MudStack Row>
@@ -54,16 +53,19 @@
                 </MudItem>
             </MudItem>
         }
-        <MudItem xs="12" md="12" lg="12">
-            <div class="d-flex flex-column align-center gap-4">
-                <MudPagination @bind-Selected="_selected"
-                               ShowPageButtons="@IsShowPageButtons"
-                               ShowFirstButton="true"
-                               ShowLastButton="true"
-                               Count="@pageCount"
-                               OnSelectedChanged="OnPageChanged" />
-            </div>
-        </MudItem>
+        @if (IsShowPagination)
+        {
+            <MudItem xs="12" md="12" lg="12">
+                <div class="d-flex flex-column align-center gap-4">
+                    <MudPagination @bind-Selected="_selected"
+                                   ShowPageButtons="@IsShowPageButtons"
+                                   ShowFirstButton="true"
+                                   ShowLastButton="true"
+                                   Count="@pageCount"
+                                   OnSelectedChanged="OnPageChanged" />
+                </div>
+            </MudItem>
+        }
     }
     else
     {
@@ -80,6 +82,8 @@
     [Parameter] public string TagFliter { get; set; } = "标签过滤";
     [Parameter] public string TypeFliter { get; set; } = "类型过滤";
     [Parameter] public List<string> TagTypeFilter { get; set; } = new List<string>();
+
+    [Parameter] public bool IsShowPagination { get; set; } = true;
     [Parameter] public bool IsShowPageButtons { get; set; } = false;
 
     [Inject]

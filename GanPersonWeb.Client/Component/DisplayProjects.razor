@@ -39,7 +39,7 @@
         @for (int i = 0; i < Math.Max(0, DisplayCount - projects.Count); i++)
         {
             <MudItem xs="12" sm="12" md="@(12 / InlineCount)" Class="d-flex flex-grow-1">
-                <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
+                <MudPaper Elevation="2" Class="pa-4" Style="height:100%;width:100%;"></MudPaper>
             </MudItem>
         }
         @if (IsShowPagination)
@@ -47,6 +47,7 @@
             <MudItem xs="12">
                 <div class="d-flex flex-column align-center gap-4">
                     <MudPagination @bind-Selected="_selected"
+                                   ShowPageButtons="@IsShowPageButtons"
                                    ShowFirstButton="true"
                                    ShowLastButton="true"
                                    Count="@pageCount"
@@ -66,11 +67,13 @@
 @code {
     [Parameter] public int DisplayCount { get; set; } = 3;
     [Parameter] public int InlineCount { get; set; } = 2; // 每行显示的项目数量
-    [Parameter] public bool IsShowPagination { get; set; } = false;
     [Parameter] public string FilterTag { get; set; } = string.Empty; // 过滤标签 TODO: 需要实现过滤功能
 
+    [Parameter] public bool IsShowPagination { get; set; } = true;
+    [Parameter] public bool IsShowPageButtons { get; set; } = false;
+
     [Inject]
-    public ClientProjectService clientProjectService { get; set; }
+    public ClientProjectService clientProjectService { get; set; } = default!;
 
     private List<Project> projects = new List<Project>();
     private int _selected = 1;
