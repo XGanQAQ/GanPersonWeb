@@ -1,19 +1,20 @@
 ﻿<!-- 关于我 -->
-<MudPaper Elevation="5">
-    <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
-        <MudGrid Justify="Justify.Center">
-            <MudItem xs="12" sm="6" md="4">
-                <MudImage Src="images/head.jpg" Alt="A image of my head" Class="rounded-lg" Fluid></MudImage>
-            </MudItem>
-            <MudItem xs="12" sm="6" md="8">
-                <MudText Typo="Typo.h4" Class="mb-4" Color="Color.Primary">
+<MudGrid Class="d-flex align-center">
+    <MudItem xs="12" sm="6" md="4">
+        <GanPersonWeb.Client.Component.ShowPersonInfo />
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="8">
+        <MudPaper>
+            <MudContainer>
+                <MudText Typo="Typo.h4" Class="my-4" Color="Color.Primary">
                     关于我
                 </MudText>
                 <MudText Typo="Typo.body1" Class="mb-4">
                     你好！我是一名专注于游戏开发的程序员，拥有丰富的游戏开发经验。我对创造沉浸式的游戏体验充满热情，特别关注游戏机制设计和技术实现。
                 </MudText>
                 <MudText Typo="Typo.body1" Class="mb-4">
-                    我的专长包括Unity和Unreal引擎开发，同时对Godot等开源引擎也有深入研究。我喜欢探索新的游戏技术，从图形渲染到AI行为，从网络同步到物理模拟。
+                    我的专长包括Unity和（准备去学）Unreal引擎开发，同时对Godot等开源引擎也有深入研究。我喜欢探索新的游戏技术，从图形渲染到AI行为，从网络同步到物理模拟。
                 </MudText>
 
                 <MudText Typo="Typo.h5" Color="Color.Secondary">
@@ -24,45 +25,14 @@
                 <MudChip T="string">Godot</MudChip>
                 <MudChip T="string">C#</MudChip>
                 <MudChip T="string">C++</MudChip>
+                <MudChip T="string">ASP.NET</MudChip>
+                <MudChip T="string">Blazor</MudChip>
 
-                <MudText Typo="Typo.h5" Color="Color.Tertiary">
-                    其他主页
-                </MudText>
-
-                <MudChip T="string"
-                         Href="https://github.com/XGanQAQ"
-                         Target="_blank"
-                         Variant="Variant.Filled"
-                         Icon="@Icons.Custom.Brands.GitHub">
-                    GitHub
-                </MudChip>
-                @* <MudChip T="string" *@
-                @*          Href="https://twitter.com/YourTwitterHandle" *@
-                @*          Target="_blank" *@
-                @*          Variant="Variant.Filled" *@
-                @*          Icon="@Icons.Custom.Brands.Twitter"> *@
-                @*     Twitter *@
-                @* </MudChip> *@
-                @* <MudChip T="string" *@
-                @*          Href="https://www.linkedin.com/in/YourLinkedInProfile" *@
-                @*          Target="_blank" *@
-                @*          Variant="Variant.Filled" *@
-                @*          Icon="@Icons.Custom.Brands.LinkedIn"> *@
-                @*     LinkedIn *@
-                @* </MudChip> *@
-
-                <MudSpacer></MudSpacer>
-
-                <MudText Typo="Typo.h5" Color="Color.Success">
-                    联系方式
-                </MudText>
-                <MudChip T="string" Icon="@Icons.Material.Filled.Email">
-                    邮箱:2423855310@qq.com
-                </MudChip>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
-</MudPaper>
+                <MudText Typo="Typo.h5" Color="Color.Tertiary" Class="my-4">Thanks for visit</MudText>
+            </MudContainer>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
 @code {
     [Inject]

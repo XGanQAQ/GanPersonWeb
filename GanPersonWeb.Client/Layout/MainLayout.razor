@@ -69,12 +69,12 @@
                     <MudNavLink Href="/Blogs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ReadMore">Browse</MudNavLink>
                     <MudNavLink Href="/Blogs/Archive" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Archive">Archive</MudNavLink>
                 </MudNavGroup>
-                <MudNavLink Href="/Portfolio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Work">Portfolio</MudNavLink>
-                <MudNavLink Href="/PictureBed" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Collections">Picture</MudNavLink>
-                <MudNavLink Href="/GameDevLab" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.VideogameAsset">GameDevLab</MudNavLink>
+                <MudNavGroup Title="Portfolio" Icon="@Icons.Material.Filled.Work" Expanded>
+                    <MudNavLink Href="/Portfolio" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ReadMore">Browse</MudNavLink>
+                    <MudNavLink Href="/GameDevLab" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.VideogameAsset">GameDevLab</MudNavLink>
+                </MudNavGroup>
 
-                @* <MudNavLink Href="About" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BackHand">About</MudNavLink> *@
-                <MudNavLink Href="/Me" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.TagFaces">Me</MudNavLink>
+                <MudNavLink Href="/AboutMe" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.TagFaces">AboutMe</MudNavLink>
             }
         </MudNavMenu>
     </MudDrawer>
