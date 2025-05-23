@@ -48,6 +48,13 @@ namespace GanPersonWeb.Services
             await _context.SaveChangesAsync();
         }
 
+        // Add overload for AddAsync for Image entity (optional, generic already exists)
+        public async Task AddImageAsync(Image image)
+        {
+            _context.Images.Add(image);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync<T>(T entity) where T : class
         {
             _context.Set<T>().Update(entity);

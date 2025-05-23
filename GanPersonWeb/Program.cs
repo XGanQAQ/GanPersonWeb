@@ -84,6 +84,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SiteVisitService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<PersonalInfoService>();
+builder.Services.AddScoped<PictureBedService>();
 
 
 // blazor client service

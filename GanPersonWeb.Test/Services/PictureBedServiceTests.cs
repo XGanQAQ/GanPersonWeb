@@ -59,7 +59,9 @@ namespace GanPersonWeb.Test.Services
             image.Should().NotBeNull();
             image!.Description.Should().Be("desc");
             image.Tags.Should().Be("tag1,tag2");
-            File.Exists(Path.Combine(_testRootPath, image.Url.Replace("/uploads/", ""))).Should().BeTrue();
+
+            var path = $"{_testRootPath}{image.Url}";
+            File.Exists(path).Should().BeTrue();
         }
 
         [Fact]
