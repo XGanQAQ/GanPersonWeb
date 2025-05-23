@@ -11,7 +11,7 @@
     {
         @foreach(var blog in blogs)
         {
-            <MudItem xs="12" md="12" lg="12">
+            <MudItem xs="12" sm="12" md="@(12/InlineCount)">
                 <MudCard Class="animated-card">
                     <MudCardMedia Image="./images/maomao.png" Height="300" />
                     <MudCardContent>
@@ -48,7 +48,7 @@
         @* 展示空白框 *@
         @for (int i = 0; i < Math.Max(0, DisplayCount - blogs.Count); i++)
         {
-            <MudItem xs="12" md="12" lg="12">
+            <MudItem xs="12" sm="12" md="@(12 / InlineCount)">
                 <MudItem xs="12">
                     <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
                 </MudItem>
@@ -75,6 +75,7 @@
 
 @code {
     [Parameter] public int DisplayCount { get; set; } = 3;
+    [Parameter] public int InlineCount { get; set; } = 1;
     [Parameter] public string RankType { get; set; } = "时间排序";
     [Parameter] public string TagFliter { get; set; } = "标签过滤";
     [Parameter] public string TypeFliter { get; set; } = "类型过滤";

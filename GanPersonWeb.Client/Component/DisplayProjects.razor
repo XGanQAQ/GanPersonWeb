@@ -11,7 +11,7 @@
     {
         @foreach (var project in projects)
         {
-            <MudItem xs="12" sm="6" Class="d-flex flex-grow-1">
+            <MudItem xs="12" sm="12" md="@(12 / InlineCount)" Class="d-flex flex-grow-1">
                 <MudCard Class="animated-card" Style="width:100%;">
                     <MudCardMedia Image="./images/maomao.png" Height="200" />
                     <MudCardContent>
@@ -28,7 +28,7 @@
                             }
                         </MudChipSet>
                         <MudSpacer/>
-                        <MudButton Variant="Variant.Text" Color="Color.Info" Href="@project.Link" >
+                        <MudButton Variant="Variant.Text" Color="Color.Info" Href="@project.Link">
                             了解更多
                         </MudButton>
                     </MudCardActions>
@@ -38,7 +38,7 @@
         @* 展示空白框 *@
         @for (int i = 0; i < Math.Max(0, DisplayCount - projects.Count); i++)
         {
-            <MudItem xs="12" sm="6">
+            <MudItem xs="12" sm="12" md="@(12 / InlineCount)" Class="d-flex flex-grow-1">
                 <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
             </MudItem>
         }
@@ -65,7 +65,9 @@
 
 @code {
     [Parameter] public int DisplayCount { get; set; } = 3;
+    [Parameter] public int InlineCount { get; set; } = 2; // 每行显示的项目数量
     [Parameter] public bool IsShowPagination { get; set; } = false;
+    [Parameter] public string FilterTag { get; set; } = string.Empty; // 过滤标签 TODO: 需要实现过滤功能
 
     [Inject]
     public ClientProjectService clientProjectService { get; set; }
