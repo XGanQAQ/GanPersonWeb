@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
-namespace GanPersonWeb.Tests.Services
+namespace GanPersonWeb.Test.Services
 {
     public class UserServiceTests
     {

@@ -4,7 +4,7 @@ using GanPersonWeb.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace GanPersonWeb.Tests.Services
+namespace GanPersonWeb.Test.Services
 {
     public class BlogCommentServiceTests
     {

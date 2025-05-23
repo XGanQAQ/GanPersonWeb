@@ -8,7 +8,7 @@ using Xunit;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
-namespace GanPersonWeb.Tests.Services
+namespace GanPersonWeb.Test.Services
 {
     public class DatabaseServiceTests
     {
