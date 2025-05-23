@@ -18,6 +18,10 @@ namespace GanPersonWeb.Client.Services
 
         private readonly HttpClient _httpClient;
         private readonly JwtHelperService jwtHelperService;
+
+        public event Action? OnLoginSuccess;
+        public event Action? OnLogoutSuccess;
+
         public ClientUserService(HttpClient httpClient, JwtHelperService jwtHelperService)
         {
             _httpClient = httpClient;
@@ -37,6 +41,7 @@ namespace GanPersonWeb.Client.Services
                     _httpClient.DefaultRequestHeaders.Authorization 
                         = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", result.Token);
                 }
+                OnLoginSuccess?.Invoke();
                 return result?.Token;
             }
             return null;
@@ -84,6 +89,7 @@ namespace GanPersonWeb.Client.Services
         {
             await jwtHelperService.SaveTokenAsync(string.Empty);
             _httpClient.DefaultRequestHeaders.Authorization = null;
+            OnLogoutSuccess?.Invoke();
         }
 
         //调用后端接口获取用户信息

@@ -1,0 +1,58 @@
+﻿@page "/Blogs/Archive"
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h4" Color="Color.Primary" Class="mt-4">Archive</MudText>
+    <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="mb-4">@blogs.Count Posts</MudText>
+    <MudPaper>
+        <MudTreeView T="string" ReadOnly>
+            @foreach(var blogs in blogGroups)
+            {
+                <MudTreeViewItem Text="@blogs.Key.Year.ToString()" ExpandButtonIconColor="Color.Primary" TextTypo="Typo.h5" Expanded>
+                    @foreach (var blog in blogs.Value)
+                    {
+                        @* <MudTreeViewItem Text="@blog.Title" Value="@blog.Id.ToString()" /> *@
+                        <MudTimeline TimelinePosition="TimelinePosition.Start">
+                            <MudTimelineItem>
+                                <ItemContent>
+                                    <MudLink Href="@($"/blogdetailshow/{blog.Id}")" Target="_blank" Color="Color.Primary" Typo="Typo.h5">@blog.Title</MudLink>
+                                    <MudSpacer />
+                                    @foreach (var tag in blog.Tags)
+                                    {
+                                        <MudChip T="string" Size="Size.Small" Color="Color.Default">@tag</MudChip>
+                                    }
+                                    <MudText Color="Color.Info" Typo="Typo.subtitle1">@blog.PublishDate</MudText>
+                                </ItemContent>
+                            </MudTimelineItem>
+                        </MudTimeline>
+                    }
+                </MudTreeViewItem>
+            }
+        </MudTreeView>
+    </MudPaper>
+</MudContainer>
+
+
+@code {
+    [Inject]
+    public ClientBlogService clientBlogService { get; set; } = default!;
+
+    private List<Blog> blogs = new List<Blog>();
+
+    private Dictionary<DateTime, List<Blog>> blogGroups = new Dictionary<DateTime, List<Blog>>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var blogsTemp = await clientBlogService.GetBlogsAsync();
+        if (blogsTemp != null)
+        {
+            blogs = blogsTemp.ToList();
+        }
+
+        // 按年份分组博客
+        blogGroups = blogs
+            .GroupBy(b => new DateTime(b.PublishDate.Year, 1, 1))
+            .ToDictionary(g => g.Key, g => g.ToList());
+    }
+}
