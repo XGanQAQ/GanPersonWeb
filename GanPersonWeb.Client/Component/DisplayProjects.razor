@@ -15,7 +15,15 @@
                 <MudCard Class="animated-card" Style="width:100%;">
                     <MudCardMedia Image="./images/maomao.png" Height="200" />
                     <MudCardContent>
-                        <MudText Typo="Typo.h5" Class="mb-4" Color="Color.Primary">@project.Title</MudText>
+                        <MudStack Row>
+                            <MudText Typo="Typo.h5" Class="mb-4" Color="Color.Primary">@project.Title</MudText>
+                            <MudSpacer />
+                            <MudText Typo="Typo.body2">
+                                <MudIcon Icon="@Icons.Material.Filled.Update"></MudIcon>
+                                @project.PublishDate.ToString("yyyy-MM-dd")
+                            </MudText>
+                        </MudStack>
+
                         <MudText Typo="Typo.body2" Class="" Color="Color.Default">
                             @project.Description
                         </MudText>
@@ -86,10 +94,16 @@
     protected async Task GetRangeProjectsAsync(int start, int count)
     {
         isLoading = true;
-        StateHasChanged();
         projects = await clientProjectService.GetProjectsInRangeAsync(start, count);
         isLoading = false;
         StateHasChanged();
+    }
+
+    protected List<Project> FilterProjectWithTag(List<Project> projects, Func<Project, bool> predicate)
+    {
+        if (predicate == null)
+            return projects;
+        return projects.Where(predicate).ToList();
     }
 
     protected override async Task OnInitializedAsync()
