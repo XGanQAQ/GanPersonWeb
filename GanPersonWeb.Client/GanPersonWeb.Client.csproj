@@ -12,7 +12,7 @@
     <Content Remove="wwwroot\BlogDetailShow.razor.css" />
     <Content Remove="wwwroot\css\BlogDetailShowDark.css" />
     <Content Remove="wwwroot\css\BlogDetailShowLight.css" />
-    <Content Remove="wwwroot\images\head.jpg" />
+    <Content Remove="wwwroot\uploads\head.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\icons\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

@@ -48,7 +48,7 @@ namespace GanPersonWeb.Services
                 {
                     Title = "个人博客系统",
                     Description = "一个基于Blazor WebAssembly的个人博客系统，支持文章发布、评论、标签等功能。",
-                    ImageUrl = "/images/projects/blog.png",
+                    ImageUrl = "/uploads/default_card.png",
                     PublishDate = DateTime.Now.AddMonths(-2),
                     Tags = new List<string> { "Blazor", "WebAssembly", "博客" },
                     Link = "https://github.com/example/blog"
@@ -57,7 +57,7 @@ namespace GanPersonWeb.Services
                 {
                     Title = "项目管理工具",
                     Description = "简单易用的项目管理工具，支持任务分配、进度跟踪和团队协作。",
-                    ImageUrl = "/images/projects/pm.png",
+                    ImageUrl = "/uploads/default_card.png",
                     PublishDate = DateTime.Now.AddMonths(-1),
                     Tags = new List<string> { "管理", "协作", "工具" },
                     Link = "https://github.com/example/pmtool"

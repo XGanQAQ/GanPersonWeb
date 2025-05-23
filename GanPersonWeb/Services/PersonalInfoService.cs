@@ -39,7 +39,7 @@ namespace GanPersonWeb.Services
                     Occupation = "默认职业",
                     Description = "这是默认的个人简介。",
                     Email = "default@example.com",
-                    ProfileImageUrl = "/images/head.jpg",
+                    ProfileImageUrl = "/uploads/default_head.png",
                     SocialMediaLinks = new List<SocialMediaLink>()
                     {
                         new SocialMediaLink

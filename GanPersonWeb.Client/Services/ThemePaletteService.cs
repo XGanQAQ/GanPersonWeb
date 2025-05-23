@@ -77,8 +77,8 @@ namespace GanPersonWeb.Client.Services
                 PaletteDark = defaultDark,
                 LayoutProperties = new LayoutProperties()
             },
-            ThemeWallpaperUrl = "images/defaultWallpaper.png",
-            ThemeBackgroundUrl = "images/defaultBackground.png"
+            ThemeWallpaperUrl = "/uploads/default_wallpaper.png",
+            ThemeBackgroundUrl = "/uploads/default_background.png"
         };
 
         public static Theme noteTheme = new Theme()
