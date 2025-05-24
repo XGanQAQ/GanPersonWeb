@@ -90,6 +90,12 @@
 </div>
 
 @code {
+    [Inject]
+    public ClientUserService clientUserService { get; set; } = default!;
+    [Inject]
+    public NavigationManager navigation { get; set; } = default!;
+    [Inject]
+    public ThemePaletteService themePaletteService { get; set; } = default!;
 
     private bool _drawerOpen = true;
     private bool isDarkMode
@@ -109,13 +115,7 @@
 
     private List<Theme> themes = new List<Theme>();
 
-    [Inject]
-    public ClientUserService clientUserService { get; set; } = default!;
     private string userName = "未登录";
-    [Inject]
-    public NavigationManager navigation { get; set; } = default!;
-    [Inject]
-    public ThemePaletteService themePaletteService { get; set; } = default!;
 
     protected override void OnInitialized()
     {
@@ -188,6 +188,7 @@
     private async Task Logout()
     {
         await clientUserService.LogoutAsync();
+        userName = "已登出";
         StateHasChanged();
     }
 

@@ -1,6 +1,10 @@
 ﻿<MudPaper>
     <MudContainer>
-        <MudText Typo="Typo.h6" Color="Color.Secondary">评论区</MudText>
+        <MudStack Row AlignItems="AlignItems.Center">
+            <MudText Typo="Typo.h6" Color="Color.Secondary">评论区</MudText>
+            <MudSpacer/>
+            <MudIconButton Icon="@Icons.Material.Filled.MoreHoriz" OnClick="() => OepnMoreDetail()"></MudIconButton>
+        </MudStack>
 
         <MudList T="string">
             @if (comments.Count == 0)
@@ -16,6 +20,10 @@
                 @foreach (var comment in comments)
                 {
                     <MudPaper Outlined="true" Class="mt-2">
+                        @if (isAdmin)
+                        {
+                            <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.DeleteForever" OnClick="() => DeleteComment(comment)"></MudIconButton>
+                        }
                         <MudListItem>
                             <MudText Typo="Typo.subtitle1" Color="Color.Tertiary">@comment.Author</MudText>
                             <MudText Typo="Typo.body1">@comment.Content</MudText>
@@ -40,14 +48,18 @@
     [Parameter] public int BlogId { get; set; }
 
     [Inject]
-    public ClientBlogCommentService CommentService { get; set; } = default!;
+    public ClientBlogCommentService ClientCommentService { get; set; } = default!;
     [Inject]
     public ClientUserService ClientUserService { get; set; } = default!;
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default!;
 
     private List<Comment> comments { get; set; } = new();
 
     private string newCommentContent { get; set; } = string.Empty;
     private string submitFallbackMessage = "登入并输入评论内容即可评论！";
+
+    private bool isAdmin { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,7 +70,21 @@
     {
         if (BlogId > 0)
         {
-            comments = await CommentService.GetCommentsByBlogIdAsync(BlogId);
+            comments = await ClientCommentService.GetCommentsByBlogIdAsync(BlogId);
+        }
+    }
+
+    private async Task OepnMoreDetail()
+    {
+        if (!await ClientUserService.IsAuthenticated())
+        {
+            NavigationManager.NavigateTo("/login");
+            return;
+        }
+        if (await ClientUserService.IsAdmin())
+        {
+            isAdmin = true;
+            StateHasChanged();
         }
     }
 
@@ -89,7 +115,7 @@
             PublishDate = DateTime.Now
         };
 
-        var success = await CommentService.AddCommentAsync(comment);
+        var success = await ClientCommentService.AddCommentAsync(comment);
         if (success)
         {
             newCommentContent = string.Empty;
@@ -102,5 +128,20 @@
             submitFallbackMessage = "评论失败，请稍后再试！";
         }
         StateHasChanged();
+    }
+
+    //删除评论
+    private async Task DeleteComment(Comment comment)
+    {
+        var success = await ClientCommentService.DeleteCommentAsync(comment.Id);
+        if (success)
+        {
+            comments.Remove(comment);
+            StateHasChanged();
+        }
+        else
+        {
+            submitFallbackMessage = "删除评论失败，请稍后再试！";
+        } 
     }
 }

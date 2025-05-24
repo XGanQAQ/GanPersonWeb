@@ -30,7 +30,11 @@ namespace GanPersonWeb.Services
                 {
                     Username = username,
                     Password = BCrypt.Net.BCrypt.HashPassword(password),
-                    Role = "Admin"
+                    Role = "Admin",
+                    Email = "admin_default_email",
+                    ProfileImageUrl = "/uploads/default_head.jpg",
+                    CreatedAt = DateTime.UtcNow,
+                    LastLoginAt = DateTime.UtcNow
                 };
                 await _databaseService.AddAsync(adminUser);
             }

@@ -7,6 +7,11 @@
         public string Username { get; set; } = string.Empty; // 用户名
         public string Password { get; set; } = string.Empty; // 密码（加密存储）
         public string Role { get; set; } = "User"; // 角色（如管理员、普通用户）
+        public string Email { get; set; } = string.Empty; // 电子邮箱
+        public string ProfileImageUrl { get; set; } = string.Empty; // 个人头像URL
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // 创建时间
+        public DateTime LastLoginAt { get; set; } = DateTime.UtcNow; // 最后登录时间
+        public int TodayCommentCount { get; set; } = 0; // 今日评论数
     }
 
     // 个人信息表
@@ -19,6 +24,7 @@
         public string Email { get; set; } = string.Empty; // 电子邮箱
         public string ProfileImageUrl { get; set; } = string.Empty; // 个人头像URL
         public List<SocialMediaLink> SocialMediaLinks { get; set; } = new(); // 社交媒体链接
+
     }
 
     // 社交媒体链接表
