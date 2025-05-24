@@ -28,6 +28,7 @@ namespace GanPersonWeb.Client.Services
             services.AddBlazoredLocalStorage();
             services.AddScoped<JwtHelperService>();
             services.AddScoped<ThemePaletteService>();
+            services.AddScoped<ClientPictureBedService>();
 
         }
     }

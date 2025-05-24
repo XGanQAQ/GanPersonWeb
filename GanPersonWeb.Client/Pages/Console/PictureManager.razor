@@ -1,40 +1,62 @@
 ﻿@page "/console/picture"
-@using GanPersonWeb.Shared.Models
+@inject ClientPictureBedService PictureBedService
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-10">
     <MudText Typo="Typo.h4" GutterBottom="true">图片管理</MudText>
 
     <MudPaper Class="pa-6 mb-8" Outlined="true">
         <MudText Typo="Typo.h6" GutterBottom="true">提交新图片</MudText>
-        <EditForm Model="@newImage" OnValidSubmit="HandleValidSubmit">
+        <EditForm Model="@newImageModel" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator/>
             <MudGrid Spacing="3">
-                <MudItem xs="12" sm="6">
-                    <MudTextField T="string" @bind-Value="newImage.Url" Label="图片URL" Required="true" />
+                <MudItem xs="12" sm="3">
+                    <MudTextField T="string" @bind-Value="imageName" Label="图片名称（带上后缀格式）" />
                 </MudItem>
-                @* <MudItem xs="12" sm="6"> *@
-                @*     <MudDatePicker @bind-Date="newImage.UploadDate" Label="上传时间" /> *@
-                @* </MudItem> *@
-                <MudItem xs="12">
-                    <MudTextField T="string" @bind-Value="newImage.Description" Label="图片描述" Lines="2" />
-                </MudItem>
-                <MudItem xs="12">
+                <MudItem xs="12" sm="3">
                     <MudTextField T="string" @bind-Value="tagsInput" Label="标签（逗号分隔）" />
                 </MudItem>
-                <MudItem xs="12" Class="d-flex justify-end">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Type="Submit">提交图片</MudButton>
+                <MudItem xs="12" sm="6">
+                    <MudTextField T="string" @bind-Value="newImageDescription" Label="图片描述" />
                 </MudItem>
+
+                <MudItem xs="12">
+                    <InputFile OnChange="OnInputFileChange" />
+                    @if (!string.IsNullOrEmpty(selectedFileName))
+                    {
+                        <MudText Typo="Typo.caption" Color="Color.Info">已选择文件: @selectedFileName</MudText>
+                    }
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    @if (!string.IsNullOrEmpty(uploadError))
+                    {
+                        <MudAlert Severity="Severity.Error">@uploadError</MudAlert>
+                    }
+                    else
+                    {
+                        <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">请上传图片文件（大小不超过10MB）。</MudAlert>
+                    }
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@isUploading" OnClick="HandleValidSubmit">提交图片</MudButton>
+                </MudItem>
+
             </MudGrid>
         </EditForm>
+
     </MudPaper>
 
     <MudPaper Class="pa-6" Outlined="true">
         <MudText Typo="Typo.h6" GutterBottom="true">已提交图片</MudText>
+        <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">@manageMessage</MudAlert>
         <MudTable Items="images" Hover="true">
             <HeaderContent>
                 <MudTh>图片</MudTh>
+                <MudTh>名称</MudTh>
                 <MudTh>描述</MudTh>
                 <MudTh>上传时间</MudTh>
+                <MudTh>Url</MudTh>
                 <MudTh>标签</MudTh>
                 <MudTh>操作</MudTh>
             </HeaderContent>
@@ -42,11 +64,15 @@
                 <MudTd>
                     @if (!string.IsNullOrWhiteSpace(context.Url))
                     {
-                        <MudAvatar Image="@context.Url" Size="Size.Large" />
+                        <MudAvatar Size="Size.Large">
+                            <MudImage Src="@context.Url"></MudImage>
+                        </MudAvatar>
                     }
                 </MudTd>
+                <MudTd>@context.Filename</MudTd>
                 <MudTd>@context.Description</MudTd>
-                <MudTd>@context.UploadDate.ToShortDateString()</MudTd>
+                <MudTd>@context.UploadDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</MudTd>
+                <MudTd>@context.Url</MudTd>
                 <MudTd>
                     @foreach (var tag in context.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                     {
@@ -63,39 +89,84 @@
 
 @code {
     private List<Image> images = new();
-    private Image newImage = new();
+
+    private Image newImageModel = new();
+
+    private string imageName = "";
     private string tagsInput = "";
+    private string newImageDescription = "";
+    private string? selectedFileName="";
+    private IBrowserFile? selectedFile;
 
-    protected override void OnInitialized()
+    private bool isUploading = false;
+    private string? uploadError;
+
+    private string manageMessage = "建议使用外部图床，不要大量使用服务器本地存储图片";
+
+    protected override async Task OnInitializedAsync()
     {
-        // TODO: Replace with actual data loading logic
-        images = new List<Image>
+        await LoadImagesAsync();
+    }
+
+    private async Task LoadImagesAsync()
+    {
+        images = await PictureBedService.GetImagesAsync();
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+        selectedFileName = selectedFile?.Name;
+        uploadError = null;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        uploadError = null;
+        if (selectedFile == null)
         {
-            new Image
+            uploadError = "请选择要上传的图片文件。";
+            return;
+        }
+        isUploading = true;
+        try
+        {
+            using var stream = selectedFile.OpenReadStream(10 * 1024 * 1024); // 10MB max
+            var image = await PictureBedService.UploadImageAsync(stream, imageName??selectedFile.Name, newImageDescription, tagsInput);
+            if (image != null)
             {
-                Id = 1,
-                Url = "https://via.placeholder.com/100",
-                UploadDate = DateTime.Now.AddDays(-1),
-                Description = "示例图片",
-                Tags = "风景,示例"
+                images.Insert(0, image);
+                // Reset form
+                imageName = "";
+                newImageDescription = "";
+                tagsInput = "";
+                selectedFile = null;
+                selectedFileName = null;
             }
-        };
-        newImage.UploadDate = DateTime.Now;
+            else
+            {
+                uploadError = "上传失败，请重试。(请检查是否已经有同名文件)";
+            }
+        }
+        catch (Exception ex)
+        {
+            uploadError = $"上传失败: {ex.Message}";
+        }
+        isUploading = false;
     }
 
-    private void HandleValidSubmit()
+    private async Task DeleteImage(Image image)
     {
-        newImage.Id = images.Count > 0 ? images.Max(i => i.Id) + 1 : 1;
-        newImage.Tags = tagsInput;
-        images.Insert(0, newImage);
-
-        // Reset form
-        newImage = new Image { UploadDate = DateTime.Now };
-        tagsInput = "";
-    }
-
-    private void DeleteImage(Image image)
-    {
-        images.Remove(image);
+        var success = await PictureBedService.DeleteImageAsync(image.Id);
+        if (success)
+        {
+            images.Remove(image);
+            manageMessage = "删除成功";
+        }
+        else
+        {
+            manageMessage = "删除失败，请重试。";
+        }
+        StateHasChanged();
     }
 }

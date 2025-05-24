@@ -8,26 +8,25 @@ namespace GanPersonWeb.Services
 {
     public class PictureBedService
     {
+        public readonly string ImageRootPath;
         private readonly DatabaseService _dbService;
-        private readonly string _imageRootPath;
 
         public PictureBedService(DatabaseService dbService, IWebHostEnvironment env)
         {
             _dbService = dbService;
             // Images will be saved under wwwroot/uploads
-            _imageRootPath = Path.Combine(env.WebRootPath, "uploads");
-            if (!Directory.Exists(_imageRootPath))
-                Directory.CreateDirectory(_imageRootPath);
+            ImageRootPath = Path.Combine(env.WebRootPath, "uploads");
+            if (!Directory.Exists(ImageRootPath))
+                Directory.CreateDirectory(ImageRootPath);
         }
-
-        public async Task<Image?> SaveImageAsync(IFormFile file, string description = "", string tags = "")
+        public async Task<Image?> SaveImageAsync(IFormFile file, string filename, string description = "", string tags = "")
         {
             if (file == null || file.Length == 0)
                 return null;
 
             var fileExt = Path.GetExtension(file.FileName);
-            var fileName = $"{Guid.NewGuid()}{fileExt}";
-            var filePath = Path.Combine(_imageRootPath, fileName);
+            var fileName = filename;
+            var filePath = Path.Combine(ImageRootPath, fileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
@@ -36,6 +35,7 @@ namespace GanPersonWeb.Services
 
             var image = new Image
             {
+                Filename = fileName,
                 Url = $"/uploads/{fileName}",
                 UploadDate = DateTime.UtcNow,
                 Description = description,
@@ -44,6 +44,21 @@ namespace GanPersonWeb.Services
 
             await _dbService.AddAsync(image);
             return image;
+        }
+
+        //删除
+        public async Task<bool> DeleteImageAsync(int id)
+        {
+            var image = await _dbService.GetByIdAsync<Image>(id);
+            if (image == null)
+                return false;
+            var filePath = Path.Combine(ImageRootPath, image.Filename);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            await _dbService.UpdateAsync(image);
+            return true;
         }
     }
 }

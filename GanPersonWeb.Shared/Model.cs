@@ -73,6 +73,7 @@
     public class Image
     {
         public int Id { get; set; } // 主键
+        public string Filename { get; set; } = string.Empty; // 图片文件名
         public string Url { get; set; } = string.Empty; // 图片URL
         public DateTime UploadDate { get; set; } // 上传时间
         public string Description { get; set; } = string.Empty; // 图片描述
