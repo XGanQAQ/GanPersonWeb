@@ -54,6 +54,12 @@ namespace GanPersonWeb.Client.Services
             return response.IsSuccessStatusCode;
         }
 
+        public async Task<bool> RegisterAsync(string username, string password, string email)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/users/register", new { Username = username, Password = password ,Email = email});
+            return response.IsSuccessStatusCode;
+        }
+
         //验证是否是管理员
         public async Task<bool> IsAdmin()
         {
