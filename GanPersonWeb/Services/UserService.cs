@@ -76,5 +76,9 @@ namespace GanPersonWeb.Services
         {
             return _jwtService.GenerateToken(user.Id.ToString(), user.Role);
         }
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await _databaseService.GetAllAsync<User>();
+        }
     }
 }

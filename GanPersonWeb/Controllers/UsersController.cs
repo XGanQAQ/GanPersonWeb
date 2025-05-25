@@ -78,6 +78,17 @@ namespace GanPersonWeb.Controllers
             await _userService.DeleteUserAsync(id);
             return NoContent();
         }
+
+        //获得所有用户信息的接口，仅限管理员
+        // 获得所有用户信息的接口，仅限管理员
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            // 这里假设 UserService 有一个 GetAllUsersAsync 方法
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
     }
 
     public class LoginRequest
