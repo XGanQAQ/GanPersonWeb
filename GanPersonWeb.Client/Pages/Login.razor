@@ -8,11 +8,11 @@
     {
         <MudPaper Class="mt-10" Elevation="4">
             <MudContainer>
-                <MudText Typo="Typo.h5" Class="mb-4">×¢²á</MudText>
+                <MudText Typo="Typo.h5" Class="mb-4">æ³¨å†Œ</MudText>
                 <MudTextField @bind-Value="email" Label="Email" Variant="Variant.Filled" InputType="InputType.Email" />
                 <MudTextField @bind-Value="username" Label="Username" Variant="Variant.Filled" />
                 <MudTextField @bind-Value="password" Label="Password" Variant="Variant.Filled" InputType="InputType.Password" />
-                <MudButton OnClick="HandleRegister" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">×¢²á</MudButton>
+                <MudButton OnClick="HandleRegister" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">æ³¨å†Œ</MudButton>
                 <MudText Color="Color.Error" Class="mt-2">@errorMessage</MudText>
             </MudContainer>
         </MudPaper>
@@ -21,13 +21,13 @@
     {
         <MudPaper Class="mt-10" Elevation="4">
             <MudContainer>
-                <MudText Typo="Typo.h5" Class="mb-4">µÇÈë</MudText>
+                <MudText Typo="Typo.h5" Class="mb-4">ç™»å…¥</MudText>
                 <MudTextField @bind-Value="username" Label="Username" Variant="Variant.Filled" />
                 <MudTextField @bind-Value="password" Label="Password" Variant="Variant.Filled" InputType="InputType.Password" />
                 <MudStack Row>
-                    <MudButton OnClick="HandleLogin" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">µÇÂ½</MudButton>
+                    <MudButton OnClick="HandleLogin" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">ç™»é™†</MudButton>
                     <MudSpacer></MudSpacer>
-                    <MudButton OnClick="ChangeRegistering" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Ã»ÓÐÕË»§£¿</MudButton>
+                    <MudButton OnClick="ChangeRegistering" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">æ²¡æœ‰è´¦æˆ·ï¼Ÿ</MudButton>
                 </MudStack>
                 <MudText Color="Color.Error" Class="mt-2">@errorMessage</MudText>
             </MudContainer>
@@ -62,7 +62,7 @@
             errorMessage = "Invalid username or password.";
         }
     }   
-    //×¢²á
+    //æ³¨å†Œ
     private async Task HandleRegister()
     {
         errorMessage = string.Empty;
