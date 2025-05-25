@@ -1,4 +1,4 @@
-using GanPersonWeb.Services;
+ï»¿using GanPersonWeb.Services;
 using GanPersonWeb.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +35,7 @@ namespace GanPersonWeb.Controllers
             return Ok(new { Token = token });
         }
 
-        //»ñµÃ×Ô¼ºµÄĞÅÏ¢
+        //è·å¾—è‡ªå·±çš„ä¿¡æ¯
         [Authorize]
         [HttpGet("me")]
         public async Task<IActionResult> GetMe()
@@ -79,13 +79,13 @@ namespace GanPersonWeb.Controllers
             return NoContent();
         }
 
-        //»ñµÃËùÓĞÓÃ»§ĞÅÏ¢µÄ½Ó¿Ú£¬½öÏŞ¹ÜÀíÔ±
-        // »ñµÃËùÓĞÓÃ»§ĞÅÏ¢µÄ½Ó¿Ú£¬½öÏŞ¹ÜÀíÔ±
+        //è·å¾—æ‰€æœ‰ç”¨æˆ·ä¿¡æ¯çš„æ¥å£ï¼Œä»…é™ç®¡ç†å‘˜
+        // è·å¾—æ‰€æœ‰ç”¨æˆ·ä¿¡æ¯çš„æ¥å£ï¼Œä»…é™ç®¡ç†å‘˜
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            // ÕâÀï¼ÙÉè UserService ÓĞÒ»¸ö GetAllUsersAsync ·½·¨
+            // è¿™é‡Œå‡è®¾ UserService æœ‰ä¸€ä¸ª GetAllUsersAsync æ–¹æ³•
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);
         }

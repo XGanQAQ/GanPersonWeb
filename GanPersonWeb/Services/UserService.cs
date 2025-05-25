@@ -1,4 +1,4 @@
-using GanPersonWeb.Shared.Models;
+ï»¿using GanPersonWeb.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,8 +19,8 @@ namespace GanPersonWeb.Services
 
         }
 
-        //´´½¨³õÊ¼¹ÜÀíÔ±ÓÃ»§
-        //¸Ã·½·¨»á¼ì²éÊı¾İ¿âÖĞÊÇ·ñÒÑ¾­´æÔÚÓÃ»§£¬Èç¹û²»´æÔÚ£¬Ôò´´½¨Ò»¸öĞÂµÄ¹ÜÀíÔ±ÓÃ»§
+        //åˆ›å»ºåˆå§‹ç®¡ç†å‘˜ç”¨æˆ·
+        //è¯¥æ–¹æ³•ä¼šæ£€æŸ¥æ•°æ®åº“ä¸­æ˜¯å¦å·²ç»å­˜åœ¨ç”¨æˆ·ï¼Œå¦‚æœä¸å­˜åœ¨ï¼Œåˆ™åˆ›å»ºä¸€ä¸ªæ–°çš„ç®¡ç†å‘˜ç”¨æˆ·
         public async Task CreateInitialAdminUserAsync(string username, string password)
         {
             var existingUsers = await _databaseService.GetAllAsync<User>();

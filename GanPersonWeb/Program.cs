@@ -1,4 +1,4 @@
-using GanPersonWeb.Client.Pages;
+ï»¿using GanPersonWeb.Client.Pages;
 using GanPersonWeb.Client.Services;
 using GanPersonWeb.Components;
 using GanPersonWeb.Data;
@@ -18,7 +18,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Ìí¼ÓJWTÈÏÖ¤·şÎñ
+// æ·»åŠ JWTè®¤è¯æœåŠ¡
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,7 +66,7 @@ if (builder.Environment.IsDevelopment() && DevelopEnvUseMemoryDb=="true")
 }
 else
 {
-    // Ê¹ÓÃSQLiteÊı¾İ¿â
+    // ä½¿ç”¨SQLiteæ•°æ®åº“
     //DataSource=:memory:
     //Data Source=GanPerson.db
     builder.Services.AddDbContext<GanPersonDbContext>(options =>
@@ -74,7 +74,7 @@ else
 }
 
 
-builder.Services.AddControllers(); // Ìí¼Ó¿ØÖÆÆ÷·şÎñ
+builder.Services.AddControllers(); // æ·»åŠ æ§åˆ¶å™¨æœåŠ¡
 
 builder.Services.AddScoped<DatabaseService>();
 builder.Services.AddScoped<ProjectService>();
@@ -92,13 +92,13 @@ ClientServices.RegisterServices(builder.Services);
 
 var app = builder.Build();
 
-// ÔÚÓ¦ÓÃÆô¶¯Ê±¼ì²é²¢²åÈëÄ¬ÈÏ¸öÈËĞÅÏ¢
+// åœ¨åº”ç”¨å¯åŠ¨æ—¶æ£€æŸ¥å¹¶æ’å…¥é»˜è®¤ä¸ªäººä¿¡æ¯
 using (var scope = app.Services.CreateScope())
 {
     var personalInfoService = scope.ServiceProvider.GetRequiredService<PersonalInfoService>();
     await personalInfoService.EnsureDefaultPersonalInfoAsync();
 }
-// ´´½¨³õÊ¼¹ÜÀíÔ±ÓÃ»§
+// åˆ›å»ºåˆå§‹ç®¡ç†å‘˜ç”¨æˆ·
 using (var scope = app.Services.CreateScope())
 {
     var userService = scope.ServiceProvider.GetRequiredService<UserService>();
@@ -119,13 +119,13 @@ using (var scope = app.Services.CreateScope())
     }
     await userService.CreateInitialAdminUserAsync(userName, password);
 }
-//´´½¨³õÊ¼²©¿Í
+//åˆ›å»ºåˆå§‹åšå®¢
 using (var scope = app.Services.CreateScope())
 {
     var blogService = scope.ServiceProvider.GetRequiredService<BlogService>();
     await blogService.CreateInitialBlogsAsync();
 }
-//´´½¨³õÊ¼ÏîÄ¿
+//åˆ›å»ºåˆå§‹é¡¹ç›®
 using (var scope = app.Services.CreateScope())
 {
     var projectService = scope.ServiceProvider.GetRequiredService<GanPersonWeb.Services.ProjectService>();
@@ -149,7 +149,7 @@ app.MapControllers();
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // ±ØĞë¼ÓÉÏÕâ¾ä
+app.UseAuthentication(); // å¿…é¡»åŠ ä¸Šè¿™å¥
 app.UseAuthorization();
 
 app.UseAntiforgery();

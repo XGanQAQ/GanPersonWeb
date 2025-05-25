@@ -1,4 +1,4 @@
-using System.Net.Http;
+ï»¿using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
@@ -60,19 +60,19 @@ namespace GanPersonWeb.Client.Services
             return response.IsSuccessStatusCode;
         }
 
-        //ÑéÖ¤ÊÇ·ñÊÇ¹ÜÀíÔ±
+        //éªŒè¯æ˜¯å¦æ˜¯ç®¡ç†å‘˜
         public async Task<bool> IsAdmin()
         {
             var role = await jwtHelperService.GetClaim(ClaimTypes.Role);
             return role == "Admin";
         }
 
-        //ÑéÖ¤ÊÇ·ñµÇÂ¼
+        //éªŒè¯æ˜¯å¦ç™»å½•
         public async Task<bool> IsAuthenticated()
         {
-            //ÏÈ´Ó±¾µØ´æ´¢ÖĞ»ñÈ¡JWTÁîÅÆ
+            //å…ˆä»æœ¬åœ°å­˜å‚¨ä¸­è·å–JWTä»¤ç‰Œ
             var token = await jwtHelperService.GetTokenAsync();
-            //Èç¹ûÁîÅÆÎª¿Õ£¬Ôò±íÊ¾Î´µÇÂ¼
+            //å¦‚æœä»¤ç‰Œä¸ºç©ºï¼Œåˆ™è¡¨ç¤ºæœªç™»å½•
             if (string.IsNullOrEmpty(token))
             {
                 return false;
@@ -80,8 +80,8 @@ namespace GanPersonWeb.Client.Services
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
             var expiration = jwtToken.ValidTo;
-            //Èç¹ûÁîÅÆÎ´¹ıÆÚ£¬Ôò±íÊ¾ÒÑµÇÂ¼
-            //·µ»Øtrue£¬²¢½«ÁîÅÆÌí¼Óµ½ÇëÇóÍ·ÖĞ
+            //å¦‚æœä»¤ç‰Œæœªè¿‡æœŸï¼Œåˆ™è¡¨ç¤ºå·²ç™»å½•
+            //è¿”å›trueï¼Œå¹¶å°†ä»¤ç‰Œæ·»åŠ åˆ°è¯·æ±‚å¤´ä¸­
             if (expiration> DateTime.UtcNow)
             {
                 _httpClient.DefaultRequestHeaders.Authorization
@@ -91,7 +91,7 @@ namespace GanPersonWeb.Client.Services
             return false;
         }
 
-        //µÇ³ö
+        //ç™»å‡º
         public async Task LogoutAsync()
         {
             await jwtHelperService.SaveTokenAsync(string.Empty);
@@ -99,7 +99,7 @@ namespace GanPersonWeb.Client.Services
             OnLogoutSuccess?.Invoke();
         }
 
-        //µ÷ÓÃºó¶Ë½Ó¿Ú»ñÈ¡ÓÃ»§ĞÅÏ¢
+        //è°ƒç”¨åç«¯æ¥å£è·å–ç”¨æˆ·ä¿¡æ¯
         public async Task<User> GetMyselfUserInformation()
         {
             if(await IsAuthenticated())
@@ -111,10 +111,10 @@ namespace GanPersonWeb.Client.Services
                 }
                 else
                 {
-                    return new User { Username = "Î´ÕÒµ½" };
+                    return new User { Username = "æœªæ‰¾åˆ°" };
                 }
             }
-            return new User { Username="Î´µÇÂ½"};
+            return new User { Username="æœªç™»é™†"};
         }      
     }
 }

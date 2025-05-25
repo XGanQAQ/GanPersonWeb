@@ -1,4 +1,4 @@
-using GanPersonWeb.Data;
+ï»¿using GanPersonWeb.Data;
 using GanPersonWeb.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using Markdig;
@@ -6,13 +6,13 @@ using Markdig;
 
 namespace GanPersonWeb.Services
 {
-    //×ÜÌåÊı¾İ
+    //æ€»ä½“æ•°æ®
     public class BlogsData
     {
-        public int BlogsCount { get; set; } // ²©¿Í×ÜÊı
-        public int BlogsVisitCount { get; set; } // ²©¿Í·ÃÎÊÁ¿
-        public int BlogsWriteCount { get; set; } // ²©¿ÍĞ´×÷Á¿
-        public DateTime LastUpdateTime { get; set; } // ×îºó¸üĞÂÊ±¼ä
+        public int BlogsCount { get; set; } // åšå®¢æ€»æ•°
+        public int BlogsVisitCount { get; set; } // åšå®¢è®¿é—®é‡
+        public int BlogsWriteCount { get; set; } // åšå®¢å†™ä½œé‡
+        public DateTime LastUpdateTime { get; set; } // æœ€åæ›´æ–°æ—¶é—´
     }
 
     public class BlogService
@@ -33,7 +33,7 @@ namespace GanPersonWeb.Services
         {
             var blog = await _databaseService.GetByIdAsync<Blog>(id);
 
-            //½«Markdown×ª»»ÎªHTML
+            //å°†Markdownè½¬æ¢ä¸ºHTML
             if(blog!=null && string.IsNullOrEmpty(blog.HtmlContent))
             {
                 blog.HtmlContent = Markdown.ToHtml(blog.Content);
@@ -42,16 +42,16 @@ namespace GanPersonWeb.Services
             return blog;
         }
 
-        //»ñµÃÖ¸¶¨·¶Î§µÄ²©¿Í
+        //è·å¾—æŒ‡å®šèŒƒå›´çš„åšå®¢
         public async Task<List<Blog>> GetBlogsInRangeAsync(int start, int count)
         {
             return await _databaseService.GetRangeAsync<Blog>(start, count);
         }
 
-        //ÒòÎª²©¿ÍÊı¾İºóÆÚ¿ÉÄÜ»áºÜ´ó£¬ËùÒÔ²ÉÓÃÖ±½Ó²Ù×÷Êı¾İ¿âÉÏÏÂÎÄ½øĞĞ¶ÁÈ¡£¬£¨¶ø²»ÊÇ¶ÁÈ¡ËùÓĞ²©¿ÍÊı¾İ£©
+        //å› ä¸ºåšå®¢æ•°æ®åæœŸå¯èƒ½ä¼šå¾ˆå¤§ï¼Œæ‰€ä»¥é‡‡ç”¨ç›´æ¥æ“ä½œæ•°æ®åº“ä¸Šä¸‹æ–‡è¿›è¡Œè¯»å–ï¼Œï¼ˆè€Œä¸æ˜¯è¯»å–æ‰€æœ‰åšå®¢æ•°æ®ï¼‰
         public async Task<BlogsData> GetBlogsDataAsync()
         {
-            // Ö±½ÓÓÃ DbContext ²éÑ¯¾ÛºÏÊı¾İ
+            // ç›´æ¥ç”¨ DbContext æŸ¥è¯¢èšåˆæ•°æ®
             using var context = _databaseService.GetDbContext();
 
             var blogsCount = await context.Blogs.CountAsync();
@@ -72,13 +72,13 @@ namespace GanPersonWeb.Services
 
         public async Task AddBlogAsync(Blog blog)
         {
-            // ½«Markdown×ª»»ÎªHTML
+            // å°†Markdownè½¬æ¢ä¸ºHTML
             if (blog != null && string.IsNullOrEmpty(blog.HtmlContent))
             {
                 blog.HtmlContent = Markdown.ToHtml(blog.Content);
             }
 
-            // È·±£´«µİµÄ blog ²»Îª null
+            // ç¡®ä¿ä¼ é€’çš„ blog ä¸ä¸º null
             if (blog == null)
             {
                 throw new ArgumentNullException(nameof(blog), "Blog cannot be null.");
@@ -89,13 +89,13 @@ namespace GanPersonWeb.Services
 
         public async Task UpdateBlogAsync(Blog blog)
         {
-            //½«Markdown×ª»»ÎªHTML
+            //å°†Markdownè½¬æ¢ä¸ºHTML
             if (blog != null)
             {
                 blog.HtmlContent = Markdown.ToHtml(blog.Content);
             }
 
-            // È·±£´«µİµÄ blog ²»Îª null
+            // ç¡®ä¿ä¼ é€’çš„ blog ä¸ä¸º null
             if (blog == null)
             {
                 throw new ArgumentNullException(nameof(blog), "Blog cannot be null.");
@@ -120,7 +120,7 @@ namespace GanPersonWeb.Services
             }
         }
 
-        // ³õÊ¼»¯²©¿ÍÊı¾İ£¨½öÔÚÊı¾İ¿âÎª¿ÕÊ±²åÈëÒ»Ğ©³õÊ¼²©¿Í£©
+        // åˆå§‹åŒ–åšå®¢æ•°æ®ï¼ˆä»…åœ¨æ•°æ®åº“ä¸ºç©ºæ—¶æ’å…¥ä¸€äº›åˆå§‹åšå®¢ï¼‰
         public async Task CreateInitialBlogsAsync()
         {
             using var context = _databaseService.GetDbContext();
@@ -130,31 +130,31 @@ namespace GanPersonWeb.Services
                 {
                     new Blog
                     {
-                        Title = "»¶Ó­À´µ½ÎÒµÄ²©¿Í",
-                        Description = "ÕâÊÇÎÒµÄµÚÒ»Æª²©¿Í£¬»¶Ó­´ó¼Ò£¡",
-                        Content = "ÕâÀïÊÇ²©¿ÍÄÚÈİÊ¾Àı¡£Äã¿ÉÒÔÔÚÕâÀï·ÖÏíÄãµÄÏë·¨ºÍ¹ÊÊÂ¡£",
+                        Title = "æ¬¢è¿æ¥åˆ°æˆ‘çš„åšå®¢",
+                        Description = "è¿™æ˜¯æˆ‘çš„ç¬¬ä¸€ç¯‡åšå®¢ï¼Œæ¬¢è¿å¤§å®¶ï¼",
+                        Content = "è¿™é‡Œæ˜¯åšå®¢å†…å®¹ç¤ºä¾‹ã€‚ä½ å¯ä»¥åœ¨è¿™é‡Œåˆ†äº«ä½ çš„æƒ³æ³•å’Œæ•…äº‹ã€‚",
                         ImageUrl = "/uploads/default_card.png",
                         PublishDate = DateTime.Now,
-                        Tags = new List<string> { "¹«¸æ", "»¶Ó­" },
+                        Tags = new List<string> { "å…¬å‘Š", "æ¬¢è¿" },
                         ViewCount = 0,
                         TalkCount = 0
                     },
                     new Blog
                     {
-                        Title = "Blazor WebAssembly ³õÌåÑé",
-                        Description = "¼ÇÂ¼ÎÒÊ¹ÓÃ Blazor WebAssembly µÄÒ»Ğ©ĞÄµÃ¡£",
-                        Content = "Blazor WebAssembly ÈÃÇ°¶Ë¿ª·¢±äµÃ¸ü¼ÓÓĞÈ¤ºÍ¸ßĞ§¡£",
+                        Title = "Blazor WebAssembly åˆä½“éªŒ",
+                        Description = "è®°å½•æˆ‘ä½¿ç”¨ Blazor WebAssembly çš„ä¸€äº›å¿ƒå¾—ã€‚",
+                        Content = "Blazor WebAssembly è®©å‰ç«¯å¼€å‘å˜å¾—æ›´åŠ æœ‰è¶£å’Œé«˜æ•ˆã€‚",
                         ImageUrl = "",
                         PublishDate = DateTime.Now,
-                        Tags = new List<string> { "Blazor", "WebAssembly", "¿ª·¢" },
+                        Tags = new List<string> { "Blazor", "WebAssembly", "å¼€å‘" },
                         ViewCount = 0,
                         TalkCount = 0
                     },
                     new Blog
                     {
-                        Title = "MarkdownÓï·¨",
-                        Description = "Markdown ÊÇÒ»ÖÖÇáÁ¿¼¶µÄ±ê¼ÇÓïÑÔ£¬³£ÓÃÓÚ±àĞ´ÎÄµµ¡¢±Ê¼Ç»ò²©¿Í£¬Óï·¨¼òµ¥Ò×ÓÃ£¬ÒÔÏÂÊÇÒ»Ğ©³£ÓÃµÄ Markdown ¸ñÊ½",
-                        Content = "### 1. ±êÌâ\r\nÊ¹ÓÃ `#` ºÅ±íÊ¾±êÌâ£¬`#` µÄÊıÁ¿¶ÔÓ¦±êÌâ¼¶±ğ£¨1-6¼¶£©¡£\r\n```markdown\r\n# Ò»¼¶±êÌâ\r\n## ¶ş¼¶±êÌâ\r\n### Èı¼¶±êÌâ\r\n```\r\n\r\n### 2. ¼Ó´ÖÓëĞ±Ìå\r\n- **¼Ó´Ö**£ºÊ¹ÓÃ `**¼Ó´ÖÄÚÈİ**` »ò `__¼Ó´ÖÄÚÈİ__`\r\n- *Ğ±Ìå*£ºÊ¹ÓÃ `*Ğ±ÌåÄÚÈİ*` »ò `_Ğ±ÌåÄÚÈİ_`\r\n- ***¼Ó´Ö¼ÓĞ±Ìå***£ºÊ¹ÓÃ `***¼Ó´Ö¼ÓĞ±ÌåÄÚÈİ***`\r\n\r\n### 3. ÁĞ±í\r\n- **ÎŞĞòÁĞ±í**£ºÊ¹ÓÃ `-`¡¢`*` »ò `+` ±íÊ¾Ã¿Ò»Ïî\r\n  ```markdown\r\n  - µÚÒ»Ïî\r\n  - µÚ¶şÏî\r\n  ```\r\n\r\n- **ÓĞĞòÁĞ±í**£ºÊ¹ÓÃÊı×Öºó¸ú `.` ±íÊ¾Ã¿Ò»Ïî\r\n  ```markdown\r\n  1. µÚÒ»Ïî\r\n  2. µÚ¶şÏî\r\n  ```\r\n\r\n### 4. Á´½ÓÓëÍ¼Æ¬\r\n- **Á´½Ó**£º`[Á´½ÓÎÄ±¾](URL)`\r\n  ```markdown\r\n  [Google](https://www.google.com)\r\n  ```\r\n\r\n- **Í¼Æ¬**£º`![Í¼Æ¬ËµÃ÷](Í¼Æ¬URL)`\r\n  ```markdown\r\n  ![Logo](https://example.com/logo.png)\r\n  ```\r\n\r\n### 5. ÒıÓÃ\r\nÊ¹ÓÃ `>` ±íÊ¾ÒıÓÃ£¬Ö§³Ö¶à²ãÇ¶Ì×¡£\r\n```markdown\r\n> ÕâÊÇÒ»¸öÒıÓÃ\r\n>> Ç¶Ì×ÒıÓÃ\r\n```\r\n\r\n### 6. ´úÂë\r\n- **ĞĞÄÚ´úÂë**£ºÊ¹ÓÃ·´ÒıºÅ ``\r\n  ```markdown\r\n  Ê¹ÓÃ `code` ±íÊ¾ĞĞÄÚ´úÂë\r\n  ```\r\n\r\n- **´úÂë¿é**£ºÊ¹ÓÃÈı¸ö·´ÒıºÅ ``` °ü¹ü´úÂë£¬²¢¿ÉÖ¸¶¨ÓïÑÔ£¨Èç `python`£©\r\n  ```markdown\r\n  ```python\r\n  print(\"Hello, World!\")\r\n  ```\r\n  ```\r\n\r\n### 7. ±í¸ñ\r\nÊ¹ÓÃ `|` ·Ö¸ôÁĞ£¬`-` ·Ö¸ô±íÍ·ºÍ±í¸ñÄÚÈİ\r\n| ĞÕÃû   | ÄêÁä |\r\n| ------ | ---- |\r\n| Ğ¡Ã÷   | 20   |\r\n| Ğ¡ºì   | 22   |\r\n```markdown\r\n\r\n| ĞÕÃû   | ÄêÁä |\r\n| ------ | ---- |\r\n| Ğ¡Ã÷   | 20   |\r\n| Ğ¡ºì   | 22   |\r\n\r\n```\r\n\r\n\r\n### 8. ·Ö¸îÏß\r\nÊ¹ÓÃ `---`¡¢`***` »ò `___` ±íÊ¾·Ö¸îÏß\r\n```markdown\r\n---\r\n```\r\n\r\n### 9. ÈÎÎñÁĞ±í\r\nÊ¹ÓÃ `[ ]` »ò `[x]` ±íÊ¾´ı°ìÊÂÏî\r\nÎªÁË·ÀÖ¹±»TODOsÊ¶±ğ£¬ÎÒÔÚÇ°Ãæ¼ÓÁË//£¬Êµ¼ÊÊ¹ÓÃÊ±ÇëÉ¾³ı\r\n\r\n// - [x] ÒÑÍê³É\r\n// - [ ] ´ıÍê³É\r\n```markdown\r\n// - [x] ÒÑÍê³É\r\n// - [ ] ´ıÍê³É\r\n```\r\n\r\n### 10£º»»ĞĞ·Ö¸ô\r\nÔÚĞĞÄ©Ìí¼ÓÁ½¸ö¿Õ¸ñ£¬È»ºó°´»Ø³µ£º\r\n```markdown\r\nµÚÒ»ĞĞÄÚÈİ  \r\nµÚ¶şĞĞÄÚÈİ\r\n```\r\n\r\n### 11£º¶ÎÂä·Ö¸ô\r\nÔÚÁ½¶ÎÎÄ±¾Ö®¼äÁô³öÒ»¸ö¿ÕĞĞ£¬Õâ½«²úÉúÒ»¸öĞÂµÄ¶ÎÂä£º\r\n```markdown\r\nµÚÒ»¶ÎÄÚÈİ¡£\r\n\r\nµÚ¶ş¶ÎÄÚÈİ¡£\r\n```\r\n\r\nÕâĞ©ÊÇ Markdown ÖĞ×î³£ÓÃµÄ¸ñÊ½£¬Áé»îÔËÓÃÕâĞ©¸ñÊ½¿ÉÒÔÈÃÄãµÄÎÄµµ¸ü¾ß½á¹¹ºÍ¿É¶ÁĞÔ¡£\r\n",
+                        Title = "Markdownè¯­æ³•",
+                        Description = "Markdown æ˜¯ä¸€ç§è½»é‡çº§çš„æ ‡è®°è¯­è¨€ï¼Œå¸¸ç”¨äºç¼–å†™æ–‡æ¡£ã€ç¬”è®°æˆ–åšå®¢ï¼Œè¯­æ³•ç®€å•æ˜“ç”¨ï¼Œä»¥ä¸‹æ˜¯ä¸€äº›å¸¸ç”¨çš„ Markdown æ ¼å¼",
+                        Content = "### 1. æ ‡é¢˜\r\nä½¿ç”¨ `#` å·è¡¨ç¤ºæ ‡é¢˜ï¼Œ`#` çš„æ•°é‡å¯¹åº”æ ‡é¢˜çº§åˆ«ï¼ˆ1-6çº§ï¼‰ã€‚\r\n```markdown\r\n# ä¸€çº§æ ‡é¢˜\r\n## äºŒçº§æ ‡é¢˜\r\n### ä¸‰çº§æ ‡é¢˜\r\n```\r\n\r\n### 2. åŠ ç²—ä¸æ–œä½“\r\n- **åŠ ç²—**ï¼šä½¿ç”¨ `**åŠ ç²—å†…å®¹**` æˆ– `__åŠ ç²—å†…å®¹__`\r\n- *æ–œä½“*ï¼šä½¿ç”¨ `*æ–œä½“å†…å®¹*` æˆ– `_æ–œä½“å†…å®¹_`\r\n- ***åŠ ç²—åŠ æ–œä½“***ï¼šä½¿ç”¨ `***åŠ ç²—åŠ æ–œä½“å†…å®¹***`\r\n\r\n### 3. åˆ—è¡¨\r\n- **æ— åºåˆ—è¡¨**ï¼šä½¿ç”¨ `-`ã€`*` æˆ– `+` è¡¨ç¤ºæ¯ä¸€é¡¹\r\n  ```markdown\r\n  - ç¬¬ä¸€é¡¹\r\n  - ç¬¬äºŒé¡¹\r\n  ```\r\n\r\n- **æœ‰åºåˆ—è¡¨**ï¼šä½¿ç”¨æ•°å­—åè·Ÿ `.` è¡¨ç¤ºæ¯ä¸€é¡¹\r\n  ```markdown\r\n  1. ç¬¬ä¸€é¡¹\r\n  2. ç¬¬äºŒé¡¹\r\n  ```\r\n\r\n### 4. é“¾æ¥ä¸å›¾ç‰‡\r\n- **é“¾æ¥**ï¼š`[é“¾æ¥æ–‡æœ¬](URL)`\r\n  ```markdown\r\n  [Google](https://www.google.com)\r\n  ```\r\n\r\n- **å›¾ç‰‡**ï¼š`![å›¾ç‰‡è¯´æ˜](å›¾ç‰‡URL)`\r\n  ```markdown\r\n  ![Logo](https://example.com/logo.png)\r\n  ```\r\n\r\n### 5. å¼•ç”¨\r\nä½¿ç”¨ `>` è¡¨ç¤ºå¼•ç”¨ï¼Œæ”¯æŒå¤šå±‚åµŒå¥—ã€‚\r\n```markdown\r\n> è¿™æ˜¯ä¸€ä¸ªå¼•ç”¨\r\n>> åµŒå¥—å¼•ç”¨\r\n```\r\n\r\n### 6. ä»£ç \r\n- **è¡Œå†…ä»£ç **ï¼šä½¿ç”¨åå¼•å· ``\r\n  ```markdown\r\n  ä½¿ç”¨ `code` è¡¨ç¤ºè¡Œå†…ä»£ç \r\n  ```\r\n\r\n- **ä»£ç å—**ï¼šä½¿ç”¨ä¸‰ä¸ªåå¼•å· ``` åŒ…è£¹ä»£ç ï¼Œå¹¶å¯æŒ‡å®šè¯­è¨€ï¼ˆå¦‚ `python`ï¼‰\r\n  ```markdown\r\n  ```python\r\n  print(\"Hello, World!\")\r\n  ```\r\n  ```\r\n\r\n### 7. è¡¨æ ¼\r\nä½¿ç”¨ `|` åˆ†éš”åˆ—ï¼Œ`-` åˆ†éš”è¡¨å¤´å’Œè¡¨æ ¼å†…å®¹\r\n| å§“å   | å¹´é¾„ |\r\n| ------ | ---- |\r\n| å°æ˜   | 20   |\r\n| å°çº¢   | 22   |\r\n```markdown\r\n\r\n| å§“å   | å¹´é¾„ |\r\n| ------ | ---- |\r\n| å°æ˜   | 20   |\r\n| å°çº¢   | 22   |\r\n\r\n```\r\n\r\n\r\n### 8. åˆ†å‰²çº¿\r\nä½¿ç”¨ `---`ã€`***` æˆ– `___` è¡¨ç¤ºåˆ†å‰²çº¿\r\n```markdown\r\n---\r\n```\r\n\r\n### 9. ä»»åŠ¡åˆ—è¡¨\r\nä½¿ç”¨ `[ ]` æˆ– `[x]` è¡¨ç¤ºå¾…åŠäº‹é¡¹\r\nä¸ºäº†é˜²æ­¢è¢«TODOsè¯†åˆ«ï¼Œæˆ‘åœ¨å‰é¢åŠ äº†//ï¼Œå®é™…ä½¿ç”¨æ—¶è¯·åˆ é™¤\r\n\r\n// - [x] å·²å®Œæˆ\r\n// - [ ] å¾…å®Œæˆ\r\n```markdown\r\n// - [x] å·²å®Œæˆ\r\n// - [ ] å¾…å®Œæˆ\r\n```\r\n\r\n### 10ï¼šæ¢è¡Œåˆ†éš”\r\nåœ¨è¡Œæœ«æ·»åŠ ä¸¤ä¸ªç©ºæ ¼ï¼Œç„¶åæŒ‰å›è½¦ï¼š\r\n```markdown\r\nç¬¬ä¸€è¡Œå†…å®¹  \r\nç¬¬äºŒè¡Œå†…å®¹\r\n```\r\n\r\n### 11ï¼šæ®µè½åˆ†éš”\r\nåœ¨ä¸¤æ®µæ–‡æœ¬ä¹‹é—´ç•™å‡ºä¸€ä¸ªç©ºè¡Œï¼Œè¿™å°†äº§ç”Ÿä¸€ä¸ªæ–°çš„æ®µè½ï¼š\r\n```markdown\r\nç¬¬ä¸€æ®µå†…å®¹ã€‚\r\n\r\nç¬¬äºŒæ®µå†…å®¹ã€‚\r\n```\r\n\r\nè¿™äº›æ˜¯ Markdown ä¸­æœ€å¸¸ç”¨çš„æ ¼å¼ï¼Œçµæ´»è¿ç”¨è¿™äº›æ ¼å¼å¯ä»¥è®©ä½ çš„æ–‡æ¡£æ›´å…·ç»“æ„å’Œå¯è¯»æ€§ã€‚\r\n",
                         ImageUrl = "/uploads/default_card.png",
                         PublishDate = DateTime.Now,
                         Tags = new List<string> { "markdown" },
@@ -168,7 +168,7 @@ namespace GanPersonWeb.Services
             }
         }
 
-        // »ñµÃËùÓĞ²©¿Í±êÇ©£¨È¥ÖØ£©
+        // è·å¾—æ‰€æœ‰åšå®¢æ ‡ç­¾ï¼ˆå»é‡ï¼‰
         public async Task<List<string>> GetAllTagsAsync()
         {
             using var context = _databaseService.GetDbContext();
@@ -178,7 +178,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync();
         }
 
-        // »ñµÃÖ¸¶¨±êÇ©µÄ²©¿Í
+        // è·å¾—æŒ‡å®šæ ‡ç­¾çš„åšå®¢
         public async Task<List<Blog>> GetBlogsByTagAsync(string tag)
         {
             using var context = _databaseService.GetDbContext();
@@ -188,7 +188,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync();
         }
 
-        // »ñµÃËùÓĞ²©¿ÍÀàĞÍ£¨È¥ÖØ£©
+        // è·å¾—æ‰€æœ‰åšå®¢ç±»å‹ï¼ˆå»é‡ï¼‰
         public async Task<List<string>> GetAllTypesAsync()
         {
             using var context = _databaseService.GetDbContext();
@@ -198,7 +198,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync();
         }
 
-        // »ñµÃÖ¸¶¨ÀàĞÍµÄ²©¿Í
+        // è·å¾—æŒ‡å®šç±»å‹çš„åšå®¢
         public async Task<List<Blog>> GetBlogsByTypeAsync(string type)
         {
             using var context = _databaseService.GetDbContext();
@@ -208,7 +208,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync();
         }
 
-        // »ñµÃÈÈÃÅ²©¿Í£¨°´¹Û¿´Á¿½µĞò£©
+        // è·å¾—çƒ­é—¨åšå®¢ï¼ˆæŒ‰è§‚çœ‹é‡é™åºï¼‰
         public async Task<List<Blog>> GetHotBlogsAsync(int start, int count)
         {
             using var context = _databaseService.GetDbContext();
@@ -219,7 +219,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync();
         }
 
-        // »ñµÃ×îĞÂ²©¿Í£¨°´Ê±¼ä½µĞò£©
+        // è·å¾—æœ€æ–°åšå®¢ï¼ˆæŒ‰æ—¶é—´é™åºï¼‰
         public async Task<List<Blog>> GetNewBlogsAsync(int start, int count)
         {
             using var context = _databaseService.GetDbContext();
@@ -230,7 +230,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync();
         }
 
-        // ¾«¼ò°æ£º»ñÈ¡Ö¸¶¨±êÇ©µÄ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆï¼šè·å–æŒ‡å®šæ ‡ç­¾çš„åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         public async Task<List<object>> GetShortBlogsByTagAsync(string tag)
         {
             using var context = _databaseService.GetDbContext();
@@ -251,7 +251,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync<object>();
         }
 
-        // ¾«¼ò°æ£º»ñÈ¡Ö¸¶¨ÀàĞÍµÄ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆï¼šè·å–æŒ‡å®šç±»å‹çš„åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         public async Task<List<object>> GetShortBlogsByTypeAsync(string type)
         {
             using var context = _databaseService.GetDbContext();
@@ -272,7 +272,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync<object>();
         }
 
-        // ¾«¼ò°æ£º»ñÈ¡ÈÈÃÅ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆï¼šè·å–çƒ­é—¨åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         public async Task<List<object>> GetShortHotBlogsAsync(int start, int count)
         {
             using var context = _databaseService.GetDbContext();
@@ -294,7 +294,7 @@ namespace GanPersonWeb.Services
                 .ToListAsync<object>();
         }
 
-        // ¾«¼ò°æ£º»ñÈ¡×îĞÂ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆï¼šè·å–æœ€æ–°åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         public async Task<List<object>> GetShortNewBlogsAsync(int start, int count)
         {
             using var context = _databaseService.GetDbContext();

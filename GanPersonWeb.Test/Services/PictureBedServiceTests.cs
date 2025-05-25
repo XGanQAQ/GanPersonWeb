@@ -1,4 +1,4 @@
-using GanPersonWeb.Services;
+﻿using GanPersonWeb.Services;
 using GanPersonWeb.Shared.Models;
 using GanPersonWeb.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -71,7 +71,7 @@ namespace GanPersonWeb.Test.Services
             envMock.Setup(e => e.WebRootPath).Returns(_testRootPath);
             var service = new PictureBedService(_dbService, envMock.Object);
 
-            var result = await service.SaveImageAsync(null!);
+            var result = await service.SaveImageAsync(null!,null!, null!, null!);
 
             result.Should().BeNull();
         }

@@ -1,4 +1,4 @@
-using GanPersonWeb.Services;
+锘縰sing GanPersonWeb.Services;
 using GanPersonWeb.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +60,7 @@ namespace GanPersonWeb.Controllers
             return NoContent();
         }
 
-        // 分页获取项目
+        // 鍒嗛〉鑾峰彇椤圭洰
         [HttpGet("range/{start}/{count}")]
         public async Task<IActionResult> GetProjectsInRange(int start, int count)
         {
@@ -68,7 +68,7 @@ namespace GanPersonWeb.Controllers
             return Ok(projects);
         }
 
-        // 获取项目总数
+        // 鑾峰彇椤圭洰鎬绘暟
         [HttpGet("count")]
         public async Task<IActionResult> GetProjectsCount()
         {

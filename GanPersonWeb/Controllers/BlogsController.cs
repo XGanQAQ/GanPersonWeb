@@ -1,4 +1,4 @@
-using GanPersonWeb.Services;
+ï»¿using GanPersonWeb.Services;
 using GanPersonWeb.Shared.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,11 +29,11 @@ namespace GanPersonWeb.Controllers
             var blog = await _blogService.GetBlogByIdAsync(id);
             if (blog == null)
                 return NotFound();
-            await _blogService.BlogBeViewedAsync(id); // ¸üĞÂ²©¿ÍµÄä¯ÀÀÁ¿
+            await _blogService.BlogBeViewedAsync(id); // æ›´æ–°åšå®¢çš„æµè§ˆé‡
             return Ok(blog);
         }
 
-        //»ñµÃÖ¸¶¨·¶Î§µÄ²©¿Í
+        //è·å¾—æŒ‡å®šèŒƒå›´çš„åšå®¢
         [HttpGet("range/{start}/{count}")]
         public async Task<IActionResult> GetBlogsInRange(int start, int count)
         {
@@ -41,7 +41,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        //»ñµÃ×ÜÌå²©¿ÍÊı¾İ
+        //è·å¾—æ€»ä½“åšå®¢æ•°æ®
         [HttpGet("data")]
         public async Task<IActionResult> GetBlogData()
         {
@@ -86,7 +86,7 @@ namespace GanPersonWeb.Controllers
             return NoContent();
         }
 
-        // ¾«¼ò°æ½Ó¿Ú£º»ñÈ¡ËùÓĞ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆæ¥å£ï¼šè·å–æ‰€æœ‰åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         [HttpGet("short")]
         public async Task<IActionResult> GetShortBlogs()
         {
@@ -105,7 +105,7 @@ namespace GanPersonWeb.Controllers
             return Ok(shortBlogs);
         }
 
-        // ¾«¼ò°æ½Ó¿Ú£º»ñÈ¡Ö¸¶¨·¶Î§µÄ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆæ¥å£ï¼šè·å–æŒ‡å®šèŒƒå›´çš„åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         [HttpGet("short/range/{start}/{count}")]
         public async Task<IActionResult> GetShortBlogsInRange(int start, int count)
         {
@@ -124,7 +124,7 @@ namespace GanPersonWeb.Controllers
             return Ok(shortBlogs);
         }
 
-        // »ñµÃËùÓĞ²©¿Í±êÇ©
+        // è·å¾—æ‰€æœ‰åšå®¢æ ‡ç­¾
         [HttpGet("tags")]
         public async Task<IActionResult> GetBlogTags()
         {
@@ -132,7 +132,7 @@ namespace GanPersonWeb.Controllers
             return Ok(tags);
         }
 
-        // »ñµÃÖ¸¶¨±êÇ©µÄ²©¿Í
+        // è·å¾—æŒ‡å®šæ ‡ç­¾çš„åšå®¢
         [HttpGet("tags/{tag}")]
         public async Task<IActionResult> GetBlogsByTag(string tag)
         {
@@ -140,7 +140,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        // »ñµÃËùÓĞ²©¿ÍÀàĞÍ
+        // è·å¾—æ‰€æœ‰åšå®¢ç±»å‹
         [HttpGet("type")]
         public async Task<IActionResult> GetBlogTypes()
         {
@@ -148,7 +148,7 @@ namespace GanPersonWeb.Controllers
             return Ok(types);
         }
 
-        // »ñµÃÖ¸¶¨ÀàĞÍµÄ²©¿Í
+        // è·å¾—æŒ‡å®šç±»å‹çš„åšå®¢
         [HttpGet("type/{type}")]
         public async Task<IActionResult> GetBlogsByType(string type)
         {
@@ -156,7 +156,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        // »ñµÃÈÈÃÅ²©¿Í£¨°´¹Û¿´Á¿½µĞò£©
+        // è·å¾—çƒ­é—¨åšå®¢ï¼ˆæŒ‰è§‚çœ‹é‡é™åºï¼‰
         [HttpGet("hot/{start:int}/{count:int}")]
         public async Task<IActionResult> GetHotBlogs(int start, int count)
         {
@@ -164,7 +164,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        // »ñµÃ×îĞÂ²©¿Í£¨°´Ê±¼ä½µĞò£©
+        // è·å¾—æœ€æ–°åšå®¢ï¼ˆæŒ‰æ—¶é—´é™åºï¼‰
         [HttpGet("new/{start:int}/{count:int}")]
         public async Task<IActionResult> GetNewBlogs(int start, int count)
         {
@@ -172,7 +172,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        // ¾«¼ò°æ½Ó¿Ú£º»ñÈ¡Ö¸¶¨±êÇ©µÄ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆæ¥å£ï¼šè·å–æŒ‡å®šæ ‡ç­¾çš„åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         [HttpGet("short/tags/{tag}")]
         public async Task<IActionResult> GetShortBlogsByTag(string tag)
         {
@@ -180,7 +180,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        // ¾«¼ò°æ½Ó¿Ú£º»ñÈ¡Ö¸¶¨ÀàĞÍµÄ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆæ¥å£ï¼šè·å–æŒ‡å®šç±»å‹çš„åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         [HttpGet("short/type/{type}")]
         public async Task<IActionResult> GetShortBlogsByType(string type)
         {
@@ -188,7 +188,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        // ¾«¼ò°æ½Ó¿Ú£º»ñÈ¡ÈÈÃÅ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆæ¥å£ï¼šè·å–çƒ­é—¨åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         [HttpGet("short/hot/{start:int}/{count:int}")]
         public async Task<IActionResult> GetShortHotBlogs(int start, int count)
         {
@@ -196,7 +196,7 @@ namespace GanPersonWeb.Controllers
             return Ok(blogs);
         }
 
-        // ¾«¼ò°æ½Ó¿Ú£º»ñÈ¡×îĞÂ²©¿Í£¨²»°üº¬Content×Ö¶Î£©
+        // ç²¾ç®€ç‰ˆæ¥å£ï¼šè·å–æœ€æ–°åšå®¢ï¼ˆä¸åŒ…å«Contentå­—æ®µï¼‰
         [HttpGet("short/new/{start:int}/{count:int}")]
         public async Task<IActionResult> GetShortNewBlogs(int start, int count)
         {

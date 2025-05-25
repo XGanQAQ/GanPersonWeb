@@ -1,4 +1,4 @@
-using GanPersonWeb.Shared.Models;
+ï»¿using GanPersonWeb.Shared.Models;
 
 namespace GanPersonWeb.Services
 {
@@ -35,9 +35,9 @@ namespace GanPersonWeb.Services
             {
                 var defaultInfo = new PersonalInfo
                 {
-                    Name = "Ä¬ÈÏĞÕÃû",
-                    Occupation = "Ä¬ÈÏÖ°Òµ",
-                    Description = "ÕâÊÇÄ¬ÈÏµÄ¸öÈË¼ò½é¡£",
+                    Name = "é»˜è®¤å§“å",
+                    Occupation = "é»˜è®¤èŒä¸š",
+                    Description = "è¿™æ˜¯é»˜è®¤çš„ä¸ªäººç®€ä»‹ã€‚",
                     Email = "default@example.com",
                     ProfileImageUrl = "/uploads/default_head.png",
                     SocialMediaLinks = new List<SocialMediaLink>()

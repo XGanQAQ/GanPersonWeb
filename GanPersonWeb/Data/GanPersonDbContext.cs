@@ -1,4 +1,4 @@
-using GanPersonWeb.Shared.Models;
+ï»¿using GanPersonWeb.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GanPersonWeb.Data
@@ -12,7 +12,7 @@ namespace GanPersonWeb.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<Comment> Comments { get; set; } // ĞÂÔöÆÀÂÛ±í
+        public DbSet<Comment> Comments { get; set; } // æ–°å¢è¯„è®ºè¡¨
         public DbSet<SiteVisit> SiteVisits { get; set; }
     }
 }

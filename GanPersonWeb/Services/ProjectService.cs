@@ -1,4 +1,4 @@
-using GanPersonWeb.Shared.Models;
+ï»¿using GanPersonWeb.Shared.Models;
 
 namespace GanPersonWeb.Services
 {
@@ -46,20 +46,20 @@ namespace GanPersonWeb.Services
             {
                 new Project
                 {
-                    Title = "¸öÈË²©¿ÍÏµÍ³",
-                    Description = "Ò»¸ö»ùÓÚBlazor WebAssemblyµÄ¸öÈË²©¿ÍÏµÍ³£¬Ö§³ÖÎÄÕÂ·¢²¼¡¢ÆÀÂÛ¡¢±êÇ©µÈ¹¦ÄÜ¡£",
+                    Title = "ä¸ªäººåšå®¢ç³»ç»Ÿ",
+                    Description = "ä¸€ä¸ªåŸºäºBlazor WebAssemblyçš„ä¸ªäººåšå®¢ç³»ç»Ÿï¼Œæ”¯æŒæ–‡ç« å‘å¸ƒã€è¯„è®ºã€æ ‡ç­¾ç­‰åŠŸèƒ½ã€‚",
                     ImageUrl = "/uploads/default_card.png",
                     PublishDate = DateTime.Now.AddMonths(-2),
-                    Tags = new List<string> { "Blazor", "WebAssembly", "²©¿Í" },
+                    Tags = new List<string> { "Blazor", "WebAssembly", "åšå®¢" },
                     Link = "https://github.com/example/blog"
                 },
                 new Project
                 {
-                    Title = "ÏîÄ¿¹ÜÀí¹¤¾ß",
-                    Description = "¼òµ¥Ò×ÓÃµÄÏîÄ¿¹ÜÀí¹¤¾ß£¬Ö§³ÖÈÎÎñ·ÖÅä¡¢½ø¶È¸ú×ÙºÍÍÅ¶ÓĞ­×÷¡£",
+                    Title = "é¡¹ç›®ç®¡ç†å·¥å…·",
+                    Description = "ç®€å•æ˜“ç”¨çš„é¡¹ç›®ç®¡ç†å·¥å…·ï¼Œæ”¯æŒä»»åŠ¡åˆ†é…ã€è¿›åº¦è·Ÿè¸ªå’Œå›¢é˜Ÿåä½œã€‚",
                     ImageUrl = "/uploads/default_card.png",
                     PublishDate = DateTime.Now.AddMonths(-1),
-                    Tags = new List<string> { "¹ÜÀí", "Ğ­×÷", "¹¤¾ß" },
+                    Tags = new List<string> { "ç®¡ç†", "åä½œ", "å·¥å…·" },
                     Link = "https://github.com/example/pmtool"
                 }
             };
@@ -70,13 +70,13 @@ namespace GanPersonWeb.Services
             }
         }
 
-        // ·ÖÒ³»ñÈ¡ÏîÄ¿
+        // åˆ†é¡µè·å–é¡¹ç›®
         public async Task<List<Project>> GetProjectsInRangeAsync(int start, int count)
         {
             return await _databaseService.GetRangeAsync<Project>(start, count);
         }
 
-        // »ñÈ¡ÏîÄ¿×ÜÊı
+        // è·å–é¡¹ç›®æ€»æ•°
         public async Task<int> GetProjectsCountAsync()
         {
             return await _databaseService.GetCountAsync<Project>();

@@ -1,4 +1,4 @@
-using GanPersonWeb.Controllers;
+﻿using GanPersonWeb.Controllers;
 using GanPersonWeb.Services;
 using GanPersonWeb.Shared.Models;
 using GanPersonWeb.Data;
@@ -55,7 +55,7 @@ namespace GanPersonWeb.Test.Controllers
             });
 
             // Act
-            var result = await _controller.Upload(fileMock.Object, "desc", "tag1,tag2");
+            var result = await _controller.Upload(fileMock.Object,"test.png","desc", "tag1,tag2");
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -68,7 +68,7 @@ namespace GanPersonWeb.Test.Controllers
         [Fact]
         public async Task Upload_ShouldReturnBadRequest_WhenFileIsNull()
         {
-            var result = await _controller.Upload(null!, null, null);
+            var result = await _controller.Upload(null!,null!, null, null);
             result.Should().BeOfType<BadRequestObjectResult>();
         }
 

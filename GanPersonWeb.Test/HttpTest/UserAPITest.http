@@ -41,3 +41,7 @@ Authorization: Bearer {{token}}
 @id=1
 DELETE {{GanPersonWeb_HostAddress}}/api/users/{{id}}  
 Authorization: Bearer {{token}}  
+
+### Get all users 
+
+GET {{GanPersonWeb_HostAddress}}/api/users
