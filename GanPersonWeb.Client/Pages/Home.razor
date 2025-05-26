@@ -11,18 +11,16 @@
             <MudText Typo="Typo.h5" Color="Color.Secondary" Class="my-2">Blogs</MudText>
             <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="3"/>
         </MudItem>
-        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <MudItem xs="12" sm="3" md="3" id="右侧边栏">
-                <MudStack>
-                    <GanPersonWeb.Client.Component.ShowPersonInfo />
-                    @* 公告 *@
-                    <GanPersonWeb.Client.Component.StandBillboard Title="公告" Content="个人博客正在建设中，敬请期待更多内容！" />
+        <MudItem xs="12" sm="3" md="3" id="右侧边栏">
+            <MudStack>
+                <GanPersonWeb.Client.Component.ShowPersonInfo />
+                @* 公告 *@
+                <GanPersonWeb.Client.Component.StandBillboard Title="公告" Content="个人博客正在建设中，敬请期待更多内容！" />
 
-                    @* 站点信息 *@
-                    <GanPersonWeb.Client.Component.ShowSiteInfo />
-                </MudStack>
-            </MudItem>
-        </MudHidden>
+                @* 站点信息 *@
+                <GanPersonWeb.Client.Component.ShowSiteInfo />
+            </MudStack>
+        </MudItem>
     </MudGrid>
 </MudContainer>
 

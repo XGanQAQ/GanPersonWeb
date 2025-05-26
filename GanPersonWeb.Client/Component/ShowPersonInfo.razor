@@ -8,7 +8,7 @@
             <MudIconButton Icon="@Icons.Material.Filled.Email"
                            Color="Color.Default"
                            Size="Size.Medium"
-                           Href="mailto:2423855310@qq.com" />
+                           Href="@mailto_personEmail"/>
             @if(githubUrl != string.Empty)
             {
                 <MudIconButton Icon="@Icons.Custom.Brands.GitHub"
@@ -52,6 +52,7 @@
     private string personImageUrl = string.Empty;
     private string description = string.Empty;
     private string personEmail = string.Empty;
+    private string mailto_personEmail = string.Empty;
 
     private List<SocialMediaLink> socialMediaLinks = new List<SocialMediaLink>();
     private string githubUrl = string.Empty;
@@ -68,6 +69,7 @@
             personImageUrl = personInfo.ProfileImageUrl;
             description = personInfo.Description;
             personEmail = personInfo.Email;
+            mailto_personEmail = "mailto:"+personInfo.Email;
             socialMediaLinks = personInfo.SocialMediaLinks;
 
             githubUrl = personInfo.SocialMediaLinks.FirstOrDefault(x => x.Platform == "GitHub")?.Url ?? string.Empty;
