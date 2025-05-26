@@ -57,12 +57,12 @@
         {
             <MudItem xs="12" md="12" lg="12">
                 <div class="d-flex flex-column align-center gap-4">
-                    <MudPagination @bind-Selected="_selected"
+                    <MudPagination SelectedChanged="OnPageChanged"
                                    ShowPageButtons="@IsShowPageButtons"
                                    ShowFirstButton="true"
                                    ShowLastButton="true"
                                    Count="@pageCount"
-                                   OnSelectedChanged="OnPageChanged" />
+                                   />
                 </div>
             </MudItem>
         }
@@ -90,7 +90,6 @@
     public ClientBlogService clientBlogService { get; set; } = default!;
 
     private List<Blog> blogs = new List<Blog>();
-    private int _selected = 1;
     private int totalBlogs = 0;
     private bool isLoading = false;
 
@@ -115,10 +114,10 @@
         await GetRangeBlogsAsync(0, DisplayCount);
         isLoading = false;
     }
+    
 
     private async Task OnPageChanged(int page)
     {
-        _selected = page;
         int start = (page - 1) * DisplayCount;
         await GetRangeBlogsAsync(start, DisplayCount);
     }
