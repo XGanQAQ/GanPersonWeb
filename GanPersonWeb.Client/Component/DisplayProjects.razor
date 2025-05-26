@@ -1,15 +1,14 @@
-﻿@using GanPersonWeb.Shared.Models
-
+﻿
 <MudGrid Spacing="3">
-    @if (isLoading)
+    @if (_isLoading)
     {
         <MudItem xs="12">
             <MudText Typo="Typo.h6" Class="text-gray-400" Align="Align.Center">加载中...</MudText>
         </MudItem>
     }
-    else if (projects != null && projects.Count > 0)
+    else if (_projects.Count > 0)
     {
-        @foreach (var project in projects)
+        @foreach (var project in _projects)
         {
             <MudItem xs="12" sm="12" md="@(12 / InlineCount)" Class="d-flex flex-grow-1">
                 <MudCard Class="animated-card" Style="width:100%;">
@@ -20,7 +19,7 @@
                             <MudSpacer />
                             <MudText Typo="Typo.body2">
                                 <MudIcon Icon="@Icons.Material.Filled.Update"></MudIcon>
-                                @project.PublishDate.ToString("yyyy-MM-dd")
+                                @project.PublishDate.Value.ToString("yyyy-MM-dd")
                             </MudText>
                         </MudStack>
 
@@ -30,7 +29,7 @@
                     </MudCardContent>
                     <MudCardActions>
                         <MudChipSet T="string" Size="Size.Small">
-                            @foreach (var tag in project.Tags ?? Enumerable.Empty<string>())
+                            @foreach (var tag in project.Tags)
                             {
                                 <MudChip>@tag</MudChip>
                             }
@@ -44,7 +43,7 @@
             </MudItem>
         }
         @* 展示空白框 *@
-        @for (int i = 0; i < Math.Max(0, DisplayCount - projects.Count); i++)
+        @for (int i = 0; i < Math.Max(0, DisplayCount - _projects.Count); i++)
         {
             <MudItem xs="12" sm="12" md="@(12 / InlineCount)" Class="d-flex flex-grow-1">
                 <MudPaper Elevation="2" Class="pa-4" Style="height:100%;width:100%;"></MudPaper>
@@ -58,7 +57,7 @@
                                    ShowPageButtons="@IsShowPageButtons"
                                    ShowFirstButton="true"
                                    ShowLastButton="true"
-                                   Count="@pageCount"
+                                   Count="@PageCount"
                                    OnSelectedChanged="OnPageChanged" />
                 </div>
             </MudItem>
@@ -81,44 +80,36 @@
     [Parameter] public bool IsShowPageButtons { get; set; } = false;
 
     [Inject]
-    public ClientProjectService clientProjectService { get; set; } = default!;
+    public ClientProjectService ClientProjectService { get; set; } = default!;
 
-    private List<Project> projects = new List<Project>();
+    private List<Project> _projects = new List<Project>();
     private int _selected = 1;
-    private int totalProjects = 0;
-    private bool isLoading = false;
+    private int _totalProjects = 0;
+    private bool _isLoading = false;
 
-    private int pageCount => (int)Math.Ceiling((double)totalProjects / DisplayCount);
+    private int PageCount => (int)Math.Ceiling((double)_totalProjects / DisplayCount);
 
     // 分页获取项目
     protected async Task GetRangeProjectsAsync(int start, int count)
     {
-        isLoading = true;
-        projects = await clientProjectService.GetProjectsInRangeAsync(start, count);
-        isLoading = false;
+        _isLoading = true;
+        _projects = await ClientProjectService.GetProjectsInRangeAsync(start, count);
+        _isLoading = false;
         StateHasChanged();
     }
 
     protected List<Project> FilterProjectWithTag(List<Project> projects, Func<Project, bool> predicate)
     {
-        if (predicate == null)
-            return projects;
         return projects.Where(predicate).ToList();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        isLoading = true;
+        _isLoading = true;
         // 获取项目总数
-        totalProjects = await clientProjectService.GetProjectsCountAsync();
+        _totalProjects = await ClientProjectService.GetProjectsCountAsync();
         await GetRangeProjectsAsync(0, DisplayCount);
-        isLoading = false;
+        _isLoading = false;
     }
-
-    private async Task OnPageChanged(int page)
-    {
-        _selected = page;
-        int start = (page - 1) * DisplayCount;
-        await GetRangeProjectsAsync(start, DisplayCount);
-    }
+    
 }

@@ -43,7 +43,7 @@
         public string Title { get; set; } = string.Empty; // 项目标题
         public string Description { get; set; } = string.Empty; // 项目描述
         public string ImageUrl { get; set; } = string.Empty; // 项目预览图片URL
-        public DateTime PublishDate { get; set; } // 项目发布日期
+        public DateTime? PublishDate { get; set; } // 项目发布日期
         public List<string> Tags { get; set; } = new(); // 项目标签
         public string Link { get; set; } = string.Empty; // 项目链接
     }
@@ -92,6 +92,6 @@
         public DateTime VisitDate { get; set; } // 日期
         public int Count { get; set; } // 当天访问次数
         public string IpAddress { get; set; } = string.Empty; // IP地址
-        public string area { get; set; } = string.Empty; // 访问区域
+        public string Area { get; set; } = string.Empty; // 访问区域
     }
 }

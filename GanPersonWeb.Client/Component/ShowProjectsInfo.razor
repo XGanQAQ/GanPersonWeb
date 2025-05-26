@@ -20,7 +20,7 @@
         if (result != null)
         {
             totalCount = result.Count.ToString();
-            lastUpdate = result.Max(p => p.PublishDate).ToString("yyyy/MM/dd");
+            lastUpdate = result.Max(p => p.PublishDate).Value.ToString("yyyy/MM/dd");
         }
     }
 }

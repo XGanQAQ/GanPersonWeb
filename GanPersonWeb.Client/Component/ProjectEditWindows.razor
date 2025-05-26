@@ -1,0 +1,61 @@
+﻿
+<MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="OpenDialog" />
+
+<MudDialog @bind-Visible="_visible" Options="_dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> 编辑项目
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="@_editProject" OnValidSubmit="HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <MudTextField T="string" @bind-Value="_editProject.Title" Label="项目标题" Required="true" />
+            <MudTextField T="string" @bind-Value="_editProject.ImageUrl" Label="项目图片URL" />
+            <MudTextField T="string" @bind-Value="_editProject.Description" Label="项目描述" Lines="2" />
+            <MudTextField T="string" @bind-Value="_tagsInput" Label="标签（逗号分隔）" />
+            <MudTextField T="string" @bind-Value="_editProject.Link" Label="项目链接" />
+            <MudDatePicker @bind-Date="_editProject.PublishDate" Label="发布日期" />
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="HandleValidSubmit">保存</MudButton>
+        <MudButton Variant="Variant.Text" OnClick="CloseDialog">取消</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter] public Project Project { get; set; } = new Project();
+    [Parameter] public EventCallback<Project> OnUpdate { get; set; }
+
+    private bool _visible;
+    private readonly DialogOptions _dialogOptions = new() { FullWidth = true };
+    private Project _editProject = new();
+    private string _tagsInput = "";
+
+    private void OpenDialog()
+    {
+        // 深拷贝，避免直接修改父组件数据
+        _editProject = new Project
+        {
+            Id = Project.Id,
+            Title = Project.Title,
+            ImageUrl = Project.ImageUrl,
+            Description = Project.Description,
+            PublishDate = Project.PublishDate,
+            Tags = new List<string>(Project.Tags),
+            Link = Project.Link
+        };
+        _tagsInput = string.Join(',', _editProject.Tags);
+        _visible = true;
+    }
+
+    private async void HandleValidSubmit()
+    {
+        _editProject.Tags = _tagsInput.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+        _visible = false;
+        await OnUpdate.InvokeAsync(_editProject);
+    }
+
+    private void CloseDialog() => _visible = false;
+}
