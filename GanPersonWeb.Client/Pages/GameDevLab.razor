@@ -1,6 +1,5 @@
 ﻿@page "/GameDevLab"
 
-@inject ClientProjectService clientProjectService
 <PageTitle>游戏开发者实验室 | 个人博客</PageTitle>
 
 <MudPaper Class="my-8">
@@ -64,11 +63,12 @@
 </MudPaper>
 
 @code {
+    [Inject] public ClientProjectService ClientProjectService { get; set; } = default!;
 
     public List<Project> projects { get; set; } = new List<Project>();  
 
     protected override async Task OnInitializedAsync()
     {
-        projects = await clientProjectService.GetProjectsAsync();
+        projects = await ClientProjectService.GetProjectsAsync();
     }
 }
