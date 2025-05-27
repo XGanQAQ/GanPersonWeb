@@ -103,6 +103,10 @@ namespace GanPersonWeb.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Filename")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Tags")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -168,7 +172,7 @@ namespace GanPersonWeb.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("PublishDate")
+                    b.Property<DateTime?>("PublishDate")
                         .HasColumnType("TEXT");
 
                     b.PrimitiveCollection<string>("Tags")
@@ -190,6 +194,10 @@ namespace GanPersonWeb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Count")
                         .HasColumnType("INTEGER");
 
@@ -198,10 +206,6 @@ namespace GanPersonWeb.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("VisitDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("area")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -243,13 +247,30 @@ namespace GanPersonWeb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastLoginAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProfileImageUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("TodayCommentCount")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Username")
                         .IsRequired()
