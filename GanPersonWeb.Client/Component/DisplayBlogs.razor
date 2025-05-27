@@ -95,17 +95,6 @@
 
     private int pageCount => (int)Math.Ceiling((double)totalBlogs / DisplayCount);
 
-    // 获得某一个范围的博客
-    protected async Task GetRangeBlogsAsync(int start, int count)
-    {
-        isLoading = true;
-        StateHasChanged();
-        var result = await clientBlogService.GetBlogsInNewShortAsync(start, count);
-        blogs = result ?? new List<Blog>();
-        isLoading = false;
-        StateHasChanged();
-    }
-
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
@@ -115,7 +104,13 @@
         isLoading = false;
     }
     
-
+    // 获得某一个范围的博客
+    protected async Task GetRangeBlogsAsync(int start, int count)
+    {
+        var result = await clientBlogService.GetBlogsInNewShortAsync(start, count);
+        blogs = result ?? new List<Blog>();
+    }
+    
     private async Task OnPageChanged(int page)
     {
         int start = (page - 1) * DisplayCount;

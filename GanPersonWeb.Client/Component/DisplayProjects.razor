@@ -87,21 +87,7 @@
     private bool _isLoading = false;
 
     private int PageCount => (int)Math.Ceiling((double)_totalProjects / DisplayCount);
-
-    // 分页获取项目
-    protected async Task GetRangeProjectsAsync(int start, int count)
-    {
-        _isLoading = true;
-        _projects = await ClientProjectService.GetProjectsInRangeAsync(start, count);
-        _isLoading = false;
-        StateHasChanged();
-    }
-
-    protected List<Project> FilterProjectWithTag(List<Project> projects, Func<Project, bool> predicate)
-    {
-        return projects.Where(predicate).ToList();
-    }
-
+    
     protected override async Task OnInitializedAsync()
     {
         _isLoading = true;
@@ -109,6 +95,17 @@
         _totalProjects = await ClientProjectService.GetProjectsCountAsync();
         await GetRangeProjectsAsync(0, DisplayCount);
         _isLoading = false;
+    }
+    
+    // 分页获取项目
+    protected async Task GetRangeProjectsAsync(int start, int count)
+    {
+        _projects = await ClientProjectService.GetProjectsInRangeAsync(start, count);
+    }
+
+    protected List<Project> FilterProjectWithTag(List<Project> projects, Func<Project, bool> predicate)
+    {
+        return projects.Where(predicate).ToList();
     }
 
     private async Task OnPageChanged(int page)
