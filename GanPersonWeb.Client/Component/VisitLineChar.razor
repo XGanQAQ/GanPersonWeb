@@ -1,4 +1,6 @@
-﻿<MudPaper>
+﻿@inject GanPersonWeb.Client.Services.ClientSiteVisitService VisitService
+
+<MudPaper>
     <MudChart ChartType="ChartType.Line" Width="auto" ChartSeries="@_series" @bind-SelectedIndex="_index" XAxisLabels="@_xAxisLabels" 
     ChartOptions="@_options" AxisChartOptions="_axisChartOptions" />
     <MudCheckBox T="bool" ValueChanged="(v)=> _series.ForEach(x => x.ShowDataMarkers = v)" Label="Show Data Markers"></MudCheckBox>
@@ -9,12 +11,30 @@
     private ChartOptions _options = new ChartOptions();
     private AxisChartOptions _axisChartOptions = new AxisChartOptions();
 
-    private List<ChartSeries> _series = new List<ChartSeries>()
+    private List<ChartSeries> _series = new List<ChartSeries>();
+    private string[] _xAxisLabels = Array.Empty<string>();
+
+    protected override async Task OnInitializedAsync()
     {
-        new ChartSeries() { Name = "VisitCount", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
-        // new ChartSeries() { Name = "Renewable", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
-    };
-    private string[] _xAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+        var data = await VisitService.GetVisitDataAsync();
+        if (data != null && data.Count > 0)
+        {
+            _xAxisLabels = data.Select(d => d.VisitDate.ToString("MM-dd")).ToArray();
+            _series = new List<ChartSeries>
+            {
+                new ChartSeries
+                {
+                    Name = "VisitCount",
+                    Data = data.Select(d => (double)d.Count).ToArray()
+                }
+            };
+        }
+        else
+        {
+            _xAxisLabels = Array.Empty<string>();
+            _series = new List<ChartSeries>();
+        }
+    }
 
     private void ShowDataMarkers(bool show)
     {
