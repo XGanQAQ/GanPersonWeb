@@ -4,14 +4,54 @@ using System.Collections.Concurrent;
 
 namespace GanPersonWeb.Services
 {
-    public class SiteVisitService
+    public interface ISiteVisitService
     {
+        Task RecordVisitAsync();
+        Task<List<SiteVisit>> GetVisitsAsync();
+    }
+    public class SiteVisitService : ISiteVisitService
+    {
+        private readonly DatabaseService _databaseService;
+
+        public SiteVisitService(DatabaseService databaseService)
+        {
+            _databaseService = databaseService;
+        }
+
+        public async Task RecordVisitAsync()
+        {
+            var today = DateTime.UtcNow.Date;
+            var db = _databaseService.GetDbContext();
+            var visit = await db.SiteVisits.FirstOrDefaultAsync(v => v.VisitDate == today);
+            if (visit == null)
+            {
+                visit = new SiteVisit { VisitDate = today, Count = 1 };
+                db.SiteVisits.Add(visit);
+            }
+            else
+            {
+                visit.Count += 1;
+            }
+            await db.SaveChangesAsync();
+        }
+
+        public async Task<List<SiteVisit>> GetVisitsAsync()
+        {
+            return await _databaseService.GetAllAsync<SiteVisit>();
+        }
+    }
+    
+    // 缓冲定时存储法
+    public class SiteVisitService_Extension : ISiteVisitService
+    {
+        private readonly ISiteVisitService _siteVisitService;
+
         private readonly DatabaseService _databaseService;
         private static readonly ConcurrentDictionary<DateTime, int> _visitCache = new();
         private static readonly object _lock = new();
         private static bool _timerStarted = false;
 
-        public SiteVisitService(DatabaseService databaseService)
+        public SiteVisitService_Extension(DatabaseService databaseService)
         {
             _databaseService = databaseService;
             StartDailySaveTimer();
@@ -74,5 +114,4 @@ namespace GanPersonWeb.Services
             return await _databaseService.GetAllAsync<SiteVisit>();
         }
     }
-
 }
