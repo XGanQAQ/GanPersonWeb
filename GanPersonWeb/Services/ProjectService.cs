@@ -61,7 +61,25 @@ namespace GanPersonWeb.Services
                     PublishDate = DateTime.Now.AddMonths(-1),
                     Tags = new List<string> { "管理", "协作", "工具" },
                     Link = "https://github.com/example/pmtool"
-                }
+                },
+                new Project
+                {
+                    Title = "我的游戏项目",
+                    Description = "游戏项目。",
+                    ImageUrl = "/uploads/default_card.png",
+                    PublishDate = DateTime.Now.AddMonths(-3),
+                    Tags = new List<string> { "Game" },
+                    Link = "https://github.com/example/pmtool"
+                },
+                new Project
+                {
+                    Title = "我的实验项目",
+                    Description = "实验项目。",
+                    ImageUrl = "/uploads/default_card.png",
+                    PublishDate = DateTime.Now.AddMonths(-3),
+                    Tags = new List<string> { "Experiment" },
+                    Link = "https://github.com/example/pmtool"
+                },
             };
 
             foreach (var project in initialProjects)

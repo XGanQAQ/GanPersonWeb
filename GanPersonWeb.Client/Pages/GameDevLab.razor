@@ -27,24 +27,25 @@
         <!-- 项目展示 -->
         <MudContainer MaxWidth="MaxWidth.Large" class="my-16">
             <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
-                我的项目
+                我的游戏项目
             </MudText>
             <MudText Typo="Typo.body1" Align="Align.Center" Class="mb-4">
                 这些是我投入大量时间和精力的完整游戏项目，每个项目都代表了我作为游戏开发者的成长历程。
             </MudText>
-            <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="3" InlineCount="3"/>
+            <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="3" InlineCount="3" FilterTag="Game"/>
         </MudContainer>
 
         <!-- 实验展示 -->
-        @* <MudContainer MaxWidth="MaxWidth.Large" class="my-16" Id="experiments"> *@
-        @*     <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Secondary"> *@
-        @*         技术实验 *@
-        @*     </MudText> *@
-        @*     <MudText Typo="Typo.body1" Align="Align.Center" Class="mb-4"> *@
-        @*         这些是我在游戏开发过程中进行的小型实验和技术探索，帮助我理解和掌握各种游戏开发技术。 *@
-        @*     </MudText> *@
-        @*     <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="4" InlineCount="4"/> *@
-        @* </MudContainer> *@
+        <MudContainer MaxWidth="MaxWidth.Large" class="my-16" Id="experiments">
+            <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Secondary">
+                技术实验
+            </MudText>
+            <MudText Typo="Typo.body1" Align="Align.Center" Class="mb-4">
+                这些是我在游戏开发过程中进行的小型实验和技术探索，帮助我理解和掌握各种游戏开发技术。
+            </MudText>
+            <GanPersonWeb.Client.Component.DisplayProjects DisplayCount="4" InlineCount="4" FilterTag="Experiment"/>
+        </MudContainer>
+
 
         <!-- 博客文章 -->
         <MudContainer MaxWidth="MaxWidth.Large" class="my-16" Id="blog">
@@ -56,6 +57,20 @@
             </MudText>
             <GanPersonWeb.Client.Component.DisplayBlogs DisplayCount="2" InlineCount="2"/>
         </MudContainer>
+
+        <MudContainer MaxWidth="MaxWidth.Small" Class="my-16">
+            <MudStack Row>
+                <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Secondary" EndIcon="@Icons.Material.Filled.More" Href="/Portfolio/Browse">
+                    ViewMore Projects
+                </MudButton>
+                <MudSpacer />
+                <MudButton Size="Size.Large" Variant="Variant.Outlined" Color="Color.Tertiary" EndIcon="@Icons.Material.Filled.More" Href="/Blogs/Browse">
+                    ViewMore Blogs
+                </MudButton>
+            </MudStack>
+        </MudContainer>
+
+        <MudDivider/>
 
         <!-- 关于我 -->
         <GanPersonWeb.Client.Component.AboutMe/>

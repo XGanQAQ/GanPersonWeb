@@ -1,5 +1,4 @@
-﻿
-<MudGrid Spacing="3">
+﻿<MudGrid Spacing="3">
     @if (_isLoading)
     {
         <MudItem xs="12">
@@ -74,7 +73,7 @@
 @code {
     [Parameter] public int DisplayCount { get; set; } = 3;
     [Parameter] public int InlineCount { get; set; } = 2; // 每行显示的项目数量
-    [Parameter] public string FilterTag { get; set; } = string.Empty; // 过滤标签 TODO: 需要实现过滤功能
+    [Parameter] public string FilterTag { get; set; } = string.Empty; // 过滤标签
 
     [Parameter] public bool IsShowPagination { get; set; } = true;
     [Parameter] public bool IsShowPageButtons { get; set; } = false;
@@ -83,29 +82,58 @@
     public ClientProjectService ClientProjectService { get; set; } = default!;
 
     private List<Project> _projects = new List<Project>();
-    private int _totalProjects = 0;
+    private int _totalProjectsCount = 0;
     private bool _isLoading = false;
 
-    private int PageCount => (int)Math.Ceiling((double)_totalProjects / DisplayCount);
-    
+    private int PageCount => (int)Math.Ceiling((double)_totalProjectsCount / DisplayCount);
+
     protected override async Task OnInitializedAsync()
     {
         _isLoading = true;
-        // 获取项目总数
-        _totalProjects = await ClientProjectService.GetProjectsCountAsync();
-        await GetRangeProjectsAsync(0, DisplayCount);
+        if (!string.IsNullOrWhiteSpace(FilterTag))
+        {
+            // 获取筛选后项目总数
+            var allByTag = await ClientProjectService.GetProjectsByTagAsync(FilterTag);
+            _totalProjectsCount = allByTag.Count;
+            await GetRangeProjectsAsync(0, DisplayCount);
+        }
+        else
+        {
+            _totalProjectsCount = await ClientProjectService.GetProjectsCountAsync();
+            await GetRangeProjectsAsync(0, DisplayCount);
+        }
         _isLoading = false;
     }
-    
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // 当FilterTag变化时，刷新数据
+        _isLoading = true;
+        if (!string.IsNullOrWhiteSpace(FilterTag))
+        {
+            var allByTag = await ClientProjectService.GetProjectsByTagAsync(FilterTag);
+            _totalProjectsCount = allByTag.Count;
+            await GetRangeProjectsAsync(0, DisplayCount);
+        }
+        else
+        {
+            _totalProjectsCount = await ClientProjectService.GetProjectsCountAsync();
+            await GetRangeProjectsAsync(0, DisplayCount);
+        }
+        _isLoading = false;
+    }
+
     // 分页获取项目
     protected async Task GetRangeProjectsAsync(int start, int count)
     {
-        _projects = await ClientProjectService.GetProjectsInRangeAsync(start, count);
-    }
-
-    protected List<Project> FilterProjectWithTag(List<Project> projects, Func<Project, bool> predicate)
-    {
-        return projects.Where(predicate).ToList();
+        if (!string.IsNullOrWhiteSpace(FilterTag))
+        {
+            _projects = await ClientProjectService.GetProjectsByTagInRangeAsync(FilterTag, start, count);
+        }
+        else
+        {
+            _projects = await ClientProjectService.GetProjectsInRangeAsync(start, count);
+        }
     }
 
     private async Task OnPageChanged(int page)

@@ -55,5 +55,19 @@ namespace GanPersonWeb.Client.Services
             var result = await _httpClient.GetFromJsonAsync<int>("api/projects/count");
             return result;
         }
+
+        // 通过Tag筛选项目
+        public async Task<List<Project>> GetProjectsByTagAsync(string tag)
+        {
+            var result = await _httpClient.GetFromJsonAsync<List<Project>>($"api/projects/tag/{tag}");
+            return result ?? new List<Project>();
+        }
+
+        // 通过Tag筛选并分页获取项目
+        public async Task<List<Project>> GetProjectsByTagInRangeAsync(string tag, int start, int count)
+        {
+            var result = await _httpClient.GetFromJsonAsync<List<Project>>($"api/projects/tag/{tag}/range/{start}/{count}");
+            return result ?? new List<Project>();
+        }
     }
 }
