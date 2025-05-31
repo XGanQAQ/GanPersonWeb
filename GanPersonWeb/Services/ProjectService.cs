@@ -81,5 +81,25 @@ namespace GanPersonWeb.Services
         {
             return await _databaseService.GetCountAsync<Project>();
         }
+
+        // 通过tag筛选项目
+        public async Task<List<Project>> GetProjectsByTagAsync(string tag)
+        {
+            var allProjects = await _databaseService.GetAllAsync<Project>();
+            return allProjects
+                .Where(p => p.Tags != null && p.Tags.Any(t => t.Equals(tag, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+        }
+
+        // 按Tag筛选并分页获取项目
+        public async Task<List<Project>> GetProjectsByTagInRangeAsync(string tag, int start, int count)
+        {
+            var allProjects = await _databaseService.GetAllAsync<Project>();
+            return allProjects
+                .Where(p => p.Tags != null && p.Tags.Any(t => t.Equals(tag, StringComparison.OrdinalIgnoreCase)))
+                .Skip(start)
+                .Take(count)
+                .ToList();
+        }
     }
 }
