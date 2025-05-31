@@ -1,4 +1,5 @@
 ﻿@page "/console/dashboard"
+@page "/console"
 <MudContainer MaxWidth="MaxWidth.Large">
     <MudGrid Spacing="6" Class="d-flex">
         <MudItem xs="12" sm="12" md="6">
@@ -22,19 +23,11 @@
     </MudGrid>
 </MudContainer>
 @code {
-    // [Inject]
-    // public AuthService AuthService { get; set; } = null!;
-    // [Inject]
-    // public NavigationManager Navigation { get; set; } = null!;
-    // private bool? isAdmin = null;
-
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     isAdmin = AuthService.IsAdmin();
-    //     if (isAdmin == false)
-    //     {
-    //         Navigation.NavigateTo("/login");
-    //     }
-    // }
+    [Inject]
+    public ClientUserService ClientUserService { get; set; } = null!;
+    [Inject]
+    public NavigationManager Navigation { get; set; } = null!;
+    private bool? isAdmin = null;
+    
 }
 
