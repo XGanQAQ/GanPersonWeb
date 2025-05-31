@@ -75,5 +75,21 @@ namespace GanPersonWeb.Controllers
             var count = await _projectService.GetProjectsCountAsync();
             return Ok(count);
         }
+
+        // 通过tag筛选项目
+        [HttpGet("tag/{tag}")]
+        public async Task<IActionResult> GetProjectsByTag(string tag)
+        {
+            var projects = await _projectService.GetProjectsByTagAsync(tag);
+            return Ok(projects);
+        }
+
+        // 按Tag筛选并分页获取项目
+        [HttpGet("tag/{tag}/range/{start}/{count}")]
+        public async Task<IActionResult> GetProjectsByTagInRange(string tag, int start, int count)
+        {
+            var projects = await _projectService.GetProjectsByTagInRangeAsync(tag, start, count);
+            return Ok(projects);
+        }
     }
 }

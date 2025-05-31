@@ -42,3 +42,17 @@ Content-Type: application/json
 DELETE {{GanPersonWeb_HostAddress}}/api/projects/{{id}}  
 
 ###  
+
+# 通过Tag筛选项目
+@tag=Blazor
+GET {{GanPersonWeb_HostAddress}}/api/projects/tag/{{tag}}
+
+###
+
+# 按Tag筛选并分页获取项目
+@tag=Blazor
+@start=0
+@count=2
+GET {{GanPersonWeb_HostAddress}}/api/projects/tag/{{tag}}/range/{{start}}/{{count}}
+
+###
