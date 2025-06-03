@@ -1,0 +1,13 @@
+<footer class="site-footer" style="padding:1rem 0;text-align:center;font-size:0.95rem;color:#888;">
+    <div>
+        <MudLink Href="@recordLink">
+            <MudText Typo="Typo.subtitle1" class="#546E7A">@recordInfo</MudText>
+        </MudLink>
+    </div>
+</footer>
+
+@code {
+    // 这里可以添加任何需要的代码逻辑
+    string recordInfo = "备01234567";
+    string recordLink = "https://example.com"; // 备案链接
+}
